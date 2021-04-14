@@ -13,9 +13,6 @@ class Partition(object):
         """
         Return the description text.
 
-        :param None
-        :type NoneType
-
         :return: Partition description text, return when operation is successful
         :rtype: str
         """
@@ -29,9 +26,6 @@ class Partition(object):
     def name(self):
         """
         Return the partition name.
-
-        :param None
-        :type NoneType
 
         :return: Partition name, return when operation is successful
         :rtype: str
@@ -48,11 +42,8 @@ class Partition(object):
         """
         Return whether the partition is empty
 
-        :param None
-        :type NoneType
-
         :return: Whether the partition is empty
-        :rtype: boolean
+        :rtype: bool
         """
         pass
 
@@ -62,9 +53,6 @@ class Partition(object):
         """
         Return the number of entities.
 
-        :param None
-        :type NoneType
-
         :return: Number of entities in this partition.
         :rtype: int
         """
@@ -73,9 +61,6 @@ class Partition(object):
     def drop(self, **kwargs):
         """
         Drop the partition, as well as its corresponding index files.
-
-        :param None
-        :type NoneType
 
         :return: Number of entities in this partition.
         :rtype: int
@@ -91,30 +76,12 @@ class Partition(object):
 
         :param index_names: The specified indexes to load.
         :type  index_names: list[str]
-
-        :return: None
-        :rtype: NoneType
-
-        :raises:
-            RpcError: If gRPC encounter an error
-            ParamError: If parameters are invalid
-            BaseException: If the return result from server is not ok
         """
         pass
 
     def release(self, **kwargs):
         """
         Release the partition from memory.
-
-        :param None
-        :type  NoneType
-
-        :return: None
-        :rtype: NoneType
-
-        :raises:
-            RpcError: If gRPC encounter an error
-            BaseException: If the return result from server is not ok
         """
         pass
 
@@ -124,14 +91,6 @@ class Partition(object):
 
         :param data: The specified data to insert, the dimension of data needs to align with column number
         :type  data: list-like(list, tuple, numpy.ndarray) object or pandas.DataFrame
-
-        :return: None
-        :rtype: NoneType
-
-        :raises:
-            RpcError: If gRPC encounter an error
-            ParamError: If parameters are invalid
-            BaseException: If the return result from server is not ok
         """
         pass
 
@@ -157,10 +116,5 @@ class Partition(object):
         :return: Query result. QueryResult is iterable and is a 2d-array-like class, the first dimension is
                  the number of vectors to query (nq), the second dimension is the number of topk.
         :rtype: QueryResult
-
-        :raises:
-            RpcError: If gRPC encounter an error
-            ParamError: If parameters are invalid
-            BaseException: If the return result from server is not ok
         """
         pass

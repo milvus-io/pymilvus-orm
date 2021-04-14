@@ -26,14 +26,6 @@ def wait_for_loading_complete(collection_name, partition_name=None):
 
     :param partition_name: The name of partition to wait
     :type  partition_name: str
-
-    :return: None
-    :rtype:  NoneType
-
-    :raises:
-        RpcError: If gRPC encounter an error
-        ParamError: If parameters are invalid
-        BaseException: If the return result from server is not ok
     """
     pass
 
@@ -63,14 +55,6 @@ def wait_for_index_building_complete(collection_name, index_name=None):
 
     :param index_name: The name of index to wait.
     :type  index_name: str
-
-    :return: None
-    :rtype:  NoneType
-
-    :raises:
-        RpcError: If gRPC encounter an error
-        ParamError: If parameters are invalid
-        BaseException: If the return result from server is not ok
     """
     pass
 
@@ -83,7 +67,7 @@ def has_collection(collection_name):
     :type  collection_name: str
 
     :return: Whether the collection exists.
-    :rtype:  boolean
+    :rtype:  bool
     """
     pass
 
@@ -99,6 +83,6 @@ def has_partition(collecton_name, partition_name):
     :type  partition_name: str
 
     :return: Whether the partition exist.
-    :rtype:  boolean
+    :rtype:  bool
     """
     pass

@@ -77,15 +77,8 @@ class Collection(object):
         """
         Return all partitions of the collection.
 
-        :param None
-        :type NoneType
-
         :return: List of Partition object, return when operation is successful
         :rtype: list[Partition]
-
-        :raises:
-            RpcError: If gRPC encounter an error
-            BaseException: If the return result from server is not ok
         """
         pass
 
@@ -98,11 +91,6 @@ class Collection(object):
 
         :return:Partition object corresponding to partition_name
         :rtype: Partition
-
-        :raises:
-            RpcError: If gRPC encounter an error
-            ParamError: If parameters are invalid
-            BaseException: If the return result from server is not ok
         """
         pass
 
@@ -119,11 +107,6 @@ class Collection(object):
 
         :return: Whether a specified partition exists.
         :rtype: bool
-
-        :raises:
-            RpcError: If gRPC encounter an error
-            ParamError: If parameters are invalid
-            BaseException: If the return result from server is not ok
         """
         pass
 
@@ -133,16 +116,6 @@ class Collection(object):
 
         :param partition_name: The name of the partition to drop.
         :type  partition_name: str
-
-        :param kwargs
-
-        :return: None
-        :rtype: NoneType
-
-        :raises:
-            RpcError: If gRPC encounter an error
-            ParamError: If parameters are invalid
-            BaseException: If the return result from server is not ok
         """
         pass
 
@@ -151,15 +124,8 @@ class Collection(object):
         """
         Return all indexes of the collection..
 
-        :param None
-        :type NoneType
-
         :return: List of Index object, return when operation is successful
         :rtype: list[Index]
-
-        :raises:
-            RpcError: If gRPC encounter an error
-            BaseException: If the return result from server is not ok
         """
         pass
 
@@ -172,11 +138,6 @@ class Collection(object):
 
         :return:Index object corresponding to index_name
         :rtype: Index
-
-        :raises:
-            RpcError: If gRPC encounter an error
-            ParamError: If parameters are invalid
-            BaseException: If the return result from server is not ok
         """
         pass
 
@@ -192,86 +153,6 @@ class Collection(object):
 
         :param index_params: Indexing parameters.
         :type  index_params: dict
-            There are examples of supported indexes:
-
-            IVF_FLAT:
-                ` {
-                    "metric_type":"L2",
-                    "index_type": "IVF_FLAT",
-                    "params":{"nlist": 1024}
-                }`
-
-            IVF_PQ:
-                `{
-                    "metric_type": "L2",
-                    "index_type": "IVF_PQ",
-                    "params": {"nlist": 1024, "m": 8, "nbits": 8}
-                }`
-
-            IVF_SQ8:
-                `{
-                    "metric_type": "L2",
-                    "index_type": "IVF_SQ8",
-                    "params": {"nlist": 1024}
-                }`
-
-            BIN_IVF_FLAT:
-                `{
-                    "metric_type": "JACCARD",
-                    "index_type": "BIN_IVF_FLAT",
-                    "params": {"nlist": 1024}
-                }`
-
-            HNSW:
-                `{
-                    "metric_type": "L2",
-                    "index_type": "HNSW",
-                    "params": {"M": 48, "efConstruction": 50}
-                }`
-
-            RHNSW_FLAT:
-                `{
-                    "metric_type": "L2",
-                    "index_type": "RHNSW_FLAT",
-                    "params": {"M": 48, "efConstruction": 50}
-                }`
-
-            RHNSW_PQ:
-                `{
-                    "metric_type": "L2",
-                    "index_type": "RHNSW_PQ",
-                    "params": {"M": 48, "efConstruction": 50, "PQM": 8}
-                }`
-
-            RHNSW_SQ:
-                `{
-                    "metric_type": "L2",
-                    "index_type": "RHNSW_SQ",
-                    "params": {"M": 48, "efConstruction": 50}
-                }`
-
-            ANNOY:
-                `{
-                    "metric_type": "L2",
-                    "index_type": "ANNOY",
-                    "params": {"n_trees": 8}
-                }`
-
-        :param kwargs:
-            * *_async* (``bool``) --
-              Indicate if invoke asynchronously. When value is true, method returns a IndexFuture object;
-              otherwise, method returns results from server.
-            * *_callback* (``function``) --
-              The callback function which is invoked after server response successfully. It only take
-              effect when _async is set to True.
-
-        :return: None
-        :rtype: NoneType
-
-        :raises:
-            RpcError: If gRPC encounter an error
-            ParamError: If parameters are invalid
-            BaseException: If the return result from server is not ok
         """
         pass
 
@@ -284,11 +165,6 @@ class Collection(object):
 
         :return: If specified index exists
         :rtype: bool
-
-        :raises:
-            RpcError: If gRPC encounter an error
-            ParamError: If parameters are invalid
-            BaseException: If the return result from server is not ok
         """
         pass
 
@@ -298,15 +174,5 @@ class Collection(object):
 
         :param index_name: The name of the partition to drop.
         :type  index_name: str
-
-        :param kwargs
-
-        :return: None
-        :rtype: NoneType
-
-        :raises:
-            RpcError: If gRPC encounter an error
-            ParamError: If parameters are invalid
-            BaseException: If the return result from server is not ok
         """
         pass
