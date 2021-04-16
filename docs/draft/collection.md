@@ -39,13 +39,13 @@
 
 ##### Accessing and constructing partition
 
-| Methods                                                    | Descriptions                                                 | 参数                       | 返回值                           |
-| ---------------------------------------------------------- | ------------------------------------------------------------ | -------------------------- | -------------------------------- |
-| Collection.partitions                                      | Return all partitions of the collection.                     | /                          | list(Partition对象)              |
-| Collection.partition(partition_name)                       | Return the partition corresponding to name. Create a new one if not existed. | partition_name类型是string | Partition对象                    |
-| Collection.create_partition(partition_name, desription="") |                                                              |                            | Partition对象或者Raise Exception |
-| Collection.has_partition(partition_name)                   | Checks if a specified partition exists.                      | partition_name类型是string | boolean                          |
-| Collection.drop_partition(partition_name, **kwargs)        | Drop the partition and its corresponding index files.        | partition_name类型是string | None或者Raise Exception          |
+| Methods                                                    | Descriptions                                          | 参数                       | 返回值                           |
+| ---------------------------------------------------------- | ----------------------------------------------------- | -------------------------- | -------------------------------- |
+| Collection.partitions                                      | Return all partitions of the collection.              | /                          | list(Partition对象)              |
+| Collection.partition(partition_name)                       | Return the partition corresponding to name.           | partition_name类型是string | None或者Partition对象            |
+| Collection.create_partition(partition_name, desription="") | Create a new one if not existed.                      |                            | Partition对象或者Raise Exception |
+| Collection.has_partition(partition_name)                   | Checks if a specified partition exists.               | partition_name类型是string | boolean                          |
+| Collection.drop_partition(partition_name, **kwargs)        | Drop the partition and its corresponding index files. | partition_name类型是string | None或者Raise Exception          |
 
 
 
