@@ -74,29 +74,105 @@ class Collection(object):
 
     @property
     def partitions(self):
+        """
+        Return all partitions of the collection.
+
+        :return: List of Partition object, return when operation is successful
+        :rtype: list[Partition]
+        """
         pass
 
     def partition(self, partition_name):
+        """
+        Return the partition corresponding to name. Create a new one if not existed.
+
+        :param partition_name: The name of the partition to create.
+        :type  partition_name: str
+
+        :return:Partition object corresponding to partition_name
+        :rtype: Partition
+        """
         pass
 
     def has_partition(self, partition_name):
+        """
+        Checks if a specified partition exists.
+
+        :param partition_name: The name of the partition to check
+        :type  partition_name: str
+
+        :param timeout: An optional duration of time in seconds to allow for the RPC. When timeout
+                        is set to None, client waits until server response or error occur.
+        :type  timeout: float
+
+        :return: Whether a specified partition exists.
+        :rtype: bool
+        """
         pass
 
     def drop_partition(self, partition_name, **kwargs):
+        """
+        Drop the partition and its corresponding index files.
+
+        :param partition_name: The name of the partition to drop.
+        :type  partition_name: str
+        """
         pass
 
     @property
     def indexes(self):
+        """
+        Return all indexes of the collection..
+
+        :return: List of Index object, return when operation is successful
+        :rtype: list[Index]
+        """
         pass
 
     def index(self, index_name):
+        """
+        Return the index corresponding to name.
+
+        :param index_name: The name of the index to create.
+        :type  index_name: str
+
+        :return:Index object corresponding to index_name
+        :rtype: Index
+        """
         pass
 
     def create_index(self, field_name, index_name, index_params, **kwargs):
+        """
+        Create index on a specified column according to the index parameters. Return Index Object.
+
+        :param field_name: The name of the field to create an index for.
+        :type  field_name: str
+
+        :param index_name: The name of the index to create.
+        :type  index_name: str
+
+        :param index_params: Indexing parameters.
+        :type  index_params: dict
+        """
         pass
 
     def has_index(self, index_name):
+        """
+        Checks whether a specified index exists.
+
+        :param index_name: The name of the index to check.
+        :type  index_name: str
+
+        :return: If specified index exists
+        :rtype: bool
+        """
         pass
 
     def drop_index(self, index_name, **kwargs):
+        """
+        Drop index and its corresponding index files.
+
+        :param index_name: The name of the partition to drop.
+        :type  index_name: str
+        """
         pass
