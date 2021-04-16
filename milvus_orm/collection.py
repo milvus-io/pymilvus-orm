@@ -1,15 +1,18 @@
 from . import connections
 
 class Collection(object):
-    """This is a class coresponding to collection in milvus.
+    """
+    This is a class coresponding to collection in milvus.
     """
 
     def __init__(self, name, schema, **kwargs):
-        """Construct a collection by the name, schema and other parameters.
+        """
+        Construct a collection by the name, schema and other parameters.
         Connection information is contained in kwargs.
 
         :param name: the name of collection
         :type name: str
+
         :param schema: the schema of collection
         :type schema: class `schema.CollectionSchema`
         """
@@ -25,51 +28,147 @@ class Collection(object):
 
     @property
     def schema(self):
+        """
+        Return the schema of collection.
+
+        :return: Schema of collection
+        :rtype: schema.CollectionSchema
+        """
         return self._schema
 
     @schema.setter
     def schema(self, value):
+        """
+        Set the schema of collection.
+
+        :param value: the schema of collection
+        :type value: class `schema.CollectionSchema`
+        """
         pass
 
     @property
     def description(self):
+        """
+        Return the description text.
+
+        :return: Collection description text, return when operation is successful
+        :rtype: str
+        """
         pass
 
     @description.setter
     def description(self, value):
+        """
+        Set the description text of collection.
+
+        :param value: the description text of collection
+        :type value: str
+        """
         pass
 
     @property
     def name(self):
+        """
+        Return the collection name.
+
+        :return: Collection name, return when operation is successful
+        :rtype: str
+        """
         pass
 
     @name.setter
     def name(self, value):
+        """
+        Set the name of collection.
+
+        :param value: the name of collection
+        :type value: str
+        """
         pass
 
     # read-only
     @property
     def is_empty(self):
+        """
+        Return whether the collection is empty.
+
+        :return: Whether the collection is empty.
+        :rtype: bool
+        """
         pass
 
     # read-only
     @property
     def num_entities(self):
+        """
+        Return the number of entities.
+
+        :return: Number of entities in this collection.
+        :rtype: int
+        """
         pass
 
     def drop(self, **kwargs):
+        """
+        Drop the collection, as well as its corresponding index files.
+
+        :return: Number of entities in this collection.
+        :rtype: int
+        """
         pass
 
     def load(self, field_names=None, index_names=None, partition_names=None, **kwargs):
+        """
+        Load the collection from disk to memory.
+
+        :param field_names: The specified fields to load.
+        :type  field_names: list[str]
+
+        :param index_names: The specified indexes to load.
+        :type  index_names: list[str]
+
+        :param partition_names: The specified partitions to load.
+        :type partition_names: list[str]
+        """
         pass
 
     def release(self, **kwargs):
+        """
+        Release the collection from memory.
+        """
         pass
 
     def insert(self, data, **kwargs):
+        """
+        Insert data into collection.
+
+        :param data: The specified data to insert, the dimension of data needs to align with column number
+        :type  data: list-like(list, tuple, numpy.ndarray) object or pandas.DataFrame
+        """
         pass
 
     def search(self, data, params, limit, expr="", partition_names=None, fields=None, **kwargs):
+        """
+        Vector similarity search with an optional boolean expression as filters.
+
+        :param data: Data to search, the dimension of data needs to align with column number
+        :type  data: list-like(list, tuple, numpy.ndarray) object or pandas.DataFrame
+
+        :param params: Search parameters
+        :type  params: dict
+
+        :param limit:
+        :type  limit: int
+
+        :param expr: Search expression
+        :type  expr: str
+
+        :param fields: The fields to return in the search result
+        :type  fields: list[str]
+
+        :return: A Search object, you can call its' `execute` method to get the search result
+        :rtype: class `search.Search`
+        """
         pass
 
     @property
