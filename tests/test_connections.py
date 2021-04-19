@@ -16,6 +16,7 @@ except ImportError:
 
 LOGGER = logging.getLogger(__name__)
 
+
 class TestConnections:
     @pytest.fixture(
         scope="function",
