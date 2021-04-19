@@ -1,6 +1,6 @@
 import unittest
 import random
-from .utility import *
+from pymilvus_orm.utility import *
 
 
 def gen_collection_name():
