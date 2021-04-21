@@ -1,5 +1,6 @@
 from . import connections
-from .schema import CollectionSchema, FieldSchema
+from . import Partition
+from .schema import CollectionSchema
 
 
 class Collection(object):
@@ -166,13 +167,16 @@ class Collection(object):
     def drop(self, **kwargs):
         """
         Drop the collection, as well as its corresponding index files.
-
-        :return: Number of entities in this collection.
-        :rtype: int
         """
         conn = self._get_connection()
-        return conn.drop_collection(self._name, timeout=kwargs.get("timeout", None))
+        indexes = self.indexes()
+        conn.drop_collection(self._name, timeout=kwargs.get("timeout", None))
+        for index in indexes:
+            conn.drop_index(self._name, index.field_name(), index.name(), timeout=kwargs.get("timeout", None),
+                            kwargs=kwargs)
+        return
 
+    #TODO(yukun): load_collection in pymilvus need db_name, but not field_name
     def load(self, field_names=None, index_names=None, partition_names=None, **kwargs):
         """
         Load the collection from disk to memory.
@@ -188,6 +192,7 @@ class Collection(object):
         """
         pass
 
+    # TODO(yukun): release_collection in pymilvus need db_name, but not field_name
     def release(self, **kwargs):
         """
         Release the collection from memory.
@@ -235,7 +240,12 @@ class Collection(object):
         :return: List of Partition object, return when operation is successful
         :rtype: list[Partition]
         """
-        pass
+        conn = self._get_connection()
+        partition_strs = conn.list_partitions(self._name)
+        partitions = []
+        for partition in partition_strs:
+            partitions.append(Partition(self._name, partition))
+        return partitions
 
     def partition(self, partition_name):
         """
@@ -247,7 +257,8 @@ class Collection(object):
         :return:Partition object corresponding to partition_name
         :rtype: Partition
         """
-        pass
+        conn = self._get_connection()
+        return Partition(self._name, partition_name)
 
     def has_partition(self, partition_name):
         """
@@ -263,7 +274,8 @@ class Collection(object):
         :return: Whether a specified partition exists.
         :rtype: bool
         """
-        pass
+        conn = self._get_connection()
+        return conn.has_partition(self._name, partition_name)
 
     def drop_partition(self, partition_name, **kwargs):
         """
@@ -272,7 +284,8 @@ class Collection(object):
         :param partition_name: The name of the partition to drop.
         :type  partition_name: str
         """
-        pass
+        conn = self._get_connection()
+        return conn.drop_partition(self._name, partition_name, timeout=kwargs.get("timeout", None))
 
     @property
     def indexes(self):
@@ -294,6 +307,7 @@ class Collection(object):
         :return:Index object corresponding to index_name
         :rtype: Index
         """
+        # TODO(yukun): Add index_name
         pass
 
     def create_index(self, field_name, index_name, index_params, **kwargs):
@@ -309,7 +323,10 @@ class Collection(object):
         :param index_params: Indexing parameters.
         :type  index_params: dict
         """
-        pass
+        # TODO(yukun): Add index_name
+        conn = self._get_connection()
+        return conn.create_index(self._name, field_name, index_params, timeout=kwargs.get("timeout", None),
+                                 kwargs=kwargs)
 
     def has_index(self, index_name):
         """
@@ -321,6 +338,7 @@ class Collection(object):
         :return: If specified index exists
         :rtype: bool
         """
+        # TODO(yukun): Add index_name
         pass
 
     def drop_index(self, index_name, **kwargs):
@@ -330,4 +348,5 @@ class Collection(object):
         :param index_name: The name of the partition to drop.
         :type  index_name: str
         """
+        # TODO(yukun): Add index_name
         pass
