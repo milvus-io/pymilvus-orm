@@ -1,5 +1,6 @@
 from . import connections
-from . import Partition
+from .partition import Partition
+from .index import Index
 from .schema import CollectionSchema
 
 class Collection(object):
@@ -122,7 +123,6 @@ class Collection(object):
                             kwargs=kwargs)
         return
 
-    #TODO(yukun): load_collection in pymilvus need db_name, but not field_name
     def load(self, field_names=None, index_names=None, partition_names=None, **kwargs):
         """
         Load the collection from disk to memory.
@@ -136,14 +136,17 @@ class Collection(object):
         :param partition_names: The specified partitions to load.
         :type partition_names: list[str]
         """
-        pass
+        conn = self._get_connection()
+        conn.load_collection("", self._name, kwargs)
 
     # TODO(yukun): release_collection in pymilvus need db_name, but not field_name
     def release(self, **kwargs):
         """
         Release the collection from memory.
         """
-        pass
+        conn = self._get_connection()
+        # TODO(yukun): release_collection in pymilvus need db_name, but not field_name
+        conn.release_collection("", self._name, kwargs)
 
     def insert(self, data, **kwargs):
         """
@@ -253,8 +256,10 @@ class Collection(object):
         :return:Index object corresponding to index_name
         :rtype: Index
         """
-        # TODO(yukun): Add index_name
-        pass
+        # TODO(yukun): Need field name, but provide index name
+        conn = self._get_connection()
+        tmp_index = conn.describe_index(self._name, "")
+        return Index(self, index_name, "", tmp_index.params)
 
     def create_index(self, field_name, index_name, index_params, **kwargs):
         """
@@ -284,8 +289,11 @@ class Collection(object):
         :return: If specified index exists
         :rtype: bool
         """
-        # TODO(yukun): Add index_name
-        pass
+        conn = self._get_connection()
+        # TODO(yukun): Need field name, but provide index name
+        if conn.describe_index(self._name, "") == None:
+            return False
+        return True
 
     def drop_index(self, index_name, **kwargs):
         """
@@ -294,5 +302,6 @@ class Collection(object):
         :param index_name: The name of the partition to drop.
         :type  index_name: str
         """
-        # TODO(yukun): Add index_name
-        pass
+        # TODO(yukun): Need field name
+        conn = self._get_connection()
+        conn.drop_index(self._name, "", index_name, timeout=kwargs.get("timeout", None), kwargs=kwargs)
