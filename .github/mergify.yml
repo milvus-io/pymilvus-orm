@@ -1,0 +1,20 @@
+pull_request_rules:
+  - name: add auto-merge label if the title does not contain “[WIP]”
+    conditions:
+      - base=main
+      - -title~=(?i)\[wip\]
+    actions:
+      label:
+        add:
+          - auto-merge
+
+  - name: automatic merge for main when unittests passed and the title does not contain “[WIP]”
+    conditions:
+      - base=main
+      - label=auto-merge
+      - -title~=(?i)\[wip\]
+      - "#approved-reviews-by>=1"
+      - "#review-requested=0"
+    actions:
+      merge:
+        method: merge
