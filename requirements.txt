@@ -2,6 +2,7 @@ requests==2.22.0
 requests-toolbelt==0.9.1
 pymilvus-distributed==0.0.62
 m2r==0.2.1
+pandas
 sklearn==0.0
 Sphinx==2.3.1
 sphinx-copybutton==0.3.1
