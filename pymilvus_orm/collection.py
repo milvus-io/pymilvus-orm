@@ -110,11 +110,7 @@ class Collection(object):
         >>> collection.is_empty
         True
         """
-        conn = self._get_connection()
-        status = conn.get_collection_states(db_name="", collection_name=self._name)
-        if status["row_count"] == 0:
-            return True
-        return False
+        return self.num_entities == 0
 
     # read-only
     @property
@@ -161,10 +157,8 @@ class Collection(object):
         conn = self._get_connection()
         indexes = self.indexes
         for index in indexes:
-            conn.drop_index(self._name, index.field_name, index.name, timeout=kwargs.get("timeout", None),
-                            kwargs=kwargs)
+            index.drop(**kwargs)
         conn.drop_collection(self._name, timeout=kwargs.get("timeout", None))
-        return
 
     def load(self, field_names=None, index_names=None, partition_names=None, **kwargs):
         """
