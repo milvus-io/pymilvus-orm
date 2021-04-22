@@ -82,23 +82,23 @@ class TestFieldSchema:
 
     def test_constructor_from_float_dict(self, raw_dict_float_vector):
         field = FieldSchema.construct_from_dict(raw_dict_float_vector)
-        assert (field.dtype == DataType.FLOAT_VECTOR)
-        assert (field.description == raw_dict_float_vector['description'])
-        assert (field.is_primary == False)
-        assert (field.name == raw_dict_float_vector['name'])
-        assert (field.ndim == raw_dict_float_vector['params']['ndim'])
+        assert field.dtype == DataType.FLOAT_VECTOR
+        assert field.description == raw_dict_float_vector['description']
+        assert field.is_primary == False
+        assert field.name == raw_dict_float_vector['name']
+        assert field.ndim == raw_dict_float_vector['params']['ndim']
 
     def test_constructor_from_binary_dict(self, raw_dict_binary_vector):
         field = FieldSchema.construct_from_dict(raw_dict_binary_vector)
-        assert (field.dtype == DataType.BINARY_VECTOR)
-        assert (field.description == raw_dict_binary_vector['description'])
-        assert (field.is_primary == False)
-        assert (field.name == raw_dict_binary_vector['name'])
-        assert (field.ndim == raw_dict_binary_vector['params']['ndim'])
+        assert field.dtype == DataType.BINARY_VECTOR
+        assert field.description == raw_dict_binary_vector['description']
+        assert field.is_primary == False
+        assert field.name == raw_dict_binary_vector['name']
+        assert field.ndim == raw_dict_binary_vector['params']['ndim']
 
     def test_constructor_from_norm_dict(self, raw_dict_norm):
         field = FieldSchema.construct_from_dict(raw_dict_norm)
-        assert (field.dtype == DataType.INT64)
-        assert (field.description == raw_dict_norm['description'])
-        assert (field.is_primary == False)
-        assert (field.name == raw_dict_norm['name'])
+        assert field.dtype == DataType.INT64
+        assert field.description == raw_dict_norm['description']
+        assert field.is_primary == False
+        assert field.name == raw_dict_norm['name']
