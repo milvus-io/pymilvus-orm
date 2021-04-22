@@ -40,8 +40,8 @@ class TestCollectionSchema:
 
     def test_constructor_from_dict(self, raw_dict):
         schema = CollectionSchema.construct_from_dict(raw_dict)
-        assert (schema.description, raw_dict['description'])
-        assert (len(schema.fields) == len(raw_dict['fields']))
+        assert schema.description, raw_dict['description']
+        assert len(schema.fields) == len(raw_dict['fields'])
         f = schema.primary_field
         assert isinstance(f, FieldSchema)
         assert f.name == raw_dict['fields'][2]['name']
