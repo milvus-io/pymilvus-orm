@@ -185,7 +185,7 @@ class Collection(object):
         TODO: add example for num_entities of collection after insert
         """
         conn = self._get_connection()
-        status = conn.get_collection_states(db_name="", collection_name=self._name)
+        status = conn.get_collection_stats(db_name="", collection_name=self._name)
         return status["row_count"]
 
     def drop(self, **kwargs):
