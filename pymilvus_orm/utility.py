@@ -94,7 +94,7 @@ def has_partition(collection_name, partition_name, using="default"):
     pass
 
 
-def list_collections(collection_name, partition_name, using="default"):
+def list_collections(timeout=None, using="default"):
     """
     Returns a list of all collection names.
 
