@@ -100,8 +100,6 @@ class Connections(object):
 
         # if not, try to create it
         try:
-            if alias not in self._kwargs:
-                self._kwargs[alias] = {}
             return self.create_connection(alias, **self._kwargs[alias])
         except KeyError:
             # no connection and no kwargs to set one up

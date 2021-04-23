@@ -1,5 +1,6 @@
 from pymilvus_orm.types import DataType
 from pymilvus_orm.constants import *
+import copy
 
 
 class CollectionSchema(object):
@@ -22,6 +23,13 @@ class CollectionSchema(object):
     @property
     def auto_id(self):
         return self.primary_field is None
+
+    def to_dict(self):
+        _dict = {}
+        _dict["auto_id"] = self.primary_field is None
+        _dict["description"] = self.description
+        _dict["fields"] = [f.to_dict() for f in self.fields]
+        return _dict
 
 
 class FieldSchema(object):
@@ -55,8 +63,19 @@ class FieldSchema(object):
         kwargs['is_primary'] = raw.get("is_primary", False)
         return FieldSchema(raw['name'], raw['type'], raw['description'], **kwargs)
 
+    def to_dict(self):
+        _dict = dict()
+        _dict["name"] = self.name
+        _dict["description"] = self.description
+        _dict["type"] = self.dtype
+        if self._type_params:
+            _dict["params"] = copy.deepcopy(self.params)
+        if self.is_primary:
+            _dict["is_primary"] = True
+        return _dict
+
     def __getattr__(self, item):
-        if item in self._type_params:
+        if self._type_params and item in self._type_params:
             return self._type_params[item]
 
     @property
