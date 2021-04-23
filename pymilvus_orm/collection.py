@@ -131,12 +131,12 @@ class Collection(object):
         :example:
         >>> from pymilvus_orm.collection import Collection
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> field = FieldSchema(name="int64", type="int64", is_primary=False, description="int64")
-        >>> schema = CollectionSchema(fields=[field], auto_id=True, description="test get description")
+        >>> from pymilvus_orm.types import DataType
+        >>> field = FieldSchema(name="int64", dtype=DataType.INT64, descrition="int64", is_parimary=False)
+        >>> schema = CollectionSchema(fields=[field], description="test get description", auto_id=True)
         >>> collection = Collection(name="test_collection", schema=schema)
         >>> collection.description
         'test get description'
-
         """
 
         return self._schema.description
@@ -152,8 +152,9 @@ class Collection(object):
         :example:
         >>> from pymilvus_orm.collection import Collection
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> field = FieldSchema(name="int64", type="int64", is_primary=False, description="int64")
-        >>> schema = CollectionSchema(fields=[field], auto_id=True, description="test get collection name.")
+        >>> from pymilvus_orm.types import DataType
+        >>> field = FieldSchema(name="int64", dtype=DataType.INT64, descrition="int64", is_parimary=False)
+        >>> schema = CollectionSchema(fields=[field], description="test get collection name", auto_id=True)
         >>> collection = Collection(name="test_collection", schema=schema)
         >>> collection.name
         'test_collection'
@@ -172,8 +173,9 @@ class Collection(object):
         :example:
         >>> from pymilvus_orm.collection import Collection
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> field = FieldSchema(name="int64", type="int64", is_primary=False, description="int64")
-        >>> schema = CollectionSchema(fields=[field], auto_id=True, description="collection schema has a int64 field")
+        >>> from pymilvus_orm.types import DataType
+        >>> field = FieldSchema(name="int64", dtype=DataType.INT64, descrition="int64", is_parimary=False)
+        >>> schema = CollectionSchema(fields=[field], description="test collection is empty", auto_id=True)
         >>> collection = Collection(name="test_collection", schema=schema)
         >>> collection.is_empty
         True
@@ -192,8 +194,9 @@ class Collection(object):
         :example:
         >>> from pymilvus_orm.collection import Collection
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> field = FieldSchema(name="int64", type="int64", is_primary=False, description="int64")
-        >>> schema = CollectionSchema(fields=[field], auto_id=True, description="collection schema has a int64 field")
+        >>> from pymilvus_orm.types import DataType
+        >>> field = FieldSchema(name="int64", dtype=DataType.INT64, descrition="int64", is_parimary=False)
+        >>> schema = CollectionSchema(fields=[field], description="get collection entities num", auto_id=True)
         >>> collection = Collection(name="test_collection", schema=schema)
         >>> collection.num_entities
         0
@@ -210,14 +213,16 @@ class Collection(object):
         :example:
         >>> from pymilvus_orm.collection import Collection
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> field = FieldSchema(name="int64", type="int64", is_primary=False, description="int64")
-        >>> schema = CollectionSchema(fields=[field], auto_id=True, description="collection schema has a int64 field")
+        >>> from pymilvus_orm.types import DataType
+        >>> field = FieldSchema(name="int64", dtype=DataType.INT64, descrition="int64", is_parimary=False)
+        >>> schema = CollectionSchema(fields=[field], description="drop collection", auto_id=True)
         >>> collection = Collection(name="test_collection", schema=schema)
         TODO: add example for drop of collection
         # >>> collection.insert(data="")
         # >>> collection.index(index_name="")
         >>> collection.drop()
         >>> collection.num_entities
+        0
         >>> collection.is_empty
         True
 
