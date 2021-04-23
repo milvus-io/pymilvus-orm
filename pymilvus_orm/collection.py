@@ -18,6 +18,22 @@ class Collection(object):
 
         :param schema: the schema of collection
         :type schema: class `schema.CollectionSchema`
+
+        :example:
+        >>> from pymilvus_orm.collection import Collection
+        >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
+        >>> from pymilvus_orm.types import DataType
+        >>> field = FieldSchema(name="int64", dtype=DataType.INT64, descrition="int64", is_parimary=False)
+        >>> schema = CollectionSchema(fields=[field], description="collection description", auto_id=True)
+        >>> collection = Collection(name="test_name", data=None, schema=schema)
+        >>> collection.name
+        'test_name'
+        >>> collection.description
+        'collection description'
+        >>> collection.is_empty
+        True
+        >>> collection.num_entities
+        0
         """
         self._name = name
         self._kwargs = kwargs
