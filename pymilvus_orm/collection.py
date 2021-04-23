@@ -65,7 +65,11 @@ class Collection(object):
                             raise Exception("field type must be schema.FieldSchema.")
                     conn.create_collection(self._name, fields=schema.__dict__)
                     self._schema = schema
-                    self.insert(data=data)
+                    if isinstance(data, pandas.DataFrame):
+                        # TODO: insert data by DataFrame
+                        pass
+                    else:
+                        self.insert(data=data)
                 else:
                     raise Exception("schema type must be schema.CollectionSchema.")
 
