@@ -19,60 +19,55 @@ class Collection(object):
         :param schema: the schema of collection
         :type schema: class `schema.CollectionSchema`
         """
-        # TODO: while data = None? schema = None?
         self._name = name
         self._kwargs = kwargs
         conn = self._get_connection()
         has = conn.has_collection(self._name)
         if has:
             resp = conn.describe_collection(self._name)
-            # TODO: construct by describe collection result
-            fields = []
-            for field in resp.fields:
-                fields.append(FieldSchema(name=field.name, dtype=field.type, description=field.description,
-                                          is_primary=field.is_primary_key))
-            server_schema = CollectionSchema(fields=fields, description=resp.description, **resp)
+            server_schema = CollectionSchema.construct_from_dict(resp.dict())
             if schema is None:
                 self._schema = server_schema
-                # No need to check data, insert method will check(can't insert data when create collection).
                 if data is not None:
                     self.insert(data=data)
-                return
-            if len(schema.fields) != len(resp.fields):
-                raise Exception("The collection already exist, but the schema is not the same as the passed in.")
-            for schema_field in schema.fields:
-                same_field = False
-                for field in resp.fields:
-                    if field.name == schema_field.name and field.type == schema_field.dtype \
-                            and field.is_primary_key == schema_field.is_primary:
-                        same_field = True
-                if not same_field:
-                    raise Exception("The collection already exist, but the schema is not the same as the passed in.")
-            if data is not None:
-                self.insert(data=data)
-            return
-
-        if schema is None:
-            if isinstance(data, pandas.DataFrame):
-                # TODO: construct schema by DataFrame
-                return
-            if not isinstance(data, pandas.DataFrame):
-                raise Exception("Data of not pandas.DataFrame type should be passed into the schema.")
-            raise Exception("Collection missing schema.")
-        if schema is not None:
-            # create collection schema must be dict
-            if isinstance(schema, CollectionSchema):
-                for i in range(len(schema.fields)):
-                    if isinstance(schema.fields[0], FieldSchema):
-                        schema.fields[0] = schema.fields[0].__dict__
-                    else:
-                        raise Exception("field type must be schema.FieldSchema.")
-                conn.create_collection(self._name, fields=schema.__dict__)
-                self.insert(data=data)
-                self._schema = schema
-                return
             else:
-                raise Exception("schema type must be schema.CollectionSchema.")
+                if len(schema.fields) != len(resp.fields):
+                    raise Exception("The collection already exist, but the schema is not the same as the passed in.")
+                for schema_field in schema.fields:
+                    same_field = False
+                    for field in resp.fields:
+                        if field.name == schema_field.name and field.type == schema_field.dtype \
+                                and field.is_primary_key == schema_field.is_primary:
+                            same_field = True
+                    if not same_field:
+                        raise Exception("The collection already exist, but the schema is not the same as the passed in.")
+                self._schema = schema
+                if data is not None:
+                    self.insert(data=data)
+
+        else:
+            if schema is None:
+                if data is None:
+                    raise Exception("Collection missing schema.")
+                else:
+                    if isinstance(data, pandas.DataFrame):
+                        # TODO: construct schema by DataFrame
+                        pass
+                    else:
+                        raise Exception("Data of not pandas.DataFrame type should be passed into the schema.")
+            else:
+                # create collection schema must be dict
+                if isinstance(schema, CollectionSchema):
+                    for i in range(len(schema.fields)):
+                        if isinstance(schema.fields[i], FieldSchema):
+                            schema.fields[i] = schema.fields[i].__dict__
+                        else:
+                            raise Exception("field type must be schema.FieldSchema.")
+                    conn.create_collection(self._name, fields=schema.__dict__)
+                    self._schema = schema
+                    self.insert(data=data)
+                else:
+                    raise Exception("schema type must be schema.CollectionSchema.")
 
     def _get_using(self):
         return self._kwargs.get("_using", "default")
