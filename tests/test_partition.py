@@ -48,8 +48,8 @@ class TestPartition():
     @pytest.fixture(
         scope="function",
     )
-    def partition(self, collection_name, data, schema, partition_name, description):
-        collection = Collection(collection_name, data, schema)
+    def partition(self, collection_name, schema, partition_name, description):
+        collection = Collection(collection_name, schema=schema)
         params = {
             "description": description,
         }
