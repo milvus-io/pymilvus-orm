@@ -1,20 +1,21 @@
 pull_request_rules:
-  - name: add auto-merge label if the title does not contain “[WIP]”
+  - name: add pr/automerge label if the title does not contain “[WIP]”
     conditions:
       - base=main
       - -title~=(?i)\[wip\]
     actions:
       label:
         add:
-          - auto-merge
+          - pr/automerge
 
   - name: automatic merge for main when unittests passed and the title does not contain “[WIP]”
     conditions:
       - base=main
-      - label=auto-merge
+      - label=pr/automerge
       - -title~=(?i)\[wip\]
       - "#approved-reviews-by>=1"
-      - "#review-requested=0"
+      - check-success=Run Python Tests (3.6)
+      - check-success=DCO
     actions:
       merge:
-        method: merge
+        method: squash
