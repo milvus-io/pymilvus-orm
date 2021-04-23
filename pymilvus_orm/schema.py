@@ -2,6 +2,7 @@ from pymilvus_orm.types import DataType
 from pymilvus_orm.constants import *
 import copy
 
+
 class CollectionSchema(object):
     def __init__(self, fields, description="", **kwargs):
         self.fields = fields
@@ -30,10 +31,11 @@ class CollectionSchema(object):
         _dict["fields"] = [f.to_dict() for f in self.fields]
         return _dict
 
+
 class FieldSchema(object):
     def __init__(self, name, dtype, description="", **kwargs):
         self.name = name
-        self._dtype = dtype
+        self.type = dtype
         self.description = description
         self._type_params = None
         self._kwargs = kwargs
@@ -42,7 +44,7 @@ class FieldSchema(object):
 
     def _parse_type_params(self):
         # update self._type_params according to self._kwargs
-        if self._dtype not in (DataType.BINARY_VECTOR, DataType.FLOAT_VECTOR):
+        if self.type not in (DataType.BINARY_VECTOR, DataType.FLOAT_VECTOR):
             return
         if not self._kwargs:
             return
@@ -82,7 +84,7 @@ class FieldSchema(object):
 
     @property
     def dtype(self):
-        return self._dtype
+        return self.type
 
     @property
     def is_primary(self):
