@@ -35,7 +35,7 @@ class CollectionSchema(object):
 class FieldSchema(object):
     def __init__(self, name, dtype, description="", **kwargs):
         self.name = name
-        self.type = dtype
+        self._dtype = dtype
         self.description = description
         self._type_params = None
         self._kwargs = kwargs
@@ -44,7 +44,7 @@ class FieldSchema(object):
 
     def _parse_type_params(self):
         # update self._type_params according to self._kwargs
-        if self.type not in (DataType.BINARY_VECTOR, DataType.FLOAT_VECTOR):
+        if self._dtype not in (DataType.BINARY_VECTOR, DataType.FLOAT_VECTOR):
             return
         if not self._kwargs:
             return
@@ -84,7 +84,7 @@ class FieldSchema(object):
 
     @property
     def dtype(self):
-        return self.type
+        return self._dtype
 
     @property
     def is_primary(self):
