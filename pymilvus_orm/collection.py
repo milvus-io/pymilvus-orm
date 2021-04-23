@@ -247,15 +247,13 @@ class Collection(object):
         :type partition_names: list[str]
         """
         conn = self._get_connection()
-        conn.load_collection("", self._name, kwargs)
+        conn.load_collection("", self._name, **kwargs)
 
-    # TODO(yukun): release_collection in pymilvus need db_name, but not field_name
     def release(self, **kwargs):
         """
         Release the collection from memory.
         """
         conn = self._get_connection()
-        # TODO(yukun): release_collection in pymilvus need db_name, but not field_name
         conn.release_collection("", self._name, kwargs)
 
     def insert(self, data, **kwargs):
