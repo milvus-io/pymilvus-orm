@@ -1,4 +1,4 @@
 
 unittest:
-	PYTHONPATH=`pwd` pytest tests -x -rxXs
+	PYTHONPATH=`pwd` pytest --cov=pymilvus_orm --cov-report=xml tests -x -rxXs
 
