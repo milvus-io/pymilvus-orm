@@ -69,20 +69,7 @@ ids = [k.get("id") for k in The_Lord_of_the_Rings]
 release_years = [k.get("release_year") for k in The_Lord_of_the_Rings]
 embeddings = [k.get("embedding") for k in The_Lord_of_the_Rings]
 
-data = [
-    # Milvus doesn't support string type yet,
-    # so we cannot insert "title".
-    {
-        "name": "release_year",
-        "values": release_years,
-        "type": DataType.INT32
-    },
-    {
-        "name": "embedding",
-        "values": embeddings,
-        "type": DataType.FLOAT_VECTOR
-    },
-]
+data = [release_years, embeddings]
 
 # Insert into milvus
 partition.insert(data)
