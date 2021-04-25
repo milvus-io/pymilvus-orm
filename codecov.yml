@@ -1,0 +1,6 @@
+coverage:
+  status:
+    project:
+      target: 0%
+    patch:
+      target: 0%
