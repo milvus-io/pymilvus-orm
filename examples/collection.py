@@ -22,7 +22,6 @@ default_dim = 128
 default_nb = 3000
 default_float_vec_field_name = "float_vector"
 default_binary_vec_field_name = "binary_vector"
-default_segment_row_limit = 1000
 
 
 all_index_types = [
@@ -68,8 +67,17 @@ def gen_default_fields():
         FieldSchema(name="float", dtype=DataType.FLOAT),
         FieldSchema(name=default_float_vec_field_name, dtype=DataType.FLOAT_VECTOR, dim=default_dim)
     ]
-    default_schema = CollectionSchema(fields=default_fields, description="test collection",
-                                      segment_row_limit=default_segment_row_limit, auto_id=True)
+    default_schema = CollectionSchema(fields=default_fields, description="test collection")
+    return default_schema
+
+
+def gen_default_fields_with_primary_key():
+    default_fields = [
+        FieldSchema(name="int64", dtype=DataType.INT64, is_primary=True),
+        FieldSchema(name="float", dtype=DataType.FLOAT),
+        FieldSchema(name=default_float_vec_field_name, dtype=DataType.FLOAT_VECTOR, dim=default_dim)
+    ]
+    default_schema = CollectionSchema(fields=default_fields, description="test collection")
     return default_schema
 
 
@@ -79,8 +87,7 @@ def gen_binary_schema():
         FieldSchema(name="float", dtype=DataType.FLOAT),
         FieldSchema(name=default_binary_vec_field_name, dtype=DataType.BINARY_VECTOR, dim=default_dim)
     ]
-    default_schema = CollectionSchema(fields=binary_fields, description="test collection",
-                                      segment_row_limit=default_segment_row_limit, auto_id=True)
+    default_schema = CollectionSchema(fields=binary_fields, description="test collection")
     return default_schema
 
 
@@ -189,8 +196,18 @@ def test_create_index_binary_vector():
     collection.drop()
 
 
+def test_specify_primary_key():
+    data = gen_float_data(default_nb)
+    collection = Collection(name=gen_unique_str(), data=data, schema=gen_default_fields_with_primary_key())
+    for index_param in gen_simple_index():
+        collection.create_index(field_name=default_float_vec_field_name, index_params=index_param)
+    assert len(collection.indexes) != 0
+    collection.drop()
+
+
 test_create_collection()
 test_collection_only_name()
 test_collection_with_data()
 test_create_index_float_vector()
 test_create_index_binary_vector()
+test_specify_primary_key()
