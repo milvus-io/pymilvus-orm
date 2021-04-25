@@ -1,46 +1,47 @@
+import sys
+
+sys.modules['milvus'] = __import__('mock_milvus')
+
 from pymilvus_orm import *
+from pymilvus_orm.schema import *
 from milvus import DataType
-from pprint import pprint
 import random
 
 # configure milvus hostname and port
-# TODO(wxyu): add configure statement
+print(f"\nCreate connection...")
+connections.create_connection()
 
 # List all collection names
-pprint(list_collections())
+print(f"\nList collections...")
+print(list_collections())
 
 # Create a collection named 'demo_film_tutorial'
-collection = Collection(name='demo_film_tutorial', data=None, schema={
-    "fields": [
-        {
-            "name": "release_year",
-            "type": DataType.INT32
-        },
-        {
-            "name": "embedding",
-            "type": DataType.FLOAT_VECTOR,
-            "params": {"dim": 8}
-        },
-    ],
-    "segment_row_limit": 4096,
-    "auto_id": False
-})
+print(f"\nCreate collection...")
+field1 = FieldSchema(name="release_year", dtype=DataType.INT64, descrition="int64", is_parimary=False)
+field2 = FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, descrition="float vector", is_parimary=False)
+schema = CollectionSchema(fields=[field1, field2], description="collection description")
+collection = Collection(name='demo_film_tutorial', data=None, schema=schema)
 
 # List all collection names
-pprint(list_collections())
+print(f"\nList collections...")
+print(list_collections())
 
-pprint(collection.name)
-pprint(collection.schema)
-pprint(collection.description)
+print(f"\nGet collection name, schema and description...")
+print(collection.name)
+print(collection.schema)
+print(collection.description)
 
 # List all partition names in demo collection
-pprint(collection.partitions)
+print(f"\nList partitions...")
+print(collection.partitions)
 
 # Create a partition named 'American'
+print(f"\nCreate partition...")
 partition = collection.partition(partition_name='American')
 
 # List all partition names in demo collection
-pprint(collection.partitions)
+print(f"\nList partitions...")
+print(collection.partitions)
 
 # Construct some entities
 The_Lord_of_the_Rings = [
@@ -72,22 +73,33 @@ embeddings = [k.get("embedding") for k in The_Lord_of_the_Rings]
 data = [release_years, embeddings]
 
 # Insert into milvus
+print(f"\nInsert data...")
 partition.insert(data)
 
 # Count entities
-pprint(collection.num_entities)
+print(f"\nCount entities...")
+print(collection.num_entities)
 
 # TODO(wxyu): search
+print(f"\nSearch...")
 # collection.search()
 
 # Drop a partition
+print(f"\nDrop partition...")
 partition.drop()
 
 # List all partition names in demo collection
-pprint(collection.partitions)
+print(f"\nList partitions...")
+print(collection.partitions)
+
+# List all collection names
+print(f"\nList collections...")
+print(list_collections())
 
 # Drop a collection
+print(f"\nDrop collection...")
 collection.drop()
 
 # List all collection names
-pprint(list_collections())
+print(f"\nList collections...")
+print(list_collections())
