@@ -23,6 +23,43 @@ default_float_vec_field_name = "float_vector"
 default_segment_row_limit = 1000
 
 
+
+all_index_types = [
+    "FLAT",
+    "IVF_FLAT",
+    "IVF_SQ8",
+    # "IVF_SQ8_HYBRID",
+    "IVF_PQ",
+    "HNSW",
+    # "NSG",
+    "ANNOY",
+    "RHNSW_FLAT",
+    "RHNSW_PQ",
+    "RHNSW_SQ",
+    "BIN_FLAT",
+    "BIN_IVF_FLAT"
+]
+
+default_index_params = [
+    {"nlist": 128},
+    {"nlist": 128},
+    {"nlist": 128},
+    # {"nlist": 128},
+    {"nlist": 128, "m": 16, "nbits": 8},
+    {"M": 48, "efConstruction": 500},
+    # {"search_length": 50, "out_degree": 40, "candidate_pool_size": 100, "knng": 50},
+    {"n_trees": 50},
+    {"M": 48, "efConstruction": 500},
+    {"M": 48, "efConstruction": 500, "PQM": 64},
+    {"M": 48, "efConstruction": 500},
+    {"nlist": 128},
+    {"nlist": 128}
+]
+
+
+default_index = {"index_type": "IVF_FLAT", "params": {"nlist": 128}, "metric_type": "L2"}
+
+
 def gen_default_fields(auto_id=True):
     default_fields = [
         FieldSchema(name="int64", dtype=DataType.INT64, is_primary=False),
@@ -53,6 +90,21 @@ def gen_data(nb, is_normal=False):
 def gen_unique_str(str_value=None):
     prefix = "".join(random.choice(string.ascii_letters + string.digits) for _ in range(8))
     return "collection_" + prefix if str_value is None else str_value + "_" + prefix
+
+
+def binary_support():
+    return ["BIN_FLAT", "BIN_IVF_FLAT"]
+
+
+def gen_simple_index():
+    index_params = []
+    for i in range(len(all_index_types)):
+        if all_index_types[i] in binary_support():
+            continue
+        dic = {"index_type": all_index_types[i], "metric_type": "L2"}
+        dic.update({"params": default_index_params[i]})
+        index_params.append(dic)
+    return index_params
 
 
 connections.create_connection(alias="default")
@@ -86,6 +138,16 @@ def test_collection_with_data():
     collection.drop()
 
 
+def test_create_index_float_vector():
+    data = gen_data(default_nb)
+    collection = Collection(name=gen_unique_str(), data=data, schema=gen_default_fields())
+    for index_param in gen_simple_index():
+        collection.create_index(field_name=default_float_vec_field_name, index_params=index_param)
+    assert len(collection.indexes) != 0
+    collection.drop()
+
+
 test_create_collection()
 test_collection_only_name()
 test_collection_with_data()
+test_create_index_float_vector()
