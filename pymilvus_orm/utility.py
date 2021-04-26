@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Copyright (C) 2019-2020 Zilliz. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance
@@ -11,39 +12,41 @@
 
 from pymilvus_orm.connections import get_connection
 
-
-def loading_progress(collection_name, partition_name="", using="default"):
+def loading_progress(collection_name, partition_names=[], using="default"):
     """
     Show #loaded entities vs #total entities.
 
     :param collection_name: The name of collection to show
     :type  collection_name: str
 
-    :param partition_name: The name of partition to show
-    :type  partition_name: str
+    :param partition_names: The name of partition to show
+    :type  partition_names: list 
 
     :return: Loading progress, contains num of loaded and num of total
     :rtype:  dict
     """
-    # TODO: Need to add functions in pymilvus-distributed
-    raise NotImplementedError
+    if len(partition_name) == 0:
+        return get_connection(using).load_collection_progress(collection_name, timeout)
+    else 
+        return get_connection(using).load_partitions_progress(collection_name, partition_names, timeout)
 
-
-def wait_for_loading_complete(collection_name, partition_name="", timeout=None, using="default"):
+def wait_for_loading_complete(collection_name, partition_name=[], timeout=None, using="default"):
     """
     Block until loading is done or Raise Exception after timeout.
 
     :param collection_name: The name of collection to wait
     :type  collection_name: str
 
-    :param partition_name: The name of partition to wait
-    :type  partition_name: str
+    :param partition_names: The name of partition to wait
+    :type  partition_names: list
 
     :param timeout: The timeout for this method, unit: second
     :type  timeout: int
     """
-    # TODO: Need to add functions in pymilvus-distributed
-    raise NotImplementedError
+    if len(partition_name) == 0:
+        return get_connection(using).wait_for_loading_collection_complete(collection_name, timeout)
+    else 
+        return get_connection(using).wait_for_loading_partitions_complete(collection_name, partition_names, timeout)
 
 
 def index_building_progress(collection_name, index_name, timeout=None, using="default"):
@@ -62,8 +65,7 @@ def index_building_progress(collection_name, index_name, timeout=None, using="de
     :return: Building progress, contains num of indexed entities and num of total entities
     :rtype:  dict
     """
-    # TODO: Need to add functions in pymilvus-distributed
-    raise NotImplementedError
+    return get_connection(using).load_index_build_progress(collection_name, index_name, timeout)
 
 
 def wait_for_index_building_complete(collection_name, index_name, timeout=None, using="default"):
@@ -79,11 +81,10 @@ def wait_for_index_building_complete(collection_name, index_name, timeout=None, 
     :param timeout: The timeout for this method, unit: second
     :type  timeout: int
     """
-    # TODO: Need to add functions in pymilvus-distributed
-    raise NotImplementedError
+    return get_connection(using).wait_for_createing_index(collection_name, index_name, timeout)
 
 
-def has_collection(collection_name, using="default"):
+def has_collection(collection_name):
     """
     Checks whether a specified collection exists.
 
@@ -96,7 +97,7 @@ def has_collection(collection_name, using="default"):
     return get_connection(using).has_collection(collection_name)
 
 
-def has_partition(collection_name, partition_name, using="default"):
+def has_partition(collection_name, partition_name):
     """
     Checks if a specified partition exists in a collection.
 
