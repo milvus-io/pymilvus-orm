@@ -25,3 +25,4 @@ LOGGER = logging.getLogger(__name__)
 
 conn = connections.create_connection()
 LOGGER.info(conn.list_collections())
+
