@@ -71,13 +71,23 @@ def gen_default_fields():
     return default_schema
 
 
-def gen_default_fields_with_primary_key():
+def gen_default_fields_with_primary_key_1():
     default_fields = [
         FieldSchema(name="int64", dtype=DataType.INT64, is_primary=True),
         FieldSchema(name="float", dtype=DataType.FLOAT),
         FieldSchema(name=default_float_vec_field_name, dtype=DataType.FLOAT_VECTOR, dim=default_dim)
     ]
     default_schema = CollectionSchema(fields=default_fields, description="test collection")
+    return default_schema
+
+
+def gen_default_fields_with_primary_key_2():
+    default_fields = [
+        FieldSchema(name="int64", dtype=DataType.INT64),
+        FieldSchema(name="float", dtype=DataType.FLOAT),
+        FieldSchema(name=default_float_vec_field_name, dtype=DataType.FLOAT_VECTOR, dim=default_dim)
+    ]
+    default_schema = CollectionSchema(fields=default_fields, description="test collection", primary_field="int64")
     return default_schema
 
 
@@ -198,11 +208,17 @@ def test_create_index_binary_vector():
 
 def test_specify_primary_key():
     data = gen_float_data(default_nb)
-    collection = Collection(name=gen_unique_str(), data=data, schema=gen_default_fields_with_primary_key())
+    collection = Collection(name=gen_unique_str(), data=data, schema=gen_default_fields_with_primary_key_1())
     for index_param in gen_simple_index():
         collection.create_index(field_name=default_float_vec_field_name, index_params=index_param)
     assert len(collection.indexes) != 0
     collection.drop()
+
+    collection2 = Collection(name=gen_unique_str(), data=data, schema=gen_default_fields_with_primary_key_2())
+    for index_param in gen_simple_index():
+        collection2.create_index(field_name=default_float_vec_field_name, index_params=index_param)
+    assert len(collection2.indexes) != 0
+    collection2.drop()
 
 
 test_create_collection()
