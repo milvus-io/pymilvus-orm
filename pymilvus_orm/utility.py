@@ -26,7 +26,7 @@ def loading_progress(collection_name, partition_names=[], using="default"):
     """
     if len(partition_name) == 0:
         return get_connection(using).load_collection_progress(collection_name, timeout)
-    else 
+    else:
         return get_connection(using).load_partitions_progress(collection_name, partition_names, timeout)
 
 
@@ -45,7 +45,7 @@ def wait_for_loading_complete(collection_name, partition_name=[], timeout=None, 
     """
     if len(partition_name) == 0:
         return get_connection(using).wait_for_loading_collection_complete(collection_name, timeout)
-    else 
+    else: 
         return get_connection(using).wait_for_loading_partitions_complete(collection_name, partition_names, timeout)
 
 
