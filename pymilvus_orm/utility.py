@@ -29,6 +29,7 @@ def loading_progress(collection_name, partition_names=[], using="default"):
     else 
         return get_connection(using).load_partitions_progress(collection_name, partition_names, timeout)
 
+
 def wait_for_loading_complete(collection_name, partition_name=[], timeout=None, using="default"):
     """
     Block until loading is done or Raise Exception after timeout.
@@ -48,7 +49,7 @@ def wait_for_loading_complete(collection_name, partition_name=[], timeout=None, 
         return get_connection(using).wait_for_loading_partitions_complete(collection_name, partition_names, timeout)
 
 
-def index_building_progress(collection_name, index_name, timeout=None, using="default"):
+def index_building_progress(collection_name, index_name="", timeout=None, using="default"):
     """
     Show # indexed entities vs. # total entities.
 
@@ -67,7 +68,7 @@ def index_building_progress(collection_name, index_name, timeout=None, using="de
     return get_connection(using).load_index_build_progress(collection_name, index_name, timeout)
 
 
-def wait_for_index_building_complete(collection_name, index_name, timeout=None, using="default"):
+def wait_for_index_building_complete(collection_name, index_name="", timeout=None, using="default"):
     """
     Block until building is done or Raise Exception after timeout.
 
