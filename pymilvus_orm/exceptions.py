@@ -75,32 +75,32 @@ class MilvusException(BaseException):
         return f"<{type(self).__name__}: (code={self._code}, message={self._message})>"
 
 
-class CollectionExistException(BaseException):
+class CollectionExistException(MilvusException):
     def __init__(self, code, message):
         super().__init__(code, message)
 
 
-class CollectionNotExistException(BaseException):
+class CollectionNotExistException(MilvusException):
     def __init__(self, code, message):
         super().__init__(code, message)
 
 
-class InvalidDimensionException(BaseException):
+class InvalidDimensionException(MilvusException):
     def __init__(self, code, message):
         super().__init__(code, message)
 
 
-class InvalidMetricTypeException(BaseException):
+class InvalidMetricTypeException(MilvusException):
     def __init__(self, code, message):
         super().__init__(code, message)
 
 
-class IllegalCollectionNameException(BaseException):
+class IllegalCollectionNameException(MilvusException):
     def __init__(self, code, message):
         super().__init__(code, message)
 
 
-class DescribeCollectionException(BaseException):
+class DescribeCollectionException(MilvusException):
     def __init__(self, code, message):
         super().__init__(code, message)
 
