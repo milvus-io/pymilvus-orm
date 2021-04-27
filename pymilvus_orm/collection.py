@@ -291,10 +291,9 @@ class Collection(object):
               An optional duration of time in seconds to allow for the RPC. When timeout
               is set to None, client waits until server response or error occur.
 
-        :raises:
-            CollectionNotExistException: If collection doesn't exist
-            ParamError: If parameters are invalid
-            BaseException: If fields, index or partition doesn't exist
+        :raises CollectionNotExistException: If collection doesn't exist.
+        :raises ParamError: If parameters are invalid.
+        :raises BaseException: If fields, index or partition doesn't exist.
 
         :example:
         >>> from pymilvus_orm.collection import Collection
