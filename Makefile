@@ -7,3 +7,6 @@ codecov:
 
 example:
 	PYTHONPATH=`pwd` python examples/example.py
+
+example_index:
+	PYTHONPATH=`pwd` python examples/example_index.py
