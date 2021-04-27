@@ -14,6 +14,7 @@ import json
 
 
 class Partition(object):
+    # TODO(yukun): Need a place to store the description
     def __init__(self, collection, name, description="", **kwargs):
         self._collection = collection
         self._name = name
@@ -26,7 +27,7 @@ class Partition(object):
             conn.create_partition(self._collection.name, self._name)
 
     def __repr__(self):
-        return json.dumps({'name': self.name, 'description': self.description, 'num_entities': self.num_entities})
+        return json.dumps({'name': self.name, 'description': self.description})
 
     def _get_connection(self):
         return self._collection._get_connection()

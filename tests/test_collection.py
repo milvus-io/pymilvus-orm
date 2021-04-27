@@ -55,7 +55,7 @@ class TestCollections:
 
     @pytest.mark.xfail
     def test_insert(self, collection):
-        data = gen_data(default_nb)
+        data = gen_list_data(default_nb)
         collection.insert(data)
 
     @pytest.mark.xfail
@@ -69,7 +69,7 @@ class TestCollections:
         collection.partition(gen_partition_name())
 
     def test_has_partition(self, collection):
-        assert collection.has_partition("_default") is True
+        assert collection.has_partition("default") is True
         assert collection.has_partition(gen_partition_name()) is False
 
     @pytest.mark.xfail
