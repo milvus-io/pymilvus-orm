@@ -14,7 +14,7 @@ class MockMilvus:
         if collection_name in self._collections:
             raise BaseException(1, f"Create collection failed: collection {collection_name} exist")
         self._collections[collection_name] = fields
-        self._collection_partitions[collection_name] = {'default'}
+        self._collection_partitions[collection_name] = {'_default'}
         self._collection_indexes[collection_name] = []
         logging.debug(f"create_collection: {collection_name}")
 
