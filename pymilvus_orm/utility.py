@@ -84,7 +84,7 @@ def wait_for_index_building_complete(collection_name, index_name="", timeout=Non
     return get_connection(using).wait_for_createing_index(collection_name, index_name, timeout)
 
 
-def has_collection(collection_name):
+def has_collection(collection_name, using="default"):
     """
     Checks whether a specified collection exists.
 
@@ -97,7 +97,7 @@ def has_collection(collection_name):
     return get_connection(using).has_collection(collection_name)
 
 
-def has_partition(collection_name, partition_name):
+def has_partition(collection_name, partition_name, using="default"):
     """
     Checks if a specified partition exists in a collection.
 
