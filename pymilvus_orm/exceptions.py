@@ -57,7 +57,7 @@ class VersionError(AttributeError):
     """
 
 
-class BaseException(Exception):
+class MilvusException(BaseException):
 
     def __init__(self, code, message):
         self._code = code
