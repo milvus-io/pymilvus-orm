@@ -4,7 +4,7 @@ sys.modules['milvus'] = __import__('mock_milvus')
 
 from pymilvus_orm import *
 from pymilvus_orm.schema import *
-from milvus import DataType
+from pymilvus_orm.types import DataType
 import random
 
 # configure milvus hostname and port
@@ -37,7 +37,9 @@ print(collection.partitions)
 
 # Create a partition named 'American'
 print(f"\nCreate partition...")
-partition = collection.partition(partition_name='American')
+partition_name = "American"
+partition = Partition(collection, partition_name)
+print(collection.partition(partition_name='American'))
 
 # List all partition names in demo collection
 print(f"\nList partitions...")
