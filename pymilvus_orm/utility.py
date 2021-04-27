@@ -24,13 +24,13 @@ def loading_progress(collection_name, partition_names=[], using="default"):
     :return: Loading progress, contains num of loaded and num of total
     :rtype:  dict
     """
-    if len(partition_name) == 0:
-        return get_connection(using).load_collection_progress(collection_name, timeout)
+    if len(partition_names) == 0:
+        return get_connection(using).load_collection_progress(collection_name)
     else:
-        return get_connection(using).load_partitions_progress(collection_name, partition_names, timeout)
+        return get_connection(using).load_partitions_progress(collection_name, partition_names)
 
 
-def wait_for_loading_complete(collection_name, partition_name=[], timeout=None, using="default"):
+def wait_for_loading_complete(collection_name, partition_names=[], timeout=None, using="default"):
     """
     Block until loading is done or Raise Exception after timeout.
 
@@ -43,13 +43,13 @@ def wait_for_loading_complete(collection_name, partition_name=[], timeout=None, 
     :param timeout: The timeout for this method, unit: second
     :type  timeout: int
     """
-    if len(partition_name) == 0:
+    if len(partition_names) == 0:
         return get_connection(using).wait_for_loading_collection_complete(collection_name, timeout)
     else: 
         return get_connection(using).wait_for_loading_partitions_complete(collection_name, partition_names, timeout)
 
 
-def index_building_progress(collection_name, index_name="", timeout=None, using="default"):
+def index_building_progress(collection_name, index_name="", using="default"):
     """
     Show # indexed entities vs. # total entities.
 
@@ -65,7 +65,7 @@ def index_building_progress(collection_name, index_name="", timeout=None, using=
     :return: Building progress, contains num of indexed entities and num of total entities
     :rtype:  dict
     """
-    return get_connection(using).load_index_build_progress(collection_name, index_name, timeout)
+    return get_connection(using).get_index_build_progress(collection_name, index_name)
 
 
 def wait_for_index_building_complete(collection_name, index_name="", timeout=None, using="default"):
@@ -81,7 +81,7 @@ def wait_for_index_building_complete(collection_name, index_name="", timeout=Non
     :param timeout: The timeout for this method, unit: second
     :type  timeout: int
     """
-    return get_connection(using).wait_for_createing_index(collection_name, index_name, timeout)
+    return get_connection(using).wait_for_creating_index(collection_name, index_name, timeout)
 
 
 def has_collection(collection_name, using="default"):
