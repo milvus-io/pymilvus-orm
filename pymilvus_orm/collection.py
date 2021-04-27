@@ -574,6 +574,8 @@ class Collection(object):
 
         :param index_name: The name of the partition to drop.
         :type  index_name: str
+        :raises PartitionNotExistException:
+            when partitoin does not exist
         """
         from .index import Index
         if self.has_index(index_name) is False:
