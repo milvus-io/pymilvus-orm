@@ -18,7 +18,7 @@ print(list_collections())
 # Create a collection named 'demo_film_tutorial'
 print(f"\nCreate collection...")
 field1 = FieldSchema(name="release_year", dtype=DataType.INT64, descrition="int64", is_parimary=False)
-field2 = FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, descrition="float vector", is_parimary=False)
+field2 = FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, descrition="float vector", dim=128, is_parimary=False)
 schema = CollectionSchema(fields=[field1, field2], description="collection description")
 collection = Collection(name='demo_film_tutorial', data=None, schema=schema)
 
