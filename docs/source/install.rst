@@ -77,4 +77,4 @@ Your installation is correct if the following command in the Python shell doesn'
    (venv) $ python -c "from milvus import Milvus, DataType"
 
 .. sectionauthor::
-   `Cai.zhang@milvus <https://github.com/xiaocai2333>`_
+   `IronMan@milvus <https://github.com/xiaocai2333>`_
