@@ -413,15 +413,14 @@ class Collection(object):
               The callback function which is invoked after server response successfully. It only take
               effect when _async is set to True.
 
-        :return: Search result:
+        :return: SearchResult:
             SearchResult is iterable and is a 2d-array-like class, the first dimension is
             the number of vectors to query (nq), the second dimension is the number of limit(topk).
         :rtype: SearchResult
 
-        :raises:
-            RpcError: If gRPC encounter an error
-            ParamError: If parameters are invalid
-            BaseException: If the return result from server is not ok
+        :raises RpcError: If gRPC encounter an error
+        :raises ParamError: If parameters are invalid
+        :raises BaseException: If the return result from server is not ok
 
         :example:
         >>> from pymilvus_orm.collection import Collection

@@ -31,8 +31,8 @@ class Hit(object):
         """
         Return the id of the hit record.
 
-        :return: The id of the hit record.
-        :rtype: int
+        :return int:
+            The id of the hit record.
         """
         return self._hit.id
 
@@ -41,8 +41,8 @@ class Hit(object):
         """
         Return the distance between the hit record and the query.
 
-        :return: The distance of the hit record.
-        :rtype: float
+        :return float:
+            The distance of the hit record.
         """
         return self._hit.distance
 
@@ -51,8 +51,8 @@ class Hit(object):
         """
         Return the calculated score of the hit record, now the score is equal to distance.
 
-        :return: The score of the hit record.
-        :rtype: float
+        :return float:
+            The score of the hit record.
         """
         return self._hit.score
 
@@ -83,8 +83,8 @@ class Hits(_IterableBase):
         """
         Return the kth Hit corresponding to the query.
 
-        :return: The kth specified by item Hit corresponding to the query.
-        :rtype: class `Hit`
+        :return Hit:
+            The kth specified by item Hit corresponding to the query.
         """
         return Hit(self._hits[item])
 
@@ -92,8 +92,8 @@ class Hits(_IterableBase):
         """
         Return the number of hit record.
 
-        :return: The number of hit record.
-        :rtype: int
+        :return int:
+            The number of hit record.
         """
         return len(self._hits)
 
@@ -102,8 +102,8 @@ class Hits(_IterableBase):
         """
         Return the ids of all hit record.
 
-        :return: The ids of all hit record.
-        :rtype: list[int]
+        :return list[int]:
+            The ids of all hit record.
         """
         return self._hits.ids
 
@@ -112,8 +112,8 @@ class Hits(_IterableBase):
         """
         Return the distances of all hit record.
 
-        :return: The distances of all hit record.
-        :rtype: list[float]
+        :return list[float]:
+            The distances of all hit record.
         """
         return self._hits.distances
 
@@ -142,8 +142,8 @@ class SearchResult(_IterableBase):
         """
         Return the Hits corresponding to the nth query.
 
-        :return: The hits corresponding to the nth(item) query.
-        :rtype: class `Hits`
+        :return Hits:
+            The hits corresponding to the nth(item) query.
         """
         return Hits(self._qs[item])
 
@@ -151,8 +151,8 @@ class SearchResult(_IterableBase):
         """
         Return the number of query of Search Result.
 
-        :return: The number of query of search result.
-        :rtype: int
+        :return int:
+            The number of query of search result.
         """
         return len(self._qs)
 
