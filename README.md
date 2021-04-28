@@ -25,7 +25,7 @@ The following collection shows Milvus versions and recommended PyMilvus ORM vers
 
 ## Installation
 
-You can install PyMilvus ORM via `pip` or `pip3` for Python 3.6+:
+You can install PyMilvus ORM via `pip3` for Python 3.6+:
 
 ```shell
 $ pip3 install pymilvus-orm
@@ -34,13 +34,13 @@ $ pip3 install pymilvus-orm
 You can install a specific version of PyMilvus ORM by:
 
 ```shell
-$ pip install pymilvus-orm==0.0.1
+$ pip3 install pymilvus-orm==0.0.1
 ```
 
 You can upgrade PyMilvus ORM to the latest version by:
 
 ```shell
-$ pip install --upgrade pymilvus-orm
+$ pip3 install --upgrade pymilvus-orm
 ```
 
 
@@ -59,7 +59,7 @@ The release version number of PyMilvus ORM follows PEP440, the format is x.y.z, 
 
 For example, after PyMilvus ORM 1.0.1 is released, a tag named v1.0.1 can be found on GitHub, and a package with version 1.0.1 can be downloaded on PyPI.
 
-### Developing packages
+### Developing packages (Working in progress)
 
 The commits on the development branch of each version will be packaged and uploaded to Test PyPI. Development branches refer to branches such as 1.0 and 1.1, and version releases are generated from the development branches, such as 1.0.1 and 1.0.2.
 
