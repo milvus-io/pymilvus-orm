@@ -417,7 +417,7 @@ class Collection(object):
 
         :raises RpcError: If gRPC encounter an error.
         :raises ParamError: If parameters are invalid.
-        :raises BaseException: IIf the return result from server is not ok.
+        :raises BaseException: If the return result from server is not ok.
 
         :example:
         >>> from pymilvus_orm.collection import Collection
