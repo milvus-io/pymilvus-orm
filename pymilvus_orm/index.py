@@ -28,6 +28,9 @@ class Index(object):
 
         :param index_params: Indexing parameters.
         :type  index_params: dict
+
+        :raises ParamError: If parameters are invalid.
+        :raises IndexConflictException: If index with same name and different param already exists.
         """
         from .collection import Collection
         self._collection = collection
@@ -53,8 +56,8 @@ class Index(object):
         """
         Return the index name.
 
-        :return: The name of index
-        :rtype:  str
+        :return str:
+            The name of index
         """
         return self._name
 
@@ -64,8 +67,8 @@ class Index(object):
         """
         Return the index params.
 
-        :return: Index parameters
-        :rtype:  dict
+        :return dict:
+            Index parameters
         """
         return copy.deepcopy(self._index_params)
 
@@ -75,8 +78,8 @@ class Index(object):
         """
         Return corresponding collection name.
 
-        :return: Corresponding collection name.
-        :rtype:  str
+        :return str:
+            Corresponding collection name
         """
         return self._collection.name
 
@@ -85,14 +88,16 @@ class Index(object):
         """
         Return corresponding column name.
 
-        :return: Corresponding column name.
-        :rtype:  str
+        :return str:
+            Corresponding column name
         """
         return self._field_name
 
     def drop(self, **kwargs):
         """
         Drop index and its corresponding index files.
+
+        :raises IndexNotExistException: If index doesn't exist.
         """
         conn = self._get_connection()
         if conn.describe_index(self._collection.name, self._field_name) is None:

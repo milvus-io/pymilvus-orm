@@ -114,8 +114,8 @@ class Collection(object):
         """
         Return the schema of collection.
 
-        :return: Schema of collection
-        :rtype: schema.CollectionSchema
+        :return schema.CollectionSchema:
+            Schema of collection.
         """
         return self._schema
 
@@ -134,10 +134,8 @@ class Collection(object):
         """
         Return the description text about the collection.
 
-        :return:
-            Collection description text, return when operation is successful
-
-        :rtype: str
+        :return str:
+            Collection description text, return when operation is successful.
 
         :example:
         >>> from pymilvus_orm.collection import Collection
@@ -160,8 +158,8 @@ class Collection(object):
         """
         Return the collection name.
 
-        :return: Collection name, return when operation is successful
-        :rtype: str
+        :return str:
+            Collection name, return when operation is successful.
 
         :example:
         >>> from pymilvus_orm.collection import Collection
@@ -185,8 +183,8 @@ class Collection(object):
         Return whether the collection is empty.
         This method need to call `num_entities <#pymilvus_orm.Collection.num_entities>`_.
 
-        :return: Whether the collection is empty
-        :rtype: bool
+        :return bool:
+            Whether the collection is empty.
 
         :example:
         >>> from pymilvus_orm.collection import Collection
@@ -209,11 +207,10 @@ class Collection(object):
         """
         Return the number of entities.
 
-        :return: Number of entities in this collection
-        :rtype: int
+        :return int:
+            Number of entities in this collection.
 
-        :raises:
-            CollectionNotExistException: If collection doesn't exist
+        :raises CollectionNotExistException: If collection doesn't exist.
 
         :example:
         >>> from pymilvus_orm.collection import Collection
@@ -410,20 +407,20 @@ class Collection(object):
         :type  timeout: float
         :param kwargs:
             * *_async* (``bool``) --
-              Indicate if invoke asynchronously. When value is true, method returns a SearchFuture object;
-              otherwise, method returns results from server.
+              Indicate if invoke asynchronously. When value is true, method returns a SearchResultFuture object;
+              otherwise, method returns results from server directly.
             * *_callback* (``function``) --
               The callback function which is invoked after server response successfully. It only take
               effect when _async is set to True.
 
-        :return: Query result. QueryResult is iterable and is a 2d-array-like class, the first dimension is
-                 the number of vectors to query (nq), the second dimension is the number of limit(topk).
-        :rtype: QueryResult
+        :return: SearchResult:
+            SearchResult is iterable and is a 2d-array-like class, the first dimension is
+            the number of vectors to query (nq), the second dimension is the number of limit(topk).
+        :rtype: SearchResult
 
-        :raises:
-            RpcError: If gRPC encounter an error
-            ParamError: If parameters are invalid
-            BaseException: If the return result from server is not ok
+        :raises RpcError: If gRPC encounter an error
+        :raises ParamError: If parameters are invalid
+        :raises BaseException: If the return result from server is not ok
 
         :example:
         >>> from pymilvus_orm.collection import Collection
@@ -454,16 +451,21 @@ class Collection(object):
         >>> print(top1.score)
         """
         conn = self._get_connection()
-        return conn.search_with_expression(self._name, data, anns_field, param, limit, expression, partition_names,
-                                           output_fields, timeout, **kwargs)
+        res = conn.search_with_expression(self._name, data, anns_field, param, limit, expression, partition_names,
+                                          output_fields, timeout, **kwargs)
+        if kwargs.get("_async", False):
+            from .search import SearchResultFuture
+            return SearchResultFuture(res)
+        from .search import SearchResult
+        return SearchResult(res)
 
     @property
     def partitions(self) -> list:
         """
         Return all partitions of the collection.
 
-        :return: List of Partition object, return when operation is successful
-        :rtype: list[Partition]
+        :return list[Partition]:
+            List of Partition object, return when operation is successful.
 
         :raises:
             CollectionNotExistException: If collection doesn't exist
@@ -485,8 +487,8 @@ class Collection(object):
         :param partition_name: The name of the partition to create.
         :type  partition_name: str
 
-        :return:Partition object corresponding to partition_name
-        :rtype: Partition
+        :return Partition:
+            Partition object corresponding to partition_name.
 
         :raises:
             CollectionNotExistException: If collection doesn't exist
@@ -508,8 +510,8 @@ class Collection(object):
                         is set to None, client waits until server response or error occur.
         :type  timeout: float
 
-        :return: Whether a specified partition exists.
-        :rtype: bool
+        :return bool:
+            Whether a specified partition exists.
 
         :raises:
             CollectionNotExistException: If collection doesn't exist
@@ -538,8 +540,8 @@ class Collection(object):
         """
         Return all indexes of the collection.
 
-        :return: List of Index object, return when operation is successful
-        :rtype: list[Index]
+        :return list[Index]:
+            List of Index object, return when operation is successful.
 
         :raises:
             CollectionNotExistException: If collection doesn't exist
@@ -561,8 +563,8 @@ class Collection(object):
         :param index_name: The name of the index to create.
         :type  index_name: str
 
-        :return:Index object corresponding to index_name
-        :rtype: Index
+        :return Index:
+            Index object corresponding to index_name.
 
         :raises:
             CollectionNotExistException: If collection doesn't exist
@@ -606,8 +608,8 @@ class Collection(object):
         :param index_name: The name of the index to check.
         :type  index_name: str
 
-        :return: If specified index exists
-        :rtype: bool
+        :return bool:
+            If specified index exists.
 
         :raises:
             CollectionNotExistException: If collection doesn't exist
