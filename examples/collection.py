@@ -23,7 +23,6 @@ default_nb = 3000
 default_float_vec_field_name = "float_vector"
 default_binary_vec_field_name = "binary_vector"
 
-
 all_index_types = [
     "FLAT",
     "IVF_FLAT",
@@ -55,7 +54,6 @@ default_index_params = [
     {"nlist": 128},
     {"nlist": 128}
 ]
-
 
 default_index = {"index_type": "IVF_FLAT", "params": {"nlist": 128}, "metric_type": "L2"}
 default_binary_index = {"index_type": "BIN_FLAT", "params": {"nlist": 1024}, "metric_type": "JACCARD"}
@@ -192,7 +190,12 @@ def test_create_index_float_vector():
     data = gen_float_data(default_nb)
     collection = Collection(name=gen_unique_str(), data=data, schema=gen_default_fields())
     for index_param in gen_simple_index():
-        collection.create_index(field_name=default_float_vec_field_name, index_params=index_param)
+        collection.create_index(field_name=default_float_vec_field_name,
+                                index_params={'index_type': 'FLAT',
+                                              'metric_type': 'L2',
+                                              'params': {
+                                                  'nlist': 128
+                                              }})
     assert len(collection.indexes) != 0
     collection.drop()
 
@@ -221,9 +224,9 @@ def test_specify_primary_key():
     collection2.drop()
 
 
-test_create_collection()
-test_collection_only_name()
-test_collection_with_data()
+# test_create_collection()
+# test_collection_only_name()
+# test_collection_with_data()
 test_create_index_float_vector()
 test_create_index_binary_vector()
 test_specify_primary_key()
