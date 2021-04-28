@@ -78,7 +78,7 @@ record your change in file `CHANGELOG.md`. The format is:
 **2. Add unit tests for your codes**
 
 To run unit test in github action, you need make sure the last commit message of PR starts with "[ci]".
-If you want to run unit test locally, under root folder of Pymilvus ORM project run `pytest --ip=${IP} --port=${PORT}`.
+If you want to run unit test locally, under root folder of PyMilvus ORM project run `pytest --ip=${IP} --port=${PORT}`.
 
 **3. Pass pylint check**
 
