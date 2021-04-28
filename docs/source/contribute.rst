@@ -58,7 +58,7 @@ If you already have an existing local repository, always update it before you st
 .. code-block:: shell
    
    $ git remote add upstream git@github.com:milvus-io/pymilvus-orm.git
-   $ git checkout master
+   $ git checkout main
    $ git pull upstream master
    $ git checkout -b my_working_branch
 
