@@ -241,8 +241,7 @@ class Collection(object):
         """
         Drop the collection, as well as its corresponding index files.
 
-        :raises:
-            CollectionNotExistException: If collection doesn't exist
+        :raises CollectionNotExistException: If collection doesn't exist.
 
         :example:
         >>> from pymilvus_orm.collection import Collection
@@ -318,9 +317,8 @@ class Collection(object):
               An optional duration of time in seconds to allow for the RPC. When timeout
               is set to None, client waits until server response or error occur.
 
-        :raises:
-            CollectionNotExistException: If collection doesn't exist
-            BaseException: If collection hasn't been loaded
+        :raises CollectionNotExistException: If collection doesn't exist.
+        :raises BaseException: If collection hasn't been loaded.
 
         :example:
         >>> from pymilvus_orm.collection import Collection
@@ -357,10 +355,9 @@ class Collection(object):
               An optional duration of time in seconds to allow for the RPC. When timeout
               is set to None, client waits until server response or error occur.
 
-        :raises:
-            CollectionNotExistException: If collection doesn't exist
-            ParamError: If parameters are invalid
-            BaseException: If partition doesn't exist
+        :raises CollectionNotExistException: If collection doesn't exist.
+        :raises ParamError: If parameters are invalid.
+        :raises BaseException: If partition doesn't exist.
 
         :example:
         >>> from pymilvus_orm.collection import Collection
@@ -417,10 +414,9 @@ class Collection(object):
             QueryResult is iterable and is a 2d-array-like class, the first dimension is
             the number of vectors to query (nq), the second dimension is the number of limit(topk).
 
-        :raises:
-            RpcError: If gRPC encounter an error
-            ParamError: If parameters are invalid
-            BaseException: If the return result from server is not ok
+        :raises RpcError: If gRPC encounter an error.
+        :raises ParamError: If parameters are invalid.
+        :raises BaseException: IIf the return result from server is not ok.
 
         :example:
         >>> from pymilvus_orm.collection import Collection
@@ -462,8 +458,7 @@ class Collection(object):
         :return list[Partition]:
             List of Partition object, return when operation is successful.
 
-        :raises:
-            CollectionNotExistException: If collection doesn't exist
+        :raises CollectionNotExistException: If collection doesn't exist.
         """
         from .partition import Partition
         conn = self._get_connection()
@@ -485,9 +480,8 @@ class Collection(object):
         :return Partition:
             Partition object corresponding to partition_name.
 
-        :raises:
-            CollectionNotExistException: If collection doesn't exist
-            BaseException: If partition doesn't exist
+        :raises CollectionNotExistException: If collection doesn't exist.
+        :raises BaseException: If partition doesn't exist.
         """
         from .partition import Partition
         if self.has_partition(partition_name) is False:
@@ -508,8 +502,7 @@ class Collection(object):
         :return bool:
             Whether a specified partition exists.
 
-        :raises:
-            CollectionNotExistException: If collection doesn't exist
+        :raises CollectionNotExistException: If collection doesn't exist.
         """
         conn = self._get_connection()
         return conn.has_partition(self._name, partition_name)
@@ -521,9 +514,8 @@ class Collection(object):
         :param partition_name: The name of the partition to drop.
         :type  partition_name: str
 
-        :raises:
-            CollectionNotExistException: If collection doesn't exist
-            BaseException: If partition doesn't exist
+        :raises CollectionNotExistException: If collection doesn't exist.
+        :raises BaseException: If partition doesn't exist.
         """
         if self.has_partition(partition_name) is False:
             raise Exception("Partition doesn't exist")
@@ -538,8 +530,7 @@ class Collection(object):
         :return list[Index]:
             List of Index object, return when operation is successful.
 
-        :raises:
-            CollectionNotExistException: If collection doesn't exist
+        :raises CollectionNotExistException: If collection doesn't exist.
         """
         from .index import Index
         conn = self._get_connection()
@@ -561,10 +552,8 @@ class Collection(object):
         :return Index:
             Index object corresponding to index_name.
 
-        :raises:
-            CollectionNotExistException: If collection doesn't exist
-            BaseException: If index doesn't exist
-
+        :raises CollectionNotExistException: If collection doesn't exist.
+        :raises BaseException: If index doesn't exist.
         """
         # TODO(yukun): Need field name, but provide index name, require some impl in server
         from .index import Index
@@ -586,11 +575,10 @@ class Collection(object):
         :param index_name: The name of the index to create.
         :type  index_name: str
 
-        :raises:
-            CollectionNotExistException: If collection doesn't exist
-            ParamError: If index parameters are invalid
-            BaseException: If field doesn't exist
-            BaseException: If index has been created
+        :raises CollectionNotExistException: If collection doesn't exist.
+        :raises ParamError: If index parameters are invalid.
+        :raises BaseException: If field doesn't exist.
+        :raises BaseException: If index has been created.
         """
         conn = self._get_connection()
         return conn.create_index(self._name, field_name, index_params, timeout=kwargs.get("timeout", None),
@@ -606,8 +594,7 @@ class Collection(object):
         :return bool:
             If specified index exists.
 
-        :raises:
-            CollectionNotExistException: If collection doesn't exist
+        :raises CollectionNotExistException: If collection doesn't exist.
         """
         conn = self._get_connection()
         # TODO(yukun): Need field name, but provide index name
@@ -622,9 +609,8 @@ class Collection(object):
         :param index_name: The name of the partition to drop.
         :type  index_name: str
 
-        :raises:
-            CollectionNotExistException: If collection doesn't exist
-            BaseException: If index has been created
+        :raises CollectionNotExistException: If collection doesn't exist.
+        :raises BaseException: If index has been created.
         """
         from .index import Index
         if self.has_index(index_name) is False:
