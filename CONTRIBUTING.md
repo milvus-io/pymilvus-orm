@@ -22,7 +22,7 @@ for example, virtualenv, conda and etc. When your virtual environment is activat
 
 
 ### Coding Style
-Before submitting a pull request, make sure the coding style is qualified. run command `pylint --rcfile=pylint.conf milvus_orm` 
+Before submitting a pull request, make sure the coding style is qualified. run command `pylint --rcfile=pylint.conf pymilvus_orm`
 to check it.
 
 
@@ -31,7 +31,7 @@ to check it.
 Before submitting your PR, make sure you have run unit test, and your code coverage rate is >= 90%.
 
 ```shell 
-$ pytest --cov=milvus_orm --cov-report=html
+$ pytest --cov=pymilvus_orm --cov-report=html
 ```
 
 You may need a milvus server which is running when you run unit test. See more details on [Milvus server](https://github.com/milvus-io/milvus).
