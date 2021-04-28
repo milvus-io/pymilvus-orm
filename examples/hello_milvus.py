@@ -19,9 +19,7 @@ def hello_milvus():
     pymilvus_orm.connections.create_connection()
 
     # create collection
-    from pymilvus_orm import schema
-    from pymilvus_orm import DataType
-    from pymilvus_orm import Collection
+    from pymilvus_orm import schema, DataType, Collection
     dim = 128
     default_fields = [
         schema.FieldSchema(name="count", dtype=DataType.INT64, is_primary=False),
@@ -39,15 +37,25 @@ def hello_milvus():
 
     # create index and load table
     default_index = {"index_type": "IVF_FLAT", "params": {"nlist": 128}, "metric_type": "L2"}
-    collection.create_index(field_name="float_vector", index_params=default_index, index_name="")
+    collection.create_index(field_name="float_vector", index_params=default_index)
     collection.load()
 
     # load and search
-    topK = 10
+    topK = 5
     search_params = {"metric_type": "L2", "params": {"nprobe": 10}}
-    res = collection.search(vectors[:-5], "float_vector", search_params, topK, "count > 100")
+    import time
+    start_time = time.time()
+    res = collection.search(vectors[-2:], "float_vector", search_params, topK, "count > 100")
+    end_time = time.time()
 
     # show result
+    for hits in res:
+        for hit in hits:
+            print(hit)
+    print("search latency = %.4fs" % (end_time - start_time))
+    
+    # drop collection
+    # collection.drop()
 
 
 hello_milvus()
