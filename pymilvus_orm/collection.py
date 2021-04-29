@@ -17,6 +17,7 @@ from .prepare import Prepare
 from .partition import Partition
 from .index import Index
 from .search import SearchResultFuture, SearchResult
+from .types import DataType
 
 
 class Collection(object):
@@ -113,6 +114,11 @@ class Collection(object):
     def _check_schema(self):
         pass
 
+    def _get_vector_field(self) -> str:
+        for field in self._schema.fields:
+            if field.dtype == DataType.FLOAT_VECTOR or field.dtype == DataType.BINARY_VECTOR:
+                return field.name
+
     @property
     def schema(self) -> CollectionSchema:
         """
@@ -122,16 +128,6 @@ class Collection(object):
             Schema of collection.
         """
         return self._schema
-
-    @schema.setter
-    def schema(self, value):
-        """
-        Set the schema of collection.
-
-        :param value: the schema of collection
-        :type value: class `schema.CollectionSchema`
-        """
-        pass
 
     @property
     def description(self) -> str:
@@ -235,15 +231,23 @@ class Collection(object):
         return status["row_count"]
 
     @property
-    def primary_field(self):
+    def primary_field(self) -> FieldSchema:
         """
         Return the primary field of collection.
+
+        :return schema.FieldSchema:
+            The primary field of collection.
         """
         return self._schema.primary_field
 
     def drop(self, **kwargs):
         """
         Drop the collection, as well as its corresponding index files.
+
+        :param kwargs:
+            * *timeout* (``float``) --
+              An optional duration of time in seconds to allow for the RPC. When timeout
+              is set to None, client waits until server response or error occur.
 
         :raises CollectionNotExistException: If collection doesn't exist.
 
@@ -478,9 +482,9 @@ class Collection(object):
 
     def partition(self, partition_name) -> Partition:
         """
-        Return the partition corresponding to name. Create a new one if not existed.
+        Return the partition corresponding to name. Return None if not existed.
 
-        :param partition_name: The name of the partition to create.
+        :param partition_name: The name of the partition to get.
         :type  partition_name: str
 
         :return Partition:
@@ -493,16 +497,33 @@ class Collection(object):
             return None
         return Partition(self, partition_name)
 
+    def create_partition(self, partition_name, description=""):
+        """
+        Create the partition corresponding to name if not existed.
+
+        :param partition_name: The name of the partition to create.
+        :type  partition_name: str
+
+        :param description: The description of the partition corresponding to name.
+        :type description: str
+
+        :return Partition:
+            Partition object corresponding to partition_name.
+
+        :raises CollectionNotExistException: If collection doesn't exist.
+        :raises BaseException: If partition doesn't exist.
+        """
+        from .partition import Partition
+        if self.has_partition(partition_name) is True:
+            raise Exception("Partition already exist.")
+        return Partition(self, partition_name)
+
     def has_partition(self, partition_name) -> bool:
         """
         Checks if a specified partition exists.
 
         :param partition_name: The name of the partition to check
         :type  partition_name: str
-
-        :param timeout: An optional duration of time in seconds to allow for the RPC. When timeout
-                        is set to None, client waits until server response or error occur.
-        :type  timeout: float
 
         :return bool:
             Whether a specified partition exists.
@@ -518,6 +539,11 @@ class Collection(object):
 
         :param partition_name: The name of the partition to drop.
         :type  partition_name: str
+
+        :param kwargs:
+            * *timeout* (``float``) --
+              An optional duration of time in seconds to allow for the RPC. When timeout
+              is set to None, client waits until server response or error occur.
 
         :raises CollectionNotExistException: If collection doesn't exist.
         :raises BaseException: If partition doesn't exist.
@@ -538,10 +564,11 @@ class Collection(object):
         :raises CollectionNotExistException: If collection doesn't exist.
         """
         conn = self._get_connection()
+        field_name = self._get_vector_field()
         indexes = []
-        tmp_index = conn.describe_index(self._name, "")
+        tmp_index = conn.describe_index(self._name, field_name)
         if tmp_index is not None:
-            indexes.append(Index(self, tmp_index['field_name'], tmp_index["params"]))
+            indexes.append(Index(self, field_name, tmp_index))
         return indexes
 
 
@@ -560,7 +587,8 @@ class Collection(object):
         """
         # TODO(yukun): Need field name, but provide index name, require some impl in server
         conn = self._get_connection()
-        tmp_index = conn.describe_index(self._name, "")
+        field_name = self._get_vector_field()
+        tmp_index = conn.describe_index(self._name, field_name)
         field_name = tmp_index.pop("field_name", None)
         if tmp_index is not None:
             return Index(self, field_name, tmp_index)
@@ -611,6 +639,11 @@ class Collection(object):
 
         :param index_name: The name of the partition to drop.
         :type  index_name: str
+
+        :param kwargs:
+            * *timeout* (``float``) --
+              An optional duration of time in seconds to allow for the RPC. When timeout
+              is set to None, client waits until server response or error occur.
 
         :raises CollectionNotExistException: If collection doesn't exist.
         :raises BaseException: If index has been created.
