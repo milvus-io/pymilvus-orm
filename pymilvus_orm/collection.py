@@ -476,7 +476,7 @@ class Collection(object):
 
     def partition(self, partition_name) -> Partition:
         """
-        Return the partition corresponding to name. Return none if not existed.
+        Return the partition corresponding to name. Return None if not existed.
 
         :param partition_name: The name of the partition to get.
         :type  partition_name: str
