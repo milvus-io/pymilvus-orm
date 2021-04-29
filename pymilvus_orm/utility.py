@@ -18,9 +18,11 @@ def loading_progress(collection_name, partition_names=[], using="default"):
 
     :param collection_name: The name of collection is loading
     :type  collection_name: str
+
     :param partition_names: The names of partitions is loading
     :type  partition_names: str list
-    :rtype:
+
+    :return dict:
         Loading progress is a dict contains num of loaded entities and num of total entities.
         {'num_loaded_entities':loaded_segments_nums, 'num_total_entities': total_segments_nums}
     :raises PartitionNotExistException: If partition doesn't exist.
@@ -97,7 +99,7 @@ def index_building_progress(collection_name, index_name="", using="default"):
                         Default index_name is to be used if index_name is not specific.
     :type index_name: str
 
-    :rtype:  
+    :return dict:  
         Index building progress is a dict contains num of indexed entities and num of total entities.
         {'total_rows':total_rows,'indexed_rows':indexed_rows}
 
@@ -180,8 +182,8 @@ def has_collection(collection_name, using="default"):
     :param collection_name: The name of collection to check.
     :type  collection_name: str
 
-    :return: Whether the collection exists.
-    :rtype:  bool
+    :return bool: 
+        Whether the collection exists.
 
     :example:
         >>> from pymilvus_orm.collection import Collection
@@ -208,8 +210,8 @@ def has_partition(collection_name, partition_name, using="default"):
     :param partition_name: The name of partition to check.
     :type  partition_name: str
 
-    :return: Whether the partition exist.
-    :rtype:  bool
+    :return bool: 
+        Whether the partition exist.
 
     :example:
         >>> from pymilvus_orm.collection import Collection
@@ -234,8 +236,8 @@ def list_collections(timeout=None, using="default") -> list:
                     is set to None, client waits until server response or error occur.
     :type  timeout: float
 
-    :return: List of collection names, return when operation is successful
-    :rtype: list[str]
+    :return list[str]:
+        List of collection names, return when operation is successful
 
     :example:
         >>> from pymilvus_orm.collection import Collection
