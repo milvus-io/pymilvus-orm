@@ -1,4 +1,5 @@
-.. _top_level_functions:
+.. _utility:
+    :toctree: api/
 
 Utility
 ==========
