@@ -157,6 +157,25 @@ class FieldSchema(object):
             return self._type_params[item]
 
     @property
+    def description(self):
+        """
+        Return the description text about the FieldSchema.
+
+        :return str:
+            FieldSchema description text, return when operation is successful.
+
+        :example:
+        >>> from pymilvus_orm.schema import FieldSchema
+        >>> from pymilvus_orm.types import DataType
+        >>> from pymilvus_orm import connections
+        >>> connections.create_connection(alias="default")
+        <milvus.client.stub.Milvus object at 0x7f9a190ca898>
+        >>> field = FieldSchema(name="int64", dtype=DataType.INT64, descrition="int64", is_parimary=False)
+        >>> field.description
+        """
+        return self._description
+
+    @property
     def params(self):
         """
         Return the parameters of the field.
