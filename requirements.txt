@@ -1,6 +1,6 @@
 requests==2.22.0
 requests-toolbelt==0.9.1
-pymilvus-distributed==0.0.63
+pymilvus-distributed==0.0.64
 m2r==0.2.1
 pandas
 numpy
