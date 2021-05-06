@@ -58,7 +58,6 @@ def is_numeric_datatype(data_type):
 
 
 def infer_dtype_by_scaladata(data):
-    print("??")
     if isinstance(data, float):
         return DataType.DOUBLE
     elif isinstance(data, bool):
