@@ -118,12 +118,12 @@ class Collection(object):
         """
         if self._schema is None:
             return False
-        fields1 = parse_fields_from_data(data)
+        infer_fields = parse_fields_from_data(data)
 
-        if len(fields1) != len(self._schema):
+        if len(infer_fields) != len(self._schema):
             raise DataTypeNotMatchException(0, "Column cnt not match with schema")
 
-        for x, y in zip(fields1, self._schema.fields):
+        for x, y in zip(infer_fields, self._schema.fields):
             if x.dtype != y.dtype:
                 return False
             # todo check dim
