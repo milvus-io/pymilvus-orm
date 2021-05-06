@@ -90,10 +90,11 @@ class Collection(object):
                 if isinstance(schema, CollectionSchema):
                     conn.create_collection(self._name, fields=schema.to_dict(), orm=True)
                     self._schema = schema
-                    if self._check_insert_data_schema(data):
-                        self.insert(data=data)
-                    else:
-                        raise Exception("The types of schema and data do not match.")
+                    if data is not None:
+                        if self._check_insert_data_schema(data):
+                            self.insert(data=data)
+                        else:
+                            raise Exception("The types of schema and data do not match.")
                 else:
                     raise Exception("schema type must be schema.CollectionSchema.")
 
