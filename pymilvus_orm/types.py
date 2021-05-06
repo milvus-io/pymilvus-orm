@@ -12,6 +12,9 @@
 from enum import IntEnum
 from pandas.api.types import is_object_dtype, infer_dtype, is_list_like, is_scalar, is_float, is_array_like
 import numpy as np
+import logging
+
+LOGGER = logging.getLogger(__name__)
 
 
 class DataType(IntEnum):
@@ -42,6 +45,28 @@ dtype_str_map = {
     "boolean": DataType.BOOL,
     "mixed": DataType.UNKNOWN,
     "bytes": DataType.UNKNOWN,
+}
+
+numpy_dtype_str_map = {
+    "bool_": DataType.BOOL,
+    "bool": DataType.BOOL,
+    "int": DataType.INT64,
+    "int_": DataType.INT64,
+    "intc": DataType.INT64,
+    "intp": DataType.INT64,
+    "int8": DataType.INT8,
+    "int16": DataType.INT16,
+    "int32": DataType.INT32,
+    "int64": DataType.INT64,
+    "uint8": DataType.INT8,
+    "uint16": DataType.INT16,
+    "uint32": DataType.INT32,
+    "uint64": DataType.INT64,
+    "float": DataType.FLOAT,
+    "float_": DataType.FLOAT,
+    "float16": DataType.FLOAT,
+    "float32": DataType.FLOAT,
+    "float64": DataType.DOUBLE,
 }
 
 
@@ -100,13 +125,11 @@ def infer_dtype_bydata(data):
             type_str = infer_dtype(data)
         except TypeError:
             failed = True
-            print("11111")
 
         if not failed:
             d_type = dtype_str_map.get(type_str, DataType.UNKNOWN)
             if is_numeric_datatype(d_type):
                 d_type = DataType.FLOAT_VECTOR
-                print("22222", type_str)
             elif type_str in ("bytes",):
                 d_type = DataType.BINARY_VECTOR
             else:
@@ -133,21 +156,5 @@ def infer_dtype_bydata(data):
 
 
 def map_numpy_dtype_to_datatype(d_type):
-    if is_object_dtype(d_type):
-        return DataType.UNKNOWN
-    elif isinstance(d_type, type(np.dtype(np.float64))):
-        return DataType.DOUBLE
-    elif isinstance(d_type, type(np.dtype(np.float32))):
-        return DataType.FLOAT
-    elif isinstance(d_type, type(np.dtype(np.int64))):
-        return DataType.INT64
-    elif isinstance(d_type, type(np.dtype(np.int32))):
-        return DataType.INT32
-    elif isinstance(d_type, type(np.dtype(np.int16))):
-        return DataType.INT16
-    elif isinstance(d_type, type(np.dtype(np.int8))):
-        return DataType.INT8
-    elif isinstance(d_type, type(np.dtype(np.bool8))):
-        return DataType.BOOL
-    elif isinstance(d_type, type(np.dtype(np.bool_))):
-        return DataType.BOOL
+    d_type_str = str(d_type)
+    return numpy_dtype_str_map.get(d_type_str, DataType.UNKNOWN)
