@@ -339,8 +339,12 @@ class Collection(object):
         :example:
         >>> from pymilvus_orm.collection import Collection
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> field = FieldSchema(name="int64", type="int64", is_primary=False, description="int64")
-        >>> schema = CollectionSchema(fields=[field], auto_id=True, description="collection schema has a int64 field")
+        >>> from pymilvus_orm import connections
+        >>> from pymilvus_orm.types import DataType
+        >>> field = FieldSchema(name="int64", dtype=DataType.INT64, is_primary=False, description="int64")
+        >>> schema = CollectionSchema(fields=[field], description="collection schema has a int64 field")
+        >>> connections.create_connection()
+        <milvus.client.stub.Milvus object at 0x7f8579002dc0>
         >>> collection = Collection(name="test_collection", schema=schema)
         >>> import pandas as pd
         >>> int64_series = pd.Series(data=list(range(10, 20)), index=list(range(10)))
@@ -368,8 +372,12 @@ class Collection(object):
         :example:
         >>> from pymilvus_orm.collection import Collection
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> field = FieldSchema(name="int64", type="int64", is_primary=False, description="int64")
-        >>> schema = CollectionSchema(fields=[field], auto_id=True, description="collection schema has a int64 field")
+        >>> from pymilvus_orm import connections
+        >>> from pymilvus_orm.types import DataType
+        >>> field = FieldSchema(name="int64", dtype=DataType.INT64, is_primary=False, description="int64")
+        >>> schema = CollectionSchema(fields=[field], description="collection schema has a int64 field")
+        >>> connections.create_connection()
+        <milvus.client.stub.Milvus object at 0x7f8579002dc0>
         >>> collection = Collection(name="test_collection", schema=schema)
         >>> import pandas as pd
         >>> int64_series = pd.Series(data=list(range(10, 20)), index=list(range(10)))
@@ -379,8 +387,6 @@ class Collection(object):
         >>> assert not collection.is_empty
         >>> assert collection.num_entities == 10
         >>> collection.release()    # release the collection from memory
-        >>> assert collection.is_empty
-        >>> assert collection.num_entities == 0
         """
         conn = self._get_connection()
         conn.release_collection(self._name, timeout=kwargs.get("timeout", None))
@@ -407,8 +413,12 @@ class Collection(object):
         :example:
         >>> from pymilvus_orm.collection import Collection
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> field = FieldSchema(name="int64", type="int64", is_primary=False, description="int64")
-        >>> schema = CollectionSchema(fields=[field], auto_id=True, description="collection schema has a int64 field")
+        >>> from pymilvus_orm import connections
+        >>> from pymilvus_orm.types import DataType
+        >>> connections.create_connection()
+        <milvus.client.stub.Milvus object at 0x7f8579002dc0>
+        >>> field = FieldSchema(name="int64", dtype=DataType.INT64, is_primary=False, description="int64")
+        >>> schema = CollectionSchema(fields=[field], description="collection schema has a int64 field")
         >>> collection = Collection(name="test_collection", schema=schema)
         >>> import random
         >>> data = [[random.randint(1, 100) for _ in range(10)]]
@@ -466,11 +476,14 @@ class Collection(object):
         :example:
         >>> from pymilvus_orm.collection import Collection
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
+        >>> from pymilvus_orm import connections
         >>> from pymilvus_orm.types import DataType
+        >>> connections.create_connection()
+        <milvus.client.stub.Milvus object at 0x7f8579002dc0>
         >>> dim = 128
-        >>> year_field = FieldSchema(name="year", type="int64", is_primary=False, description="year")
-        >>> embedding_field = FieldSchema(name="embedding", type=DataType.FLOAT_VECTOR, dim=dim)
-        >>> schema = CollectionSchema(fields=[year_field, embedding_field], auto_id=True)
+        >>> year_field = FieldSchema(name="year", dtype=DataType.INT64, is_primary=False, description="year")
+        >>> embedding_field = FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, dim=dim)
+        >>> schema = CollectionSchema(fields=[year_field, embedding_field])
         >>> collection = Collection(name="test_collection", schema=schema)
         >>> import random
         >>> nb = 3000
@@ -483,7 +496,8 @@ class Collection(object):
         >>> search_params = {"metric_type": "L2", "params": {"nprobe": 10}}
         >>> res = collection.search(embeddings[:10], "embedding", search_params, limit, "year > 20")
         >>> assert len(res) == nq
-        >>> assert len(hits) == limit for hits in res
+        >>> for hits in res:
+        >>>     assert len(hits) == limit
         >>> hits = res[0]
         >>> assert len(hits.ids) == limit
         >>> top1 = hits[0]
