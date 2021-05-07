@@ -236,7 +236,7 @@ def parse_fields_from_dataframe(dataframe) -> List[FieldSchema]:
 
     column_params_map = {}
 
-    if DataType.UNKNOWN in data_types:
+    if DataType.UNKNOWN not in data_types:
         if len(dataframe) == 0:
             raise CannotInferSchemaException(0, "Cannot infer schema from empty dataframe")
         else:
