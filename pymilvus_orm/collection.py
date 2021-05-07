@@ -69,7 +69,8 @@ class Collection(object):
                     self.insert(data=data)
             else:
                 if server_schema != schema:
-                    raise Exception("The collection already exist, but the schema is not the same as the passed in.")
+                    raise SchemaNotReadyException("The collection already exist, but the schema is not the same as "
+                                                  "the passed in.")
                 self._schema = schema
                 if data is not None:
                     self.insert(data=data)
@@ -77,7 +78,7 @@ class Collection(object):
         else:
             if schema is None:
                 if data is None:
-                    raise Exception("Collection missing schema.")
+                    raise SchemaNotReadyException("Collection missing schema.")
                 else:
                     if isinstance(data, pandas.DataFrame):
                         fields = parse_fields_from_data(data)
@@ -85,7 +86,8 @@ class Collection(object):
                         conn.create_collection(self._name, fields=self._schema.to_dict(), orm=True)
                         self.insert(data=data)
                     else:
-                        raise Exception("Data of not pandas.DataFrame type should be passed into the schema.")
+                        raise SchemaNotReadyException("Data of not pandas.DataFrame type should be passed into the "
+                                                      "schema.")
             else:
                 if isinstance(schema, CollectionSchema):
                     conn.create_collection(self._name, fields=schema.to_dict(), orm=True)
@@ -94,9 +96,9 @@ class Collection(object):
                         if self._check_insert_data_schema(data):
                             self.insert(data=data)
                         else:
-                            raise Exception("The types of schema and data do not match.")
+                            raise SchemaNotReadyException("The types of schema and data do not match.")
                 else:
-                    raise Exception("schema type must be schema.CollectionSchema.")
+                    raise SchemaNotReadyException("schema type must be schema.CollectionSchema.")
 
     def _get_using(self):
         return self._kwargs.get("_using", "default")
