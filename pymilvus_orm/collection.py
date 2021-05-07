@@ -428,7 +428,7 @@ class Collection(object):
         >>> assert collection.num_entities == 10
         """
         conn = self._get_connection()
-        entities, ids = Prepare.prepare_insert_data_for_list_or_tuple(data, self._schema)
+        entities, ids = Prepare.prepare_insert_data(data, self._schema)
         timeout = kwargs.pop("timeout", None)
         return conn.insert(collection_name=self._name, entities=entities, ids=ids, partition_tag=partition_name,
                            timeout=timeout, orm=True, **kwargs)
