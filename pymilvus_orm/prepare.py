@@ -17,14 +17,24 @@ class Prepare(object):
             raise Exception("data is not invalid")
 
         fields = schema.fields
-        if len(data) != len(fields):
+        if isinstance(data, pandas.DataFrame):
+            if len(fields) != len(data.columns):
+                raise Exception(f"collection has {len(fields)} fields, but go {len(data.columns)} fields")
+        elif len(data) != len(fields):
             raise Exception(f"collection has {len(fields)} fields, but go {len(data)} fields")
 
-        entities = [{
-            "name": field.name,
-            "type": field.dtype,
-            "values": data[i],
-        } for i, field in enumerate(fields)]
+        if isinstance(data, pandas.DataFrame):
+            entities = [{
+                "name": field.name,
+                "type": field.dtype,
+                "values": list(data[field.name]),
+            } for i, field in enumerate(fields)]
+        else:
+            entities = [{
+                "name": field.name,
+                "type": field.dtype,
+                "values": data[i],
+            } for i, field in enumerate(fields)]
 
         ids = None
         for i, field in enumerate(fields):
