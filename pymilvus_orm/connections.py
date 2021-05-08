@@ -61,7 +61,7 @@ class Connections(object):
             except KeyError:
                 errors += 1
 
-        if errors == 2:
+        if errors == 3:
             raise KeyError("There is no connection with alias %r." % alias)
 
     def create_connection(self, alias=DefaultConfig.DEFAULT_USING, **kwargs) -> Milvus:
