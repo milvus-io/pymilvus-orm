@@ -115,3 +115,22 @@ class TestConnections:
                 conn = c.get_connection(key)
                 assert isinstance(conn, milvus.Milvus)
                 c.remove_connection(key)
+
+    def test_get_connection_addr(self, c, host, port):
+        alias = DefaultConfig.DEFAULT_USING
+
+        c.create_connection(alias, host=host, port=port)
+
+        connection_addr = c.get_connection_addr(alias)
+
+        assert connection_addr["host"] == host
+        assert connection_addr["port"] == port
+
+    def test_list_connections(self, c, host, port):
+        alias = DefaultConfig.DEFAULT_USING
+
+        c.create_connection(alias, host=host, port=port)
+
+        conns = c.list_connections()
+
+        assert len(conns) == 1

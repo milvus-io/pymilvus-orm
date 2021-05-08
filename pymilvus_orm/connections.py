@@ -41,8 +41,12 @@ class Connections(object):
 
         This will create two milvus connections named default and dev.
         """
-        for k in kwargs:
-            self.create_connection(alias=k, **kwargs[k])
+        for k in list(self._conns):
+            # try and preserve existing client to keep the persistent connections alive
+            if k in self._kwargs and kwargs.get(k, None) == self._kwargs[k]:
+                continue
+            self.remove_connection(alias=k)
+        self._kwargs = kwargs
 
     def remove_connection(self, alias):
         """
@@ -54,6 +58,10 @@ class Connections(object):
 
         :raises KeyError: If there is no connection with alias.
         """
+        try:
+            conn = self._conns[alias]
+        except KeyError:
+            raise KeyError("There is no connection with alias %r." % alias)
         errors = 0
         for d in (self._conns, self._kwargs, self._addrs):
             try:
@@ -63,6 +71,7 @@ class Connections(object):
 
         if errors == 3:
             raise KeyError("There is no connection with alias %r." % alias)
+        conn.close()
 
     def create_connection(self, alias=DefaultConfig.DEFAULT_USING, **kwargs) -> Milvus:
         """
@@ -90,7 +99,7 @@ class Connections(object):
 
         conn = Milvus(host, port, handler, pool, **kwargs)
         self._conns[alias] = conn
-        self._addrs[alias] = {"host": host, "port": port, "handler": handler, "pool": pool}
+        self._addrs[alias] = {"host": host, "port": port}
         return conn
 
     def get_connection(self, alias=DefaultConfig.DEFAULT_USING) -> Milvus:
@@ -120,7 +129,7 @@ class Connections(object):
             # no connection and no kwargs to set one up
             raise KeyError("There is no connection with alias %r." % alias)
 
-    def list_connections(self) -> list:
+    def list_connections(self):
         """
         List all connections.
 
@@ -134,10 +143,8 @@ class Connections(object):
         >>> connections.list_connections()
         ['test']
         """
-        conns = []
-        for conn in self._conns:
-            conns.append(conn)
-        return conns
+
+        return self._conns.keys()
 
     def get_connection_addr(self, alias):
         """
