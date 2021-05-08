@@ -55,7 +55,7 @@ class Connections(object):
         :raises KeyError: If there is no connection with alias.
         """
         errors = 0
-        for d in (self._conns, self._kwargs):
+        for d in (self._conns, self._kwargs, self._addrs):
             try:
                 del d[alias]
             except KeyError:
