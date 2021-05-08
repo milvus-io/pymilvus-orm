@@ -129,7 +129,7 @@ class Connections(object):
             # no connection and no kwargs to set one up
             raise KeyError("There is no connection with alias %r." % alias)
 
-    def list_connections(self):
+    def list_connections(self) -> list:
         """
         List all connections.
 
@@ -144,7 +144,7 @@ class Connections(object):
         ['test']
         """
 
-        return self._conns.keys()
+        return list(self._conns.keys())
 
     def get_connection_addr(self, alias):
         """
