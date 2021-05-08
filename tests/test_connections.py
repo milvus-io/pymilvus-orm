@@ -52,28 +52,15 @@ class TestConnections:
 
                 c.remove_connection(key)
 
-    def test_add_connection(self, c, host, port):
-        with mock.patch("milvus.Milvus.__init__", return_value=None):
-            conn = milvus.Milvus(host, port)
-            alias = "default"
-
-            c.add_connection(alias, conn)
-
-            conn_got = c.get_connection(alias)
-            assert conn_got is conn
-
-            c.remove_connection(alias)
-
     def test_remove_connection_without_no_connections(self, c):
         with pytest.raises(Exception):
             c.remove_connection("default")
 
     def test_remove_connection(self, c, host, port):
         with mock.patch("milvus.Milvus.__init__", return_value=None):
-            conn = milvus.Milvus(host, port)
             alias = "default"
 
-            c.add_connection(alias, conn)
+            c.create_connection(alias, host=host, port=port)
             c.remove_connection(alias)
 
             with pytest.raises(Exception):
@@ -101,25 +88,23 @@ class TestConnections:
 
     def test_get_collection(self, c, host, port):
         with mock.patch("milvus.Milvus.__init__", return_value=None):
-            conn = milvus.Milvus(host, port)
             alias = "default"
 
-            c.add_connection(alias, conn)
+            c.create_connection(alias, host=host, port=port)
 
             conn_got = c.get_connection(alias)
-            assert conn_got is conn
+            assert isinstance(conn_got, milvus.Milvus)
 
             c.remove_connection(alias)
 
     def test_get_collection_without_alias(self, c, host, port):
         with mock.patch("milvus.Milvus.__init__", return_value=None):
-            conn = milvus.Milvus(host, port)
             alias = DefaultConfig.DEFAULT_USING
 
-            c.add_connection(alias, conn)
+            c.create_connection(alias, host=host, port=port)
 
             conn_got = c.get_connection()
-            assert conn_got is conn
+            assert isinstance(conn_got, milvus.Milvus)
 
             c.remove_connection(alias)
 
