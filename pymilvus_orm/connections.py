@@ -155,8 +155,7 @@ class Connections(object):
 
         :return dict:
             The connection configure which of the name is alias.
-
-        :raises KeyError: If there is no connection with alias.
+            If alias does not exist, return empty dict.
 
         :example:
         >>> from pymilvus_orm import connections
@@ -167,9 +166,7 @@ class Connections(object):
         >>> connections.get_connection_addr('test')
         {'host': 'localhost', 'port': '19530'}
         """
-        if alias not in self._addrs:
-            return {}
-        return self._addrs[alias]
+        return self._addrs.get(alias, {})
 
 
 # Singleton Mode in Python
