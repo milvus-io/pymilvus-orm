@@ -130,9 +130,9 @@ class Partition(object):
         >>> partition.num_entities
         0
         """
-        # TODO: Need to add functions in pymilvus-distributed
-        return 0
-        # raise NotImplementedError
+        conn = self._get_connection()
+        status = conn.get_partition_stats(db_name="", collection_name=self._collection.name, partition_name=self._name)
+        return status["row_count"]
 
     def drop(self, **kwargs):
         """
