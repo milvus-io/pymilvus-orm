@@ -165,7 +165,7 @@ class Connections(object):
         >>> connections.list_connections()
         ['test']
         >>> connections.get_connection_addr('test')
-        {'host': 'localhost', 'port': '19530', 'handler': 'GRPC', 'pool': 'SingletonThread'}
+        {'host': 'localhost', 'port': '19530'}
         """
         return self._addrs[alias]
 
