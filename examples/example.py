@@ -105,3 +105,5 @@ collection.drop()
 # List all collection names
 print(f"\nList collections...")
 print(list_collections())
+
+print(f"\nFinished...")
