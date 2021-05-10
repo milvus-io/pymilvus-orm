@@ -167,6 +167,8 @@ class Connections(object):
         >>> connections.get_connection_addr('test')
         {'host': 'localhost', 'port': '19530'}
         """
+        if alias not in self._addrs:
+            return {}
         return self._addrs[alias]
 
 
@@ -174,6 +176,8 @@ class Connections(object):
 
 connections = Connections()
 configure = connections.configure
+list_connections = connections.list_connections
+get_connection_addr = connections.get_connection_addr
 remove_connection = connections.remove_connection
 create_connection = connections.create_connection
 get_connection = connections.get_connection
