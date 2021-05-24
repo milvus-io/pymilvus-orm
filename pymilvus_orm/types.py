@@ -123,13 +123,15 @@ def infer_dtype_bydata(data):
 
     if is_list_like(data) or is_array_like(data):
         failed = False
+        type_str = ""
         try:
             type_str = infer_dtype(data)
         except TypeError:
             failed = True
-
-        if not failed:
-            d_type = dtype_str_map.get(type_str, DataType.UNKNOWN)
+        d_type = dtype_str_map.get(type_str, DataType.UNKNOWN)
+        if d_type == DataType.UNKNOWN or failed:
+            elem = data[0]
+            d_type = infer_dtype_bydata(elem)
             if is_numeric_datatype(d_type):
                 d_type = DataType.FLOAT_VECTOR
             elif type_str in ("bytes",):
