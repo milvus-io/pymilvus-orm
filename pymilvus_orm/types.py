@@ -86,7 +86,7 @@ def is_numeric_datatype(data_type):
 # pylint: disable=too-many-return-statements
 def infer_dtype_by_scaladata(data):
     if isinstance(data, float):
-        return DataType.FLOAT
+        return DataType.DOUBLE
     if isinstance(data, bool):
         return DataType.BOOL
     if isinstance(data, int):
