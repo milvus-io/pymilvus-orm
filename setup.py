@@ -25,6 +25,9 @@ setuptools.setup(
     license="Apache-2.0",
     packages=setuptools.find_packages(),
     include_package_data=True,
+    dependency_links=[
+        'https://test.pypi.org/simple/pymilvus'
+    ],
     install_requires=requirements,
     classifiers=[
         "Programming Language :: Python :: 3.6",
