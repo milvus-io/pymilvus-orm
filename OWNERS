@@ -1,0 +1,11 @@
+filters:
+  ".*":
+    reviewers:
+      - bigsheeper
+      - DragonDriver
+      - fishpenguin
+      - scsven
+      - xiaocai2333
+      - XuanYang-cn
+    approvers:
+      - czs007
