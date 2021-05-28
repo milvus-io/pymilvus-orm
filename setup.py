@@ -10,10 +10,18 @@ README = (HERE / 'README.md').read_text()
 with io.open("pymilvus_orm/__init__.py", "rt", encoding="utf8") as f:
     version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
 
-requirements = []
-with open("requirements.txt", 'r') as f:
-    for line in f.readlines():
-        requirements.append(line.strip())
+
+def simple_parse_requirements(fpath):
+    requirements = []
+    with open("requirements.txt", 'r') as f:
+        for line in f.readlines():
+            if line.startswith("--"):
+                continue
+            requirements.append(line.strip())
+    return requirements
+
+
+requirements = simple_parse_requirements("requirements.txt")
 
 setuptools.setup(
     name="pymilvus-orm",
@@ -24,6 +32,9 @@ setuptools.setup(
     url='https://github.com/milvus-io/pymilvus-orm.git',
     license="Apache-2.0",
     packages=setuptools.find_packages(),
+    dependency_links=[
+        'https://test.pypi.org/simple/pymilvus',
+    ],
     include_package_data=True,
     install_requires=requirements,
     classifiers=[
