@@ -13,7 +13,7 @@ with io.open("pymilvus_orm/__init__.py", "rt", encoding="utf8") as f:
 
 def simple_parse_requirements(fpath):
     requirements = []
-    with open("requirements.txt", 'r') as f:
+    with open(fpath, 'r') as f:
         for line in f.readlines():
             if line.startswith("--"):
                 continue
