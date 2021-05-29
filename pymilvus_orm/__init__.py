@@ -43,7 +43,7 @@ from .future import SearchResultFuture, InsertFuture
 __version__ = '0.0.0.dev'
 
 try:
-    __version__ = get_distribution('pymilvus').version
+    __version__ = get_distribution('pymilvus-orm').version
 except DistributionNotFound:
     # package is not installed
     pass
