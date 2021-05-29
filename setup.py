@@ -8,8 +8,10 @@ README = (HERE / 'README.md').read_text()
 
 requirements = [
         "pymilvus==2.0a1.dev8",
-        "pandas",
-        "numpy",
+        "pandas==1.1.5; python_version<'3.7'",
+        "pandas; python_version>'3.6'",
+        "numpy==1.19.5; python_version<'3.7'",
+        "numpy; python_version>'3.6'",
     ]
 
 extras_require={
