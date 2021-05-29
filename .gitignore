@@ -11,6 +11,7 @@ docs/build/
 docs/_build/
 *.egg
 *.egg-info
+*.eggs/
 **/__pycache__/
 .pytest*/
 /build/

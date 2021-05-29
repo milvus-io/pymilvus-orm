@@ -1,31 +1,50 @@
 import pathlib
 import setuptools
-import io
 import re
 
 HERE = pathlib.Path(__file__).parent
 
 README = (HERE / 'README.md').read_text()
 
-with io.open("pymilvus_orm/__init__.py", "rt", encoding="utf8") as f:
-    version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
+requirements = [
+        "pymilvus==2.0a1.dev8",
+        "pandas==1.1.5; python_version<'3.7'",
+        "pandas; python_version>'3.6'",
+        "numpy==1.19.5; python_version<'3.7'",
+        "numpy; python_version>'3.6'",
+    ]
 
-
-def simple_parse_requirements(fpath):
-    requirements = []
-    with open(fpath, 'r') as f:
-        for line in f.readlines():
-            if line.startswith("--"):
-                continue
-            requirements.append(line.strip())
-    return requirements
-
-
-requirements = simple_parse_requirements("requirements.txt")
+extras_require={
+        'test': [
+            'pytest==5.3.4',
+            'pytest-cov==2.8.1',
+            'pytest-timeout==1.3.4',
+        ],
+        'dev': [
+            'requests-toolbelt==0.9.1',
+            'm2r==0.2.1',
+            'sklearn==0.0',
+        ],
+        'doc': [
+            'Sphinx==2.3.1',
+            'sphinx-copybutton==0.3.1',
+            'sphinx-rtd-theme==0.4.3',
+            'sphinxcontrib-applehelp==1.0.1',
+            'sphinxcontrib-devhelp==1.0.1',
+            'sphinxcontrib-htmlhelp==1.0.2',
+            'sphinxcontrib-jsmath==1.0.1',
+            'sphinxcontrib-qthelp==1.0.2',
+            'sphinxcontrib-serializinghtml==1.1.3',
+            'sphinxcontrib-prettyspecialmethods',
+        ]
+}
 
 setuptools.setup(
     name="pymilvus-orm",
-    version=version,
+    author='Milvus Team',
+    author_email='milvus-team@zilliz.com',
+    setup_requires=['setuptools_scm'],
+    use_scm_version={'local_scheme': 'no-local-version'},
     description="Python ORM Sdk for Milvus(>= 2.0)",
     long_description=README,
     long_description_content_type='text/markdown',
@@ -37,6 +56,7 @@ setuptools.setup(
     ],
     include_package_data=True,
     install_requires=requirements,
+    extras_require=extras_require,
     classifiers=[
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",

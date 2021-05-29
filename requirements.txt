@@ -1,7 +1,7 @@
 --extra-index-url https://test.pypi.org/simple/
 requests==2.22.0
 requests-toolbelt==0.9.1
-pymilvus==2.0a1.dev2
+pymilvus==2.0a1.dev8
 m2r==0.2.1
 pandas
 numpy
