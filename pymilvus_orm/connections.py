@@ -17,8 +17,8 @@ from .exceptions import ParamError
 
 
 class SingleInstanceMetaClass(type):
-    def __init__(self, name, bases, dic):
-        self.__single_instance = None
+    def __init__(cls, name, bases, dic):
+        cls.__single_instance = None
         super().__init__(name, bases, dic)
 
     def __call__(cls, *args, **kwargs):
