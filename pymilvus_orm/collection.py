@@ -433,6 +433,8 @@ class Collection:
         >>> assert not collection.is_empty
         >>> assert collection.num_entities == 10
         """
+        if data is None:
+            return []
         if not self._check_insert_data_schema(data):
             raise SchemaNotReadyException(0, "The types of schema and data do not match.")
         conn = self._get_connection()
