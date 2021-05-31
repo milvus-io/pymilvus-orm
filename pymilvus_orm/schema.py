@@ -134,7 +134,7 @@ class FieldSchema:
         self._description = description
         self._type_params = None
         self._kwargs = kwargs
-        self.is_primary = kwargs.get("is_primary", False)
+        self.is_primary = kwargs.get("is_primary", False) is True
         self._parse_type_params()
 
     def _parse_type_params(self):
