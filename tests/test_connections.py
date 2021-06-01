@@ -17,7 +17,7 @@ class TestConnections:
     @pytest.fixture(scope="function")
     def configure_params(self):
         params = {
-            "default": {"host": "localhost", "port": "19530"},
+            "test": {"host": "localhost", "port": "19530"},
             "dev": {"host": "localhost", "port": "19530"},
         }
         return params
@@ -42,6 +42,7 @@ class TestConnections:
         LOGGER.info(type(c))
 
     def test_configure(self, c, configure_params):
+        print(c.list_connections())
         with mock.patch("milvus.Milvus.__init__", return_value=None):
             c.configure(**configure_params)
 
@@ -56,7 +57,7 @@ class TestConnections:
 
     def test_remove_connection_without_no_connections(self, c):
         with pytest.raises(Exception):
-            c.remove_connection("default")
+            c.remove_connection("remove")
 
     def test_remove_connection(self, c, host, port):
         with mock.patch("milvus.Milvus.__init__", return_value=None):
