@@ -267,8 +267,9 @@ class Partition:
 
     def get(self, ids, output_field=None, timeout=None):
         """
-        Retrieve multiple entities by entityID. Returns a dict that the key is entityID and the value
-        is entity. If entityID not found in the collection, it's value in the result will be None.
+        Retrieve multiple entities by entityID. Returns a dict that the key is entityID and
+        the value is entity. If entityID not found in the collection,
+        it's value in the result will be None.
 
         :param ids: A list of entityID
         :type  ids: list[int]
