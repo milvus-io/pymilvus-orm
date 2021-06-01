@@ -12,4 +12,4 @@ import pymilvus_orm.connections as connections
 def create_collection():
     connections.create_connection()
     yield
-    connections.remove_connection(alias='default')
+    connections.pop(alias='default')

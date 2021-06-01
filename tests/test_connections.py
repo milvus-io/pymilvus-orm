@@ -1,3 +1,4 @@
+import copy
 import logging
 import pytest
 import milvus
@@ -12,7 +13,7 @@ LOGGER = logging.getLogger(__name__)
 class TestConnections:
     @pytest.fixture(scope="function")
     def c(self):
-        return Connections()
+        return copy.deepcopy(Connections())
 
     @pytest.fixture(scope="function")
     def configure_params(self):
@@ -42,7 +43,6 @@ class TestConnections:
         LOGGER.info(type(c))
 
     def test_configure(self, c, configure_params):
-        print(c.list_connections())
         with mock.patch("milvus.Milvus.__init__", return_value=None):
             c.configure(**configure_params)
 
@@ -53,7 +53,7 @@ class TestConnections:
 
                 assert isinstance(conn, milvus.Milvus)
 
-                c.remove_connection(key)
+                c.pop(key)
 
     def test_remove_connection_without_no_connections(self, c):
         with pytest.raises(Exception):
@@ -66,8 +66,9 @@ class TestConnections:
             c.create_connection(alias, host=host, port=port)
             c.remove_connection(alias)
 
-            with pytest.raises(Exception):
-                c.get_connection(alias)
+            assert c.get_connection(alias) is None
+
+            c.pop(alias)
 
     def test_create_collection_without_param(self, c):
         with mock.patch("milvus.Milvus.__init__", return_value=None):
@@ -75,7 +76,7 @@ class TestConnections:
             c.create_connection(alias)
             conn_got = c.get_connection(alias)
             assert isinstance(conn_got, milvus.Milvus)
-            c.remove_connection(alias)
+            c.pop(alias)
 
     def test_create_collection(self, c, params):
         with mock.patch("milvus.Milvus.__init__", return_value=None):
@@ -83,11 +84,10 @@ class TestConnections:
             c.create_connection(alias, **params)
             conn_got = c.get_connection(alias)
             assert isinstance(conn_got, milvus.Milvus)
-            c.remove_connection(alias)
+            c.pop(alias)
 
     def test_get_collection_without_no_connections(self, c):
-        with pytest.raises(Exception):
-            c.get_connection("default")
+        assert c.get_connection("get") is None
 
     def test_get_collection(self, c, host, port):
         with mock.patch("milvus.Milvus.__init__", return_value=None):
@@ -98,7 +98,7 @@ class TestConnections:
             conn_got = c.get_connection(alias)
             assert isinstance(conn_got, milvus.Milvus)
 
-            c.remove_connection(alias)
+            c.pop(alias)
 
     def test_get_collection_without_alias(self, c, host, port):
         with mock.patch("milvus.Milvus.__init__", return_value=None):
@@ -109,7 +109,7 @@ class TestConnections:
             conn_got = c.get_connection()
             assert isinstance(conn_got, milvus.Milvus)
 
-            c.remove_connection(alias)
+            c.pop(alias)
 
     def test_get_collection_with_configure_without_add(self, c, configure_params):
         with mock.patch("milvus.Milvus.__init__", return_value=None):
@@ -118,7 +118,7 @@ class TestConnections:
                 c.create_connection(key)
                 conn = c.get_connection(key)
                 assert isinstance(conn, milvus.Milvus)
-                c.remove_connection(key)
+                c.pop(key)
 
     def test_get_connection_addr(self, c, host, port):
         alias = DefaultConfig.DEFAULT_USING
@@ -129,12 +129,14 @@ class TestConnections:
 
         assert connection_addr["host"] == host
         assert connection_addr["port"] == port
+        c.pop(alias)
 
     def test_list_connections(self, c, host, port):
         alias = DefaultConfig.DEFAULT_USING
 
         c.create_connection(alias, host=host, port=port)
 
-        conns = c.list_connections()
+        conns = c.items()
 
         assert len(conns) == 1
+        c.pop(alias)
