@@ -58,14 +58,13 @@ class Connections(metaclass=SingleInstanceMetaClass):
 
         This will create two milvus connections named default and dev.
         """
-        for k in list(self._conns):
-            # try and preserve existing client to keep the persistent connections alive
-            if k in self._kwargs and kwargs.get(k, None) == self._kwargs[k]:
-                continue
-            self.remove_connection(alias=k)
-        self._kwargs = kwargs
-        for c in self._kwargs:
-            self.create_connection(alias=c)
+        for k in kwargs:
+            if k in self._conns:
+                if self._kwargs.get(k, None) == kwargs.get(k, None):
+                    continue
+                raise ParamError("alias of %r already creating connections, "
+                                 "but the configure is not the same as passed in." % k)
+            self._kwargs[k] = kwargs.get(k, None)
 
     def remove_connection(self, alias):
         """
@@ -77,10 +76,6 @@ class Connections(metaclass=SingleInstanceMetaClass):
 
         :raises KeyError: If there is no connection with alias.
         """
-        try:
-            conn = self._conns[alias]
-        except KeyError:
-            raise KeyError("There is no connection with alias %r." % alias)
         errors = 0
         for d in (self._conns, self._kwargs, self._addrs):
             try:
@@ -90,7 +85,6 @@ class Connections(metaclass=SingleInstanceMetaClass):
 
         if errors == 3:
             raise KeyError("There is no connection with alias %r." % alias)
-        conn.close()
 
     def create_connection(self, alias=DefaultConfig.DEFAULT_USING, **kwargs) -> Milvus:
         """
@@ -113,6 +107,11 @@ class Connections(metaclass=SingleInstanceMetaClass):
         <milvus.client.stub.Milvus object at 0x7f4045335f10>
         """
         if alias in self._conns:
+            if len(kwargs) > 0 and self._addrs[alias] != kwargs:
+                raise ParamError(f"The connection named {alias} already creating, "
+                                 "but passed parameters don't match the configured parameters, "
+                                 f"passed: {kwargs}, "
+                                 f"configured: {self._addrs[alias]}")
             return self._conns[alias]
 
         if alias in self._kwargs and len(kwargs) > 0 and self._kwargs[alias] != kwargs:
@@ -134,6 +133,7 @@ class Connections(metaclass=SingleInstanceMetaClass):
         conn = Milvus(host, port, handler, pool, **_using_parameters)
         self._conns[alias] = conn
         self._addrs[alias] = {"host": host, "port": port}
+        self._kwargs.pop(alias, None)
         return conn
 
     def get_connection(self, alias=DefaultConfig.DEFAULT_USING) -> Milvus:

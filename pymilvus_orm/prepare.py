@@ -38,7 +38,8 @@ class Prepare:
                     ids = list(data[field.name])
         else:
             if len(data) != len(fields):
-                raise DataNotMatch(0, f"collection has {len(fields)} fields, but go {len(data)} fields")
+                raise DataNotMatch(0, f"collection has {len(fields)} fields, "
+                                      f"but got {len(data)} fields")
 
             for i, field in enumerate(fields):
                 entities.append({
