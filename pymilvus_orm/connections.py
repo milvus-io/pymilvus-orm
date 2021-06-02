@@ -156,9 +156,7 @@ class Connections(metaclass=SingleInstanceMetaClass):
         :raises Exception: If server specific in parameters is not ready, we cannot connect to
                            server.
         """
-        if alias in self._conns:
-            return self._conns[alias]
-        return None
+        return self._conns.get(alias, None)
 
     def list_connections(self) -> list:
         """
@@ -168,11 +166,11 @@ class Connections(metaclass=SingleInstanceMetaClass):
             Names of all connections.
 
         :example:
-        >>> from pymilvus_orm import connections
-        >>> connections.create_connection("test", host="localhost", port="19530")
-        <milvus.client.stub.Milvus object at 0x7f4045335f10>
-        >>> connections.items()
-        ['test']
+        >>> from pymilvus_orm import connections as conn
+        >>> conn.connect("test", host="localhost", port="19530")
+        <milvus.client.stub.Milvus object at 0x7f05003f3e80>
+        >>> conn.list_connections()
+        [('default', None), ('test', <milvus.client.stub.Milvus object at 0x7f05003f3e80>)]
         """
         return [(k, self._conns.get(k, None)) for k in self._kwargs]
 
@@ -192,7 +190,7 @@ class Connections(metaclass=SingleInstanceMetaClass):
         >>> connections.connect("test", host="localhost", port="19530")
         <milvus.client.stub.Milvus object at 0x7f4045335f10>
         >>> connections.list_connections()
-        ['test']
+        [('default', None), ('test', <milvus.client.stub.Milvus object at 0x7f4045335f10>)]
         >>> connections.get_connection_addr('test')
         {'host': 'localhost', 'port': '19530'}
         """
