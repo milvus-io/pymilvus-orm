@@ -1,21 +1,12 @@
 pull_request_rules:
-  - name: add pr/automerge label if the title does not contain “[WIP]”
+  - name: Test passed
     conditions:
-      - base=main
-      - -title~=(?i)\[wip\]
+      - base=master
+      - "status-success=Code lint check"
+      - "status-success=Run Python Tests"
+      - "status-success=docs/readthedocs.org:pymilvus-orm"
     actions:
       label:
         add:
-          - pr/automerge
+          - ci-passed
 
-  - name: automatic merge for main when unittests passed and the title does not contain “[WIP]”
-    conditions:
-      - base=main
-      - label=pr/automerge
-      - -title~=(?i)\[wip\]
-      - "#approved-reviews-by>=1"
-      - check-success=Run Python Tests (3.6)
-      - check-success=DCO
-    actions:
-      merge:
-        method: squash
