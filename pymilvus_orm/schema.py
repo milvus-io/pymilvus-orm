@@ -18,7 +18,8 @@ from pandas.api.types import is_list_like
 
 from pymilvus_orm.constants import VECTOR_COMMON_TYPE_PARAMS
 from pymilvus_orm.types import DataType, map_numpy_dtype_to_datatype, infer_dtype_bydata
-from pymilvus_orm.exceptions import CannotInferSchemaException, DataTypeNotSupport, ParamError, DataNotMatch
+from pymilvus_orm.exceptions import CannotInferSchemaException, DataTypeNotSupport, \
+    ParamError, DataNotMatch
 
 
 class CollectionSchema:
@@ -272,7 +273,8 @@ def parse_fields_from_dataframe(dataframe) -> List[FieldSchema]:
                 for e in dataframe[col_names[i]]:
                     tmp_type = infer_dtype_bydata(e)
                     if tmp_type != new_dtype:
-                        raise DataNotMatch(0, "The data in the same column must be of the same type.")
+                        raise DataNotMatch(0, "The data in the same column "
+                                              "must be of the same type.")
                 if new_dtype in (DataType.BINARY_VECTOR, DataType.FLOAT_VECTOR):
                     vector_type_parasm = {
                         'dim': len(values[i]),
