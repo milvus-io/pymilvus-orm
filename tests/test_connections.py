@@ -80,7 +80,7 @@ class TestConnections:
             assert isinstance(conn_got, milvus.Milvus)
             c.remove_connection(alias)
 
-    def test_create_collection(self, c, params):
+    def test_connect(self, c, params):
         with mock.patch("milvus.Milvus.__init__", return_value=None):
             alias = "default"
             c.connect(alias, **params)
@@ -88,10 +88,10 @@ class TestConnections:
             assert isinstance(conn_got, milvus.Milvus)
             c.remove_connection(alias)
 
-    def test_get_collection_without_no_connections(self, c):
+    def test_get_connection_without_no_connections(self, c):
         assert c.get_connection("get") is None
 
-    def test_get_collection(self, c, host, port):
+    def test_get_connection(self, c, host, port):
         with mock.patch("milvus.Milvus.__init__", return_value=None):
             alias = "default"
 
@@ -102,7 +102,7 @@ class TestConnections:
 
             c.remove_connection(alias)
 
-    def test_get_collection_without_alias(self, c, host, port):
+    def test_get_connection_without_alias(self, c, host, port):
         with mock.patch("milvus.Milvus.__init__", return_value=None):
             alias = DefaultConfig.DEFAULT_USING
 
@@ -113,7 +113,7 @@ class TestConnections:
 
             c.remove_connection(alias)
 
-    def test_get_collection_with_configure_without_add(self, c, configure_params):
+    def test_get_connection_with_configure_without_add(self, c, configure_params):
         with mock.patch("milvus.Milvus.__init__", return_value=None):
             c.add_connection(**configure_params)
             for key, _ in configure_params.items():

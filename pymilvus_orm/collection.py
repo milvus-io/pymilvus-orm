@@ -60,7 +60,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
         >>> schema = CollectionSchema(fields=[field], description="collection description")
@@ -175,7 +175,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
         >>> schema = CollectionSchema(fields=[field], description="test get description")
@@ -199,7 +199,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
         >>> schema = CollectionSchema(fields=[field], description="test get collection name")
@@ -224,7 +224,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
         >>> schema = CollectionSchema(fields=[field], description="test collection is empty")
@@ -255,7 +255,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
         >>> schema = CollectionSchema(fields=[field], description="get collection entities num")
@@ -285,7 +285,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=True)
         >>> schema = CollectionSchema(fields=[field], description="get collection entities num")
@@ -313,7 +313,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
         >>> schema = CollectionSchema(fields=[field], description="drop collection")
@@ -363,7 +363,7 @@ class Collection:
         >>> from pymilvus_orm.types import DataType
         >>> field = FieldSchema("int64", DataType.INT64, is_primary=False, description="int64")
         >>> schema = CollectionSchema([field], description="collection schema has a int64 field")
-        >>> connections.create_connection()
+        >>> connections.connect()
         <milvus.client.stub.Milvus object at 0x7f8579002dc0>
         >>> collection = Collection(name="test_collection", schema=schema)
         >>> import pandas as pd
@@ -396,7 +396,7 @@ class Collection:
         >>> from pymilvus_orm.types import DataType
         >>> field = FieldSchema("int64", DataType.INT64, is_primary=False, description="int64")
         >>> schema = CollectionSchema([field], description="collection schema has a int64 field")
-        >>> connections.create_connection()
+        >>> connections.connect()
         <milvus.client.stub.Milvus object at 0x7f8579002dc0>
         >>> collection = Collection(name="test_collection", schema=schema)
         >>> import pandas as pd
@@ -437,7 +437,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm import connections
         >>> from pymilvus_orm.types import DataType
-        >>> connections.create_connection()
+        >>> connections.connect()
         <milvus.client.stub.Milvus object at 0x7f8579002dc0>
         >>> field = FieldSchema("int64", DataType.INT64, is_primary=False, description="int64")
         >>> schema = CollectionSchema([field], description="collection schema has a int64 field")
@@ -507,7 +507,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm import connections
         >>> from pymilvus_orm.types import DataType
-        >>> connections.create_connection()
+        >>> connections.connect()
         <milvus.client.stub.Milvus object at 0x7f8579002dc0>
         >>> dim = 128
         >>> year_field = FieldSchema("year", DataType.INT64, is_primary=False, description="year")
@@ -556,7 +556,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
         >>> schema = CollectionSchema(fields=[field], description="collection description")
@@ -589,7 +589,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
         >>> schema = CollectionSchema(fields=[field], description="collection description")
@@ -624,7 +624,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
         >>> schema = CollectionSchema(fields=[field], description="collection description")
@@ -655,7 +655,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
         >>> schema = CollectionSchema(fields=[field], description="collection description")
@@ -692,7 +692,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
         >>> schema = CollectionSchema(fields=[field], description="collection description")
@@ -727,7 +727,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
         >>> schema = CollectionSchema(fields=[field], description="collection description")
@@ -760,7 +760,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> year_field = FieldSchema("year", DataType.INT64, is_primary=False, description="year")
         >>> embedding_field = FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, dim=128)
@@ -804,7 +804,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> year_field = FieldSchema("year", DataType.INT64, is_primary=False, description="year")
         >>> embedding_field = FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, dim=128)
@@ -839,7 +839,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7f9a190ca898>
         >>> year_field = FieldSchema("year", DataType.INT64, is_primary=False, description="year")
         >>> embedding_field = FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, dim=128)
@@ -881,7 +881,7 @@ class Collection:
         >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
         >>> from pymilvus_orm.types import DataType
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
+        >>> connections.connect(alias="default")
         <milvus.client.stub.Milvus object at 0x7feaddc9cb80>
         >>> year_field = FieldSchema("year", DataType.INT64, is_primary=False, description="year")
         >>> embedding_field = FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, dim=128)
