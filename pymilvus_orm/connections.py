@@ -45,14 +45,14 @@ class Connections(metaclass=SingleInstanceMetaClass):
                                     "port": DefaultConfig.DEFAULT_PORT}}
         self._conns = {}
 
-    def configure(self, **kwargs):
+    def add_connection(self, **kwargs):
         """
         Configure the milvus connections and then create milvus connections by the passed
         parameters.
 
         Example::
 
-            connections.configure(
+            connections.add_connection(
                 default={"host": "localhost", "port": "19530"},
                 dev={"host": "localhost", "port": "19531"},
             )
@@ -66,7 +66,7 @@ class Connections(metaclass=SingleInstanceMetaClass):
                                      "but the configure is not the same as passed in." % k)
             self._kwargs[k] = kwargs.get(k, None)
 
-    def remove_connection(self, alias):
+    def disconnect(self, alias):
         """
         Disconnect connection from the registry.
 
@@ -77,23 +77,18 @@ class Connections(metaclass=SingleInstanceMetaClass):
             conn = self._conns[alias]
             conn.close()
             self._conns.pop(alias, None)
-        else:
-            raise ParamError("There is no connection named %r" % alias)
 
-    def pop(self, alias):
+    def remove_connection(self, alias):
         """
         Remove connection from the registry.
 
         :param alias: The name of milvus connection
         :type alias: str
         """
-        try:
-            self.remove_connection(alias)
-        except ParamError:
-            pass
+        self.disconnect(alias)
         self._kwargs.pop(alias, None)
 
-    def create_connection(self, alias=DefaultConfig.DEFAULT_USING, **kwargs) -> Milvus:
+    def connect(self, alias=DefaultConfig.DEFAULT_USING, **kwargs) -> Milvus:
         """
         Construct a milvus connection and register it under given alias.
 
@@ -110,7 +105,7 @@ class Connections(metaclass=SingleInstanceMetaClass):
 
         :example:
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection("test", host="localhost", port="19530")
+        >>> connections.connect("test", host="localhost", port="19530")
         <milvus.client.stub.Milvus object at 0x7f4045335f10>
         """
         if alias in self._conns:
@@ -165,7 +160,7 @@ class Connections(metaclass=SingleInstanceMetaClass):
             return self._conns[alias]
         return None
 
-    def items(self) -> list:
+    def list_connections(self) -> list:
         """
         List all connections.
 
@@ -179,7 +174,7 @@ class Connections(metaclass=SingleInstanceMetaClass):
         >>> connections.items()
         ['test']
         """
-        return list(self._kwargs.keys())
+        return [(k, self._conns.get(k, None)) for k in self._kwargs]
 
     def get_connection_addr(self, alias):
         """
@@ -194,9 +189,9 @@ class Connections(metaclass=SingleInstanceMetaClass):
 
         :example:
         >>> from pymilvus_orm import connections
-        >>> connections.create_connection("test", host="localhost", port="19530")
+        >>> connections.connect("test", host="localhost", port="19530")
         <milvus.client.stub.Milvus object at 0x7f4045335f10>
-        >>> connections.items()
+        >>> connections.list_connections()
         ['test']
         >>> connections.get_connection_addr('test')
         {'host': 'localhost', 'port': '19530'}
@@ -207,10 +202,10 @@ class Connections(metaclass=SingleInstanceMetaClass):
 # Singleton Mode in Python
 
 connections = Connections()
-configure = connections.configure
-list_connections = connections.items
+add_connection = connections.add_connection
+list_connections = connections.list_connections
 get_connection_addr = connections.get_connection_addr
 remove_connection = connections.remove_connection
-create_connection = connections.create_connection
+connect = connections.connect
 get_connection = connections.get_connection
-pop = connections.pop
+disconnect = connections.disconnect
