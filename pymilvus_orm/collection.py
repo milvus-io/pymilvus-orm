@@ -13,7 +13,12 @@
 import pandas
 
 from .connections import get_connection
-from .schema import CollectionSchema, FieldSchema, parse_fields_from_data
+from .schema import (
+    CollectionSchema,
+    FieldSchema,
+    parse_fields_from_data,
+    infer_dtype_bydata,
+)
 from .prepare import Prepare
 from .partition import Partition
 from .index import Index
@@ -22,6 +27,7 @@ from .types import DataType
 from .exceptions import (
     SchemaNotReadyException,
     DataTypeNotMatchException,
+    DataNotMatch,
 )
 from .future import SearchResultFuture, InsertFuture
 
@@ -37,6 +43,13 @@ def _check_schema(schema):
             vector_fields.append(field.name)
     if len(vector_fields) < 1:
         raise SchemaNotReadyException(0, "The schema at least have one vector column!")
+
+
+def _check_same_column_data_type(dtype, data):
+    for d in data:
+        tmp_type = infer_dtype_bydata(d)
+        if tmp_type != dtype:
+            raise DataNotMatch(0, "The data in the same column must be of the same type.")
 
 
 class Collection:
@@ -137,9 +150,18 @@ class Collection:
         if len(infer_fields) != len(self._schema):
             raise DataTypeNotMatchException(0, "Column cnt not match with schema")
 
+        for i, field in enumerate(infer_fields):
+            if isinstance(data, pandas.DataFrame):
+                _check_same_column_data_type(field.dtype, data[field.name])
+            else:
+                _check_same_column_data_type(field.dtype, data[i])
+
         for x, y in zip(infer_fields, self._schema.fields):
             if x.dtype != y.dtype:
                 return False
+            if isinstance(data, pandas.DataFrame):
+                if x.name != y.name:
+                    return False
             # todo check dim
         return True
 

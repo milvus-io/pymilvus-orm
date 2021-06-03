@@ -246,12 +246,9 @@ def parse_fields_from_data(datas):
         if not is_list_like(d):
             raise DataTypeNotSupport(0, "Data type must like list")
         d_type = infer_dtype_bydata(d[0])
-        for e in d:
-            tmp_type = infer_dtype_bydata(e)
-            if d_type != tmp_type:
-                raise DataNotMatch(0, "The data in the same column must be of the same type.")
         fields.append(FieldSchema("", d_type))
     return fields
+
 
 
 def parse_fields_from_dataframe(dataframe) -> List[FieldSchema]:
@@ -270,11 +267,6 @@ def parse_fields_from_dataframe(dataframe) -> List[FieldSchema]:
         for i, dtype in enumerate(data_types):
             if dtype == DataType.UNKNOWN:
                 new_dtype = infer_dtype_bydata(values[i])
-                for e in dataframe[col_names[i]]:
-                    tmp_type = infer_dtype_bydata(e)
-                    if tmp_type != new_dtype:
-                        raise DataNotMatch(0, "The data in the same column "
-                                              "must be of the same type.")
                 if new_dtype in (DataType.BINARY_VECTOR, DataType.FLOAT_VECTOR):
                     vector_type_parasm = {
                         'dim': len(values[i]),
