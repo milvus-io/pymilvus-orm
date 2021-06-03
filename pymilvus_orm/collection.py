@@ -45,11 +45,19 @@ def _check_schema(schema):
         raise SchemaNotReadyException(0, "The schema at least have one vector column!")
 
 
-def _check_same_column_data_type(dtype, data):
-    for i, _ in enumerate(data):
-        tmp_type = infer_dtype_bydata(data[i])
-        if tmp_type != dtype:
-            raise DataNotMatch(0, "The data in the same column must be of the same type.")
+def _check_data_schema(fields, data):
+    if isinstance(data, pandas.DataFrame):
+        for i, field in enumerate(fields):
+            for j, _ in enumerate(data[field.name]):
+                tmp_type = infer_dtype_bydata(data[field.name][j])
+                if tmp_type != field.dtype:
+                    raise DataNotMatch(0, "The data in the same column must be of the same type.")
+    else:
+        for i, field in enumerate(fields):
+            for j, _ in enumerate(data[i]):
+                tmp_type = infer_dtype_bydata(data[i][j])
+                if tmp_type != field.dtype:
+                    raise DataNotMatch(0, "The data in the same column must be of the same type.")
 
 
 class Collection:
@@ -115,6 +123,7 @@ class Collection:
                     raise SchemaNotReadyException(0, "Collection missing schema.")
                 if isinstance(data, pandas.DataFrame):
                     fields = parse_fields_from_data(data)
+                    _check_data_schema(fields, data)
                     self._schema = CollectionSchema(fields=fields)
                     _check_schema(self._schema)
                     conn.create_collection(self._name, fields=self._schema.to_dict(), orm=True)
@@ -150,11 +159,7 @@ class Collection:
         if len(infer_fields) != len(self._schema):
             raise DataTypeNotMatchException(0, "Column cnt not match with schema")
 
-        for i, field in enumerate(infer_fields):
-            if isinstance(data, pandas.DataFrame):
-                _check_same_column_data_type(field.dtype, data[field.name])
-            else:
-                _check_same_column_data_type(field.dtype, data[i])
+        _check_data_schema(infer_fields, data)
 
         for x, y in zip(infer_fields, self._schema.fields):
             if x.dtype != y.dtype:
