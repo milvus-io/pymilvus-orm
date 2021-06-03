@@ -46,8 +46,8 @@ def _check_schema(schema):
 
 
 def _check_same_column_data_type(dtype, data):
-    for d in data:
-        tmp_type = infer_dtype_bydata(d)
+    for i, _ in enumerate(data):
+        tmp_type = infer_dtype_bydata(data[i])
         if tmp_type != dtype:
             raise DataNotMatch(0, "The data in the same column must be of the same type.")
 
