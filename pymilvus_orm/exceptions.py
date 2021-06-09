@@ -138,5 +138,5 @@ class DataNotMatch(MilvusException):
     pass
 
 
-class ConnectNotExistException(MilvusException):
+class ConnectionNotExistException(MilvusException):
     pass

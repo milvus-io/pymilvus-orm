@@ -28,7 +28,7 @@ from .exceptions import (
     SchemaNotReadyException,
     DataTypeNotMatchException,
     DataNotMatch,
-    ConnectNotExistException,
+    ConnectionNotExistException,
 )
 from .future import SearchResultFuture, InsertFuture
 
@@ -149,7 +149,7 @@ class Collection:
     def _get_connection(self):
         conn = get_connection(self._get_using())
         if conn is None:
-            raise ConnectNotExistException(0, "should create connect first")
+            raise ConnectionNotExistException(0, "should create connect first")
         return conn
 
     def _check_insert_data_schema(self, data):
