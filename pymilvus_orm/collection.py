@@ -12,6 +12,9 @@
 
 import pandas
 
+import pymilvus_orm.partition as Partition
+import pymilvus_orm.index as Index
+
 from .connections import get_connection
 from .schema import (
     CollectionSchema,
@@ -20,8 +23,6 @@ from .schema import (
     infer_dtype_bydata,
 )
 from .prepare import Prepare
-from .partition import Partition
-from .index import Index
 from .search import SearchResult
 from .types import DataType
 from .exceptions import (
@@ -631,10 +632,10 @@ class Collection:
         partition_strs = conn.list_partitions(self._name)
         partitions = []
         for partition in partition_strs:
-            partitions.append(Partition(self, partition))
+            partitions.append(Partition.Partition(self, partition))
         return partitions
 
-    def partition(self, partition_name) -> Partition:
+    def partition(self, partition_name) -> Partition.Partition:
         """
         Return the partition corresponding to name. Return None if not existed.
 
@@ -664,7 +665,7 @@ class Collection:
         """
         if self.has_partition(partition_name) is False:
             return None
-        return Partition(self, partition_name)
+        return Partition.Partition(self, partition_name)
 
     def create_partition(self, partition_name, description=""):
         """
@@ -699,7 +700,7 @@ class Collection:
         """
         if self.has_partition(partition_name) is True:
             raise Exception("Partition already exist.")
-        return Partition(self, partition_name)
+        return Partition.Partition(self, partition_name)
 
     def has_partition(self, partition_name) -> bool:
         """
@@ -802,10 +803,10 @@ class Collection:
         indexes = []
         tmp_index = conn.describe_index(self._name)
         if tmp_index is not None:
-            indexes.append(Index(self, tmp_index['field_name'], tmp_index))
+            indexes.append(Index.Index(self, tmp_index['field_name'], tmp_index))
         return indexes
 
-    def index(self, index_name="") -> Index:
+    def index(self, index_name="") -> Index.Index:
         """
         Return the index corresponding to name.
 
@@ -841,10 +842,10 @@ class Collection:
         tmp_index = conn.describe_index(self._name)
         if tmp_index is not None:
             field_name = tmp_index.pop("field_name", None)
-            return Index(self, field_name, tmp_index)
+            return Index.Index(self, field_name, tmp_index)
         raise Exception(f"index {index_name} not exist")
 
-    def create_index(self, field_name, index_params, index_name="", **kwargs) -> Index:
+    def create_index(self, field_name, index_params, index_name="", **kwargs) -> Index.Index:
         """
         Create index on a specified column according to the index parameters. Return Index Object.
 
@@ -964,5 +965,5 @@ class Collection:
         conn = self._get_connection()
         tmp_index = conn.describe_index(self._name, "")
         if tmp_index is not None:
-            index = Index(self, tmp_index['field_name'], tmp_index, index_name)
+            index = Index.Index(self, tmp_index['field_name'], tmp_index, index_name)
             index.drop()
