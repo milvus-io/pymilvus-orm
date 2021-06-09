@@ -631,10 +631,10 @@ class Collection:
         partition_strs = conn.list_partitions(self._name)
         partitions = []
         for partition in partition_strs:
-            partitions.append(Partition.Partition(self, partition))
+            partitions.append(Partition(self, partition))
         return partitions
 
-    def partition(self, partition_name) -> Partition.Partition:
+    def partition(self, partition_name) -> Partition:
         """
         Return the partition corresponding to name. Return None if not existed.
 
@@ -664,7 +664,7 @@ class Collection:
         """
         if self.has_partition(partition_name) is False:
             return None
-        return Partition.Partition(self, partition_name)
+        return Partition(self, partition_name)
 
     def create_partition(self, partition_name, description=""):
         """
@@ -699,7 +699,7 @@ class Collection:
         """
         if self.has_partition(partition_name) is True:
             raise Exception("Partition already exist.")
-        return Partition.Partition(self, partition_name)
+        return Partition(self, partition_name)
 
     def has_partition(self, partition_name) -> bool:
         """
