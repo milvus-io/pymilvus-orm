@@ -136,3 +136,7 @@ class DataTypeNotSupport(MilvusException):
 
 class DataNotMatch(MilvusException):
     pass
+
+
+class ConnectNotExistException(MilvusException):
+    pass

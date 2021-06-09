@@ -12,6 +12,9 @@
 
 import copy
 
+from .collection import Collection
+from .exceptions import CollectionNotExistException
+
 
 class Index:
     def __init__(self, collection, field_name, index_params, name="", **kwargs):
@@ -51,6 +54,8 @@ class Index:
         >>> print(index.field_name)
         >>> index.drop()
         """
+        if not isinstance(collection, Collection):
+            raise CollectionNotExistException(0, "The type of collection must be pymilvus_orm.Collection")
         self._collection = collection
         self._name = name
         self._field_name = field_name
