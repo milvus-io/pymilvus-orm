@@ -12,9 +12,6 @@
 
 import pandas
 
-import pymilvus_orm.partition as Partition
-import pymilvus_orm.index as Index
-
 from .connections import get_connection
 from .schema import (
     CollectionSchema,
@@ -23,6 +20,8 @@ from .schema import (
     infer_dtype_bydata,
 )
 from .prepare import Prepare
+from .partition import Partition
+from .index import Index
 from .search import SearchResult
 from .types import DataType
 from .exceptions import (
