@@ -802,10 +802,10 @@ class Collection:
         indexes = []
         tmp_index = conn.describe_index(self._name)
         if tmp_index is not None:
-            indexes.append(Index.Index(self, tmp_index['field_name'], tmp_index))
+            indexes.append(Index(self, tmp_index['field_name'], tmp_index))
         return indexes
 
-    def index(self, index_name="") -> Index.Index:
+    def index(self, index_name="") -> Index:
         """
         Return the index corresponding to name.
 
@@ -841,10 +841,10 @@ class Collection:
         tmp_index = conn.describe_index(self._name)
         if tmp_index is not None:
             field_name = tmp_index.pop("field_name", None)
-            return Index.Index(self, field_name, tmp_index)
+            return Index(self, field_name, tmp_index)
         raise Exception(f"index {index_name} not exist")
 
-    def create_index(self, field_name, index_params, index_name="", **kwargs) -> Index.Index:
+    def create_index(self, field_name, index_params, index_name="", **kwargs) -> Index:
         """
         Create index on a specified column according to the index parameters. Return Index Object.
 
@@ -964,5 +964,5 @@ class Collection:
         conn = self._get_connection()
         tmp_index = conn.describe_index(self._name, "")
         if tmp_index is not None:
-            index = Index.Index(self, tmp_index['field_name'], tmp_index, index_name)
+            index = Index(self, tmp_index['field_name'], tmp_index, index_name)
             index.drop()
