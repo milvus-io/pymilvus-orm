@@ -31,7 +31,7 @@ def synchronized(func):
     return lock_func
 
 
-class Connections(object):
+class Connections:
     """
     Class for managing all connections of milvus.
     Used as a singleton in this module.
