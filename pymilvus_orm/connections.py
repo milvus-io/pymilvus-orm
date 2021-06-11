@@ -43,10 +43,10 @@ class SingleInstanceMetaClass(type):
         return single_obj
 
     @synchronized
-    def __new__(mcs, *args, **kwargs):
-        if not mcs.instance:
-            mcs.instance = super().__new__(mcs, *args, **kwargs)
-        return mcs.instance
+    def __new__(cls, *args, **kwargs):
+        if not cls.instance:
+            cls.instance = super().__new__(cls, *args, **kwargs)
+        return cls.instance
 
 
 class Connections(metaclass=SingleInstanceMetaClass):
