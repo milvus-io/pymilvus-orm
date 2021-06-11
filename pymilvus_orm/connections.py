@@ -31,18 +31,29 @@ def synchronized(func):
     return lock_func
 
 
-class Connections:
+class SingleInstanceMetaClass(type):
+    instance = None
+
+    def __init__(cls, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def __call__(cls, *args, **kwargs):
+        single_obj = cls.__new__(cls)
+        single_obj.__init__(*args, **kwargs)
+        return single_obj
+
+    @synchronized
+    def __new__(mcs, *args, **kwargs):
+        if not mcs.instance:
+            mcs.instance = super().__new__(mcs, *args, **kwargs)
+        return mcs.instance
+
+
+class Connections(metaclass=SingleInstanceMetaClass):
     """
     Class for managing all connections of milvus.
     Used as a singleton in this module.
     """
-    instance = None
-
-    @synchronized
-    def __new__(cls):
-        if not cls.instance:
-            cls.instance = super().__new__(cls)
-        return cls.instance
 
     def __init__(self):
         """
