@@ -34,8 +34,8 @@ def synchronized(func):
 class SingleInstanceMetaClass(type):
     instance = None
 
-    # def __init__(cls, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
+    def __init__(cls, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def __call__(cls, *args, **kwargs):
         if cls.instance:
