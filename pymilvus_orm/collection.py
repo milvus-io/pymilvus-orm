@@ -115,7 +115,7 @@ class Collection:
 
         else:
             if schema is None:
-                raise SchemaNotReadyException(0, "Data of not pandas.DataFrame type should be passed into the schema.")
+                raise SchemaNotReadyException(0, "Should be passed into the schema.")
             if isinstance(schema, CollectionSchema):
                 _check_schema(schema)
                 conn.create_collection(self._name, fields=schema.to_dict(), orm=True)
