@@ -117,6 +117,20 @@ def gen_float_data(nb, is_normal=False):
     return entities
 
 
+def gen_dataframe(nb, is_normal=False):
+    import pandas
+    import numpy
+
+    vectors = gen_float_vectors(nb, default_dim, is_normal)
+    data = {
+        "int64": [i for i in range(nb)],
+        "float": numpy.array([i for i in range(nb)], dtype=numpy.float32),
+        "float_vector": vectors
+    }
+
+    return pandas.DataFrame(data)
+
+
 def gen_binary_vectors(num, dim):
     raw_vectors = []
     binary_vectors = []
@@ -157,7 +171,7 @@ def gen_simple_index():
     return index_params
 
 
-connections.create_connection(alias="default")
+connections.connect(alias="default")
 
 
 def test_create_collection():
@@ -179,9 +193,9 @@ def test_collection_only_name():
     collection.drop()
 
 
-def test_collection_with_data():
-    data = gen_float_data(default_nb)
-    collection = Collection(name=gen_unique_str(), data=data, schema=gen_default_fields())
+def test_collection_with_dataframe():
+    data = gen_dataframe(default_nb)
+    collection = Collection.construct_from_dataframe(name=gen_unique_str(), dataframe=data)
     collection.load()
     assert collection.is_empty is False
     assert collection.num_entities == default_nb
@@ -223,7 +237,7 @@ def test_specify_primary_key():
 
 test_create_collection()
 test_collection_only_name()
-test_collection_with_data()
+test_collection_with_dataframe()
 test_create_index_float_vector()
 test_create_index_binary_vector()
 test_specify_primary_key()

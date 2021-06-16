@@ -9,7 +9,7 @@ import random
 
 # configure milvus hostname and port
 print(f"\nCreate connection...")
-connections.create_connection()
+connections.connect()
 
 # List all collection names
 print(f"\nList collections...")

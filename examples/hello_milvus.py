@@ -16,7 +16,7 @@ import pymilvus_orm
 
 def hello_milvus():
     # create connection
-    pymilvus_orm.connections.create_connection()
+    pymilvus_orm.connections.connect()
 
     # create collection
     from pymilvus_orm import schema, DataType, Collection

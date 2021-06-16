@@ -108,7 +108,7 @@ def gen_simple_index():
     return index_params
 
 def test_partition():
-    connections.create_connection(alias="default")
+    connections.connect(alias="default")
     collection = Collection(name=gen_unique_str(), schema=gen_default_fields())
     partition = Partition(collection, name=gen_unique_str())
 
