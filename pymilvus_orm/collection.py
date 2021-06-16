@@ -66,7 +66,7 @@ class Collection:
     This is a class corresponding to collection in milvus.
     """
 
-    def __init__(self, name, schema, **kwargs):
+    def __init__(self, name, schema=None, **kwargs):
         """
         Constructs a collection by name, schema and other parameters.
         Connection information is contained in kwargs.
