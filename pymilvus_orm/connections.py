@@ -82,6 +82,14 @@ class Connections(metaclass=SingleInstanceMetaClass):
                 if self._kwargs.get(k, None) != kwargs.get(k, None):
                     raise ParamError("alias of %r already creating connections, "
                                      "but the configure is not the same as passed in." % k)
+            if "host" not in kwargs.get(k, {}) or "port" not in kwargs.get(k, {}):
+                raise ParamError("connection configuration must contain 'host' and 'port'")
+
+            if not isinstance(kwargs.get(k)["host"], str):
+                raise ParamError("host must be a str")
+            if type(kwargs.get(k)["port"]) not in [str, int]:
+                raise ParamError("port type must be str or int")
+
             self._kwargs[k] = kwargs.get(k, None)
 
     def disconnect(self, alias):
@@ -135,6 +143,8 @@ class Connections(metaclass=SingleInstanceMetaClass):
             return self._conns[alias]
 
         if alias in self._kwargs and len(kwargs) > 0:
+            if "host" not in kwargs or "port" not in kwargs:
+                raise ParamError("connection configuration must contain 'host' and 'port'")
             self._kwargs[alias] = copy.deepcopy(kwargs)
 
         if alias not in self._kwargs:
