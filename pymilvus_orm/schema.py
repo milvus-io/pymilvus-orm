@@ -22,16 +22,23 @@ from pymilvus_orm.exceptions import (
     CannotInferSchemaException,
     DataTypeNotSupport,
     ParamError,
+    PrimaryKeyException,
 )
 
 
 class CollectionSchema:
     def __init__(self, fields, description="", **kwargs):
+        self._primary_field = None
         if not isinstance(fields, list):
             raise ParamError("The fields of schema must be type list.")
         for field in fields:
             if not isinstance(field, FieldSchema):
                 raise ParamError("The field of schema type must be FieldSchema.")
+            if field.is_primary:
+                if self._primary_field is None:
+                    self._primary_field = field
+                else:
+                    raise PrimaryKeyException(0, "Primary key field can only be one")
         self._fields = fields
         self._description = description
         self._kwargs = kwargs
@@ -152,7 +159,12 @@ class FieldSchema:
         self._kwargs = kwargs
         if not isinstance(kwargs.get("is_primary", False), bool):
             raise ParamError("Param is_primary must be bool type.")
-        self.is_primary = kwargs.get("is_primary", False) is True
+        self.is_primary = kwargs.get("is_primary", False)
+        if "auto_id" in kwargs and not self.is_primary:
+            raise PrimaryKeyException(0, "auto_id can only be specified on the primary key field")
+        if not isinstance(kwargs.get("auto_id", False), bool):
+            raise ParamError("Param auto_id must be bool type.")
+        self.auto_id = kwargs.get("auto_id", False)
         self._parse_type_params()
 
     def _parse_type_params(self):
