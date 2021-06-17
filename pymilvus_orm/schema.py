@@ -133,11 +133,11 @@ class CollectionSchema:
         >>> schema = CollectionSchema(fields=[field])
         >>> schema.auto_id
         """
-        return self.primary_field is None
+        return self.auto_id
 
     def to_dict(self):
         _dict = {
-            "auto_id": self.primary_field is None,
+            "auto_id": self.auto_id,
             "description": self._description,
             "fields": [f.to_dict() for f in self._fields]
         }
