@@ -23,6 +23,8 @@ except ImportError:
 
 LOGGER = logging.getLogger(__name__)
 
+print("start connection")
 conn = connections.connect()
 LOGGER.info(conn.list_collections())
+print("end connection")
 
