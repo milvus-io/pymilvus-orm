@@ -14,6 +14,7 @@ from pymilvus_orm.connections import connections
 from pymilvus_orm.partition import Partition
 from pymilvus_orm.schema import FieldSchema, CollectionSchema
 from pymilvus_orm.types import DataType
+from pymilvus_orm.utility import list_collections, has_partition
 import random
 from sklearn import preprocessing
 import string
@@ -63,7 +64,7 @@ default_index = {"index_type": "IVF_FLAT", "params": {"nlist": 128}, "metric_typ
 
 def gen_default_fields(auto_id=True):
     default_fields = [
-        FieldSchema(name="int64", dtype=DataType.INT64, is_primary=False),
+        FieldSchema(name="count", dtype=DataType.INT64, is_primary=False),
         FieldSchema(name="float", dtype=DataType.FLOAT),
         FieldSchema(name=default_float_vec_field_name, dtype=DataType.FLOAT_VECTOR, dim=default_dim)
     ]
@@ -109,19 +110,34 @@ def gen_simple_index():
 
 def test_partition():
     connections.connect(alias="default")
+    print("create collection")
     collection = Collection(name=gen_unique_str(), schema=gen_default_fields())
+    print("create partition")
     partition = Partition(collection, name=gen_unique_str())
+    print(list_collections())
+    assert has_partition(collection.name, partition.name) == True
 
     data = gen_data(default_nb)
+    print("insert data to partition")
     partition.insert(data)
-    # TODO: assert partition.is_empty is False
-    # TODO: assert partition.num_entities == default_nb
+    assert partition.is_empty is False
+    assert partition.num_entities == default_nb
 
+    print("load partition")
     partition.load()
-    # TODO: partition.search()
+    topK = 5
+    search_params = {"metric_type": "L2", "params": {"nprobe": 10}}
+    print("search partition")
+    res = partition.search(data[2][-2:], "float_vector", search_params, topK, "count > 100")
+    for hits in res:
+        for hit in hits:
+            print(hit)
 
+    print("release partition")
     partition.release()
+    print("drop partition")
     partition.drop()
+    print("drop collection")
     collection.drop()
 
 test_partition()
