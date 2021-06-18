@@ -33,3 +33,4 @@ print(f"\nDrop index...")
 index.drop()
 
 print([index.params for index in collection.indexes])
+collection.drop()

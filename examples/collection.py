@@ -235,9 +235,16 @@ def test_specify_primary_key():
     collection2.drop()
 
 
+print("test collection")
 test_create_collection()
+print("test collection only name")
 test_collection_only_name()
+print("test collection with dataframe")
 test_collection_with_dataframe()
+print("test collection index float vector")
 test_create_index_float_vector()
+print("test collection binary vector")
 test_create_index_binary_vector()
+print("test collection specify primary key")
 test_specify_primary_key()
+print("test end")
