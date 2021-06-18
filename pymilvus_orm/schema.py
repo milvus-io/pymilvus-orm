@@ -38,7 +38,19 @@ class CollectionSchema:
                 if self._primary_field is None:
                     self._primary_field = field
                 else:
-                    raise PrimaryKeyException(0, "Primary key field can only be one")
+                    raise PrimaryKeyException(0, "Primary key field can only be one.")
+
+        if self._primary_field is None:
+            if self._kwargs.get("primary_field", None) is None:
+                raise PrimaryKeyException(0, "Must be have a primary key field.")
+            self._primary_field = self._kwargs.get("primary_field", None)
+        else:
+            if self._kwargs.get("primary_field", None) is not None and self._kwargs.get("primary_field", None) != self._primary_field.name:
+                raise PrimaryKeyException(0, "Primary key field can only be one.")
+
+        if self._primary_field.dtype not in [DataType.INT64]:
+            raise PrimaryKeyException(0, "Primary key type must be DataType.INT64.")
+
         self._fields = fields
         self._description = description
         self._kwargs = kwargs
@@ -66,13 +78,7 @@ class CollectionSchema:
     @property
     # TODO:
     def primary_field(self):
-        primary_field = None
-        primary = self._kwargs.get("primary_field", None)
-        for f in self._fields:
-            if f.is_primary or f.name == primary:
-                f.is_primary = True
-                primary_field = f
-        return primary_field
+        return self._primary_field
 
     @property
     def fields(self):
@@ -133,7 +139,17 @@ class CollectionSchema:
         >>> schema = CollectionSchema(fields=[field])
         >>> schema.auto_id
         """
-        return self.auto_id
+        if "auto_id" in self._kwargs:
+            if isinstance(self._kwargs.get("auto_id"), bool):
+                raise ParamError("Param auto_id must be bool type.")
+            if self._primary_field.auto_id is not None:
+                if self._primary_field.auto_id != self._kwargs.get("auto_id"):
+                    raise ParamError("The auto_id of the collection is inconsistent "
+                                     "with the auto_id of the primary key field.")
+            return self._kwargs.get("auto_id")
+        if self._primary_field.auto_id is None:
+            raise ParamError("Must be specified auto_id on primary key field or collection schema.")
+        return self._primary_field.auto_id
 
     def to_dict(self):
         _dict = {
@@ -160,11 +176,12 @@ class FieldSchema:
         if not isinstance(kwargs.get("is_primary", False), bool):
             raise ParamError("Param is_primary must be bool type.")
         self.is_primary = kwargs.get("is_primary", False)
-        if "auto_id" in kwargs and not self.is_primary:
-            raise PrimaryKeyException(0, "auto_id can only be specified on the primary key field")
-        if not isinstance(kwargs.get("auto_id", False), bool):
-            raise ParamError("Param auto_id must be bool type.")
-        self.auto_id = kwargs.get("auto_id", False)
+        if "auto_id" in kwargs:
+            if not self.is_primary:
+                raise PrimaryKeyException(0, "auto_id can only be specified on the primary key field")
+            if not isinstance(kwargs.get("auto_id"), bool):
+                raise ParamError("Param auto_id must be bool type.")
+        self.auto_id = kwargs.get("auto_id", None)
         self._parse_type_params()
 
     def _parse_type_params(self):
@@ -197,6 +214,8 @@ class FieldSchema:
             _dict["params"] = copy.deepcopy(self.params)
         if self.is_primary:
             _dict["is_primary"] = True
+        if self.auto_id is not None:
+            _dict["auto_id"] = self.auto_id
         return _dict
 
     def __getattr__(self, item):
