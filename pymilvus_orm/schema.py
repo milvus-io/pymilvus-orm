@@ -156,7 +156,9 @@ class FieldSchema:
         self.is_primary = kwargs.get("is_primary", False) is True
         self._parse_type_params()
 
-    def __deepcopy__(self, memodict={}):
+    def __deepcopy__(self, memodict=None):
+        if memodict is None:
+            memodict = {}
         return FieldSchema(self.name, self._dtype, self.description, **self._kwargs)
 
     def _parse_type_params(self):
