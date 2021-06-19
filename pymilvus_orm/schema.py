@@ -43,6 +43,9 @@ class CollectionSchema:
         if self._primary_field is None:
             if self._kwargs.get("primary_field", None) is None:
                 raise PrimaryKeyException(0, "Must be have a primary key field.")
+            for field in fields:
+                if self._kwargs.get("primary_field", None) == field.name:
+                    field.is_primary = True
             self._primary_field = self._kwargs.get("primary_field", None)
         else:
             if self._kwargs.get("primary_field", None) is not None and self._kwargs.get("primary_field", None) != self._primary_field.name:
