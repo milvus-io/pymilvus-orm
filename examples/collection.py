@@ -63,7 +63,7 @@ default_binary_index = {"index_type": "BIN_FLAT", "params": {"nlist": 1024}, "me
 
 def gen_default_fields():
     default_fields = [
-        FieldSchema(name="int64", dtype=DataType.INT64, is_primary=False),
+        FieldSchema(name="int64", dtype=DataType.INT64, is_primary=True),
         FieldSchema(name="double", dtype=DataType.DOUBLE),
         FieldSchema(name=default_float_vec_field_name, dtype=DataType.FLOAT_VECTOR, dim=default_dim)
     ]
@@ -93,7 +93,7 @@ def gen_default_fields_with_primary_key_2():
 
 def gen_binary_schema():
     binary_fields = [
-        FieldSchema(name="int64", dtype=DataType.INT64, is_primary=False),
+        FieldSchema(name="int64", dtype=DataType.INT64, is_primary=True),
         FieldSchema(name="double", dtype=DataType.DOUBLE),
         FieldSchema(name=default_binary_vec_field_name, dtype=DataType.BINARY_VECTOR, dim=default_dim)
     ]
@@ -195,7 +195,7 @@ def test_collection_only_name():
 
 def test_collection_with_dataframe():
     data = gen_dataframe(default_nb)
-    collection = Collection.construct_from_dataframe(name=gen_unique_str(), dataframe=data)
+    collection = Collection.construct_from_dataframe(name=gen_unique_str(), dataframe=data, priamry_field="int64")
     collection.load()
     assert collection.is_empty is False
     assert collection.num_entities == default_nb
