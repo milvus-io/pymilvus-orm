@@ -87,7 +87,7 @@ class Connections(metaclass=SingleInstanceMetaClass):
 
             if not isinstance(kwargs.get(k)["host"], str):
                 raise ParamError("Type of 'host' must be str!")
-            if type(kwargs.get(k)["port"]) not in [str, int]:
+            if not isinstance(kwargs.get(k)["port"], (str, int)):
                 raise ParamError("Type of port type must be str or int!")
 
             self._kwargs[k] = kwargs.get(k, None)
@@ -168,10 +168,7 @@ class Connections(metaclass=SingleInstanceMetaClass):
             self._kwargs[alias] = copy.deepcopy(kwargs)
             self._conns[alias] = conn
             return conn
-        else:
-            raise ParamError("You need to pass in the configuration "
-                             "of the connection named %r" % alias)
-
+        raise ParamError("You need to pass in the configuration of the connection named %r" % alias)
 
     def get_connection(self, alias=DefaultConfig.DEFAULT_USING) -> Milvus:
         """
