@@ -31,7 +31,8 @@ class CollectionSchema:
         self._primary_field = None
         if not isinstance(fields, list):
             raise ParamError("The fields of schema must be type list.")
-        for field in fields:
+        self._fields = [copy.deepcopy(field) if field else None for field in fields]
+        for field in self._fields:
             if not isinstance(field, FieldSchema):
                 raise ParamError("The field of schema type must be FieldSchema.")
             if field.is_primary:
@@ -41,22 +42,33 @@ class CollectionSchema:
                     raise PrimaryKeyException(0, "Primary key field can only be one.")
 
         if self._primary_field is None:
-            if self._kwargs.get("primary_field", None) is None:
+            if kwargs.get("primary_field", None) is None:
                 raise PrimaryKeyException(0, "Must be have a primary key field.")
-            for field in fields:
-                if self._kwargs.get("primary_field", None) == field.name:
+            for field in self._fields:
+                if kwargs.get("primary_field", None) == field.name:
                     field.is_primary = True
-            self._primary_field = self._kwargs.get("primary_field", None)
+                    self._primary_field = field
         else:
-            if self._kwargs.get("primary_field", None) is not None and self._kwargs.get("primary_field", None) != self._primary_field.name:
+            if kwargs.get("primary_field", None) is not None and kwargs.get("primary_field", None) != self._primary_field.name:
                 raise PrimaryKeyException(0, "Primary key field can only be one.")
 
         if self._primary_field.dtype not in [DataType.INT64]:
             raise PrimaryKeyException(0, "Primary key type must be DataType.INT64.")
 
-        self._fields = fields
+        self._auto_id = kwargs.get("auto_id", None)
+        if self._auto_id is not None:
+            if not isinstance(self._auto_id, bool):
+                raise ParamError("Param auto_id must be bool type.")
+            if self._primary_field.auto_id is not None and self._primary_field.auto_id != self._auto_id:
+                raise ParamError("The auto_id of the collection is inconsistent "
+                                 "with the auto_id of the primary key field.")
+        else:
+            if self._primary_field.auto_id is None:
+                self._primary_field.auto_id = False
+            self._auto_id = self._primary_field.auto_id
+
         self._description = description
-        self._kwargs = kwargs
+        self._kwargs = copy.deepcopy(kwargs)
 
     def __repr__(self):
         return json.dumps(self.to_dict())
@@ -142,17 +154,8 @@ class CollectionSchema:
         >>> schema = CollectionSchema(fields=[field])
         >>> schema.auto_id
         """
-        if "auto_id" in self._kwargs:
-            if isinstance(self._kwargs.get("auto_id"), bool):
-                raise ParamError("Param auto_id must be bool type.")
-            if self._primary_field.auto_id is not None:
-                if self._primary_field.auto_id != self._kwargs.get("auto_id"):
-                    raise ParamError("The auto_id of the collection is inconsistent "
-                                     "with the auto_id of the primary key field.")
-            return self._kwargs.get("auto_id")
-        if self._primary_field.auto_id is None:
-            raise ParamError("Must be specified auto_id on primary key field or collection schema.")
-        return self._primary_field.auto_id
+        return self._auto_id
+
 
     def to_dict(self):
         _dict = {
@@ -174,8 +177,8 @@ class FieldSchema:
             raise DataTypeNotSupport(0, "Field type must be of DataType")
         self._dtype = dtype
         self._description = description
-        self._type_params = None
-        self._kwargs = kwargs
+        self._type_params = {}
+        self._kwargs = copy.deepcopy(kwargs)
         if not isinstance(kwargs.get("is_primary", False), bool):
             raise ParamError("Param is_primary must be bool type.")
         self.is_primary = kwargs.get("is_primary", False)
@@ -186,6 +189,11 @@ class FieldSchema:
                 raise ParamError("Param auto_id must be bool type.")
         self.auto_id = kwargs.get("auto_id", None)
         self._parse_type_params()
+
+    def __deepcopy__(self, memodict=None):
+        if memodict is None:
+            memodict = {}
+        return FieldSchema(self.name, self._dtype, self.description, **self._kwargs)
 
     def _parse_type_params(self):
         # update self._type_params according to self._kwargs
