@@ -190,7 +190,6 @@ class Collection:
         _check_data_schema(fields, dataframe)
         if auto_id:
             fields.append(FieldSchema(name=primary_field, dtype=DataType.INT64, is_primary=True, auto_id=True, **kwargs))
-
         else:
             for field in fields:
                 if field.name == primary_field:

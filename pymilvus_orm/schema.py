@@ -31,7 +31,7 @@ class CollectionSchema:
         self._primary_field = None
         if not isinstance(fields, list):
             raise ParamError("The fields of schema must be type list.")
-        self._fields = [copy.deepcopy(field) if field else None for field in fields]
+        self._fields = [copy.deepcopy(field) for field in fields]
         for field in self._fields:
             if not isinstance(field, FieldSchema):
                 raise ParamError("The field of schema type must be FieldSchema.")
@@ -193,7 +193,7 @@ class FieldSchema:
     def __deepcopy__(self, memodict=None):
         if memodict is None:
             memodict = {}
-        return FieldSchema(self.name, self._dtype, self.description, **self._kwargs)
+        return self.construct_from_dict(self.to_dict())
 
     def _parse_type_params(self):
         # update self._type_params according to self._kwargs
