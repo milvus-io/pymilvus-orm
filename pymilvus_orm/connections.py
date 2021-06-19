@@ -86,9 +86,9 @@ class Connections(metaclass=SingleInstanceMetaClass):
                 raise ParamError("connection configuration must contain 'host' and 'port'")
 
             if not isinstance(kwargs.get(k)["host"], str):
-                raise ParamError("host must be a str")
+                raise ParamError("Type of 'host' must be str!")
             if type(kwargs.get(k)["port"]) not in [str, int]:
-                raise ParamError("port type must be str or int")
+                raise ParamError("Type of port type must be str or int!")
 
             self._kwargs[k] = kwargs.get(k, None)
 
@@ -134,6 +134,13 @@ class Connections(metaclass=SingleInstanceMetaClass):
         >>> connections.connect("test", host="localhost", port="19530")
         <milvus.client.stub.Milvus object at 0x7f4045335f10>
         """
+        def connect_milvus(**kwargs):
+            tmp_kwargs = copy.deepcopy(kwargs)
+            tmp_host = tmp_kwargs.pop("host", None)
+            tmp_port = tmp_kwargs.pop("port", None)
+            handler = tmp_kwargs.pop("handler", DefaultConfig.DEFAULT_HANDLER)
+            pool = tmp_kwargs.pop("pool", DefaultConfig.DEFAULT_POOL)
+            return Milvus(tmp_host, tmp_port, handler, pool, **tmp_kwargs)
         if alias in self._conns:
             if len(kwargs) > 0 and self._kwargs[alias] != kwargs:
                 raise ParamError(f"The connection named {alias} already creating, "
@@ -142,31 +149,29 @@ class Connections(metaclass=SingleInstanceMetaClass):
                                  f"configured: {self._kwargs[alias]}")
             return self._conns[alias]
 
-        if alias in self._kwargs and len(kwargs) > 0:
-            if "host" not in kwargs or "port" not in kwargs:
-                raise ParamError("connection configuration must contain 'host' and 'port'")
-            self._kwargs[alias] = copy.deepcopy(kwargs)
-
-        if alias not in self._kwargs:
+        if alias in self._kwargs:
             if len(kwargs) > 0:
+                if "host" not in kwargs or "port" not in kwargs:
+                    raise ParamError("Connection configuration must be contained host and port")
+                conn = connect_milvus(**kwargs)
                 self._kwargs[alias] = copy.deepcopy(kwargs)
-            else:
-                raise ParamError("You need to pass in the configuration "
-                                 "of the connection named %r" % alias)
+                self._conns[alias] = conn
+                return conn
+            conn = connect_milvus(**self._kwargs[alias])
+            self._conns[alias] = conn
+            return conn
 
-        host = self._kwargs[alias].get("host", None)
-        port = self._kwargs[alias].get("port", None)
-        handler = self._kwargs[alias].get("handler", DefaultConfig.DEFAULT_HANDLER)
-        pool = self._kwargs[alias].get("pool", DefaultConfig.DEFAULT_POOL)
+        if len(kwargs) > 0:
+            if "host" not in kwargs or "port" not in kwargs:
+                raise ParamError("Connection configuration must be contained host and port")
+            conn = connect_milvus(**kwargs)
+            self._kwargs[alias] = copy.deepcopy(kwargs)
+            self._conns[alias] = conn
+            return conn
+        else:
+            raise ParamError("You need to pass in the configuration "
+                             "of the connection named %r" % alias)
 
-        kwargs.pop("host", None)
-        kwargs.pop("port", None)
-        kwargs.pop("handler", None)
-        kwargs.pop("pool", None)
-
-        conn = Milvus(host, port, handler, pool, **kwargs)
-        self._conns[alias] = conn
-        return conn
 
     def get_connection(self, alias=DefaultConfig.DEFAULT_USING) -> Milvus:
         """
