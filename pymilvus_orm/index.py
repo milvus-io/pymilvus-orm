@@ -117,7 +117,7 @@ class Index:
         _dict = {
             "collection": self._collection._name,
             "field": self._field_name,
-            "index_param": self._index_params
+            "index_param": self.params
         }
         return _dict
 
