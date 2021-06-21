@@ -28,29 +28,24 @@ from pymilvus_orm.exceptions import (
 
 class CollectionSchema:
     def __init__(self, fields, description="", **kwargs):
-        self._primary_field = None
         if not isinstance(fields, list):
             raise ParamError("The fields of schema must be type list.")
         self._fields = [copy.deepcopy(field) for field in fields]
+        primary_field = kwargs.get("primary_field", None)
         for field in self._fields:
             if not isinstance(field, FieldSchema):
                 raise ParamError("The field of schema type must be FieldSchema.")
+            if primary_field == field.name:
+                field.is_primary = True
+        self._primary_field = None
+        for field in self._fields:
             if field.is_primary:
-                if self._primary_field is None:
-                    self._primary_field = field
-                else:
+                if primary_field is not None and primary_field != field.name:
                     raise PrimaryKeyException(0, "Primary key field can only be one.")
+                self._primary_field = field
 
         if self._primary_field is None:
-            if kwargs.get("primary_field", None) is None:
-                raise PrimaryKeyException(0, "Must be have a primary key field.")
-            for field in self._fields:
-                if kwargs.get("primary_field", None) == field.name:
-                    field.is_primary = True
-                    self._primary_field = field
-        else:
-            if kwargs.get("primary_field", None) is not None and kwargs.get("primary_field", None) != self._primary_field.name:
-                raise PrimaryKeyException(0, "Primary key field can only be one.")
+            raise PrimaryKeyException(0, "Must be have a primary key field.")
 
         if self._primary_field.dtype not in [DataType.INT64]:
             raise PrimaryKeyException(0, "Primary key type must be DataType.INT64.")
@@ -214,6 +209,8 @@ class FieldSchema:
         kwargs = {}
         kwargs.update(raw.get("params", {}))
         kwargs['is_primary'] = raw.get("is_primary", False)
+        if raw.get("auto_id", None) is not None:
+            kwargs['auto_id'] = raw.get("auto_id", None)
         return FieldSchema(raw['name'], raw['type'], raw['description'], **kwargs)
 
     def to_dict(self):

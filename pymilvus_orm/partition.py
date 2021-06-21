@@ -14,7 +14,7 @@ import json
 
 from .exceptions import CollectionNotExistException
 from .prepare import Prepare
-from .search import SearchResult
+from .search import SearchResult, MutationResult
 from .future import SearchResultFuture, InsertFuture
 
 
@@ -217,7 +217,7 @@ class Partition:
                           partition_name=self._name, timeout=timeout, orm=True, **kwargs)
         if kwargs.get("_async", False):
             return InsertFuture(res)
-        return res
+        return MutationResult(res)
 
     def search(self, data, anns_field, params, limit, expr=None, output_fields=None, timeout=None,
                **kwargs):

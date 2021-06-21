@@ -1,7 +1,5 @@
 import sys
 
-sys.modules['milvus'] = __import__('mock_milvus')
-
 from pymilvus_orm import *
 from pymilvus_orm.schema import *
 from pymilvus_orm.types import DataType
