@@ -64,12 +64,12 @@ default_index = {"index_type": "IVF_FLAT", "params": {"nlist": 128}, "metric_typ
 
 def gen_default_fields(auto_id=True):
     default_fields = [
-        FieldSchema(name="count", dtype=DataType.INT64, is_primary=False),
+        FieldSchema(name="count", dtype=DataType.INT64, is_primary=True),
         FieldSchema(name="float", dtype=DataType.FLOAT),
         FieldSchema(name=default_float_vec_field_name, dtype=DataType.FLOAT_VECTOR, dim=default_dim)
     ]
     default_schema = CollectionSchema(fields=default_fields, description="test collection",
-                                      segment_row_limit=default_segment_row_limit, auto_id=True)
+                                      segment_row_limit=default_segment_row_limit, auto_id=False)
     return default_schema
 
 

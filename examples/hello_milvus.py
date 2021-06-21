@@ -24,7 +24,7 @@ def hello_milvus():
     # create collection
     dim = 128
     default_fields = [
-        schema.FieldSchema(name="count", dtype=DataType.INT64, is_primary=False),
+        schema.FieldSchema(name="count", dtype=DataType.INT64, is_primary=True),
         schema.FieldSchema(name="score", dtype=DataType.DOUBLE),
         schema.FieldSchema(name="float_vector", dtype=DataType.FLOAT_VECTOR, dim=dim)
     ]
