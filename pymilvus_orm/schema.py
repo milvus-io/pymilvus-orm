@@ -177,12 +177,13 @@ class FieldSchema:
         if not isinstance(kwargs.get("is_primary", False), bool):
             raise ParamError("Param is_primary must be bool type.")
         self.is_primary = kwargs.get("is_primary", False)
-        if "auto_id" in kwargs:
-            if not self.is_primary:
-                raise PrimaryKeyException(0, "auto_id can only be specified on the primary key field")
+        self.auto_id = kwargs.get("auto_id", None)
+        if self.auto_id is not None:
             if not isinstance(kwargs.get("auto_id"), bool):
                 raise ParamError("Param auto_id must be bool type.")
-        self.auto_id = kwargs.get("auto_id", None)
+            if not self.is_primary and self.auto_id:
+                raise PrimaryKeyException(0, "auto_id can only be specified on the primary key field")
+
         self._parse_type_params()
 
     def __deepcopy__(self, memodict=None):
