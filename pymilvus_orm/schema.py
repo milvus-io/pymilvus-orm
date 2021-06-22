@@ -223,7 +223,6 @@ class FieldSchema:
             _dict["params"] = copy.deepcopy(self.params)
         if self.is_primary:
             _dict["is_primary"] = True
-        if self.auto_id is not None:
             _dict["auto_id"] = self.auto_id
         return _dict
 
