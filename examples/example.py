@@ -81,8 +81,6 @@ print(f"\nCount entities...")
 print(collection.num_entities)
 
 # TODO(wxyu): search
-print(f"\nSearch...")
-# collection.search()
 
 # Drop a partition
 print(f"\nDrop partition...")
