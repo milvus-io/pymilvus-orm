@@ -51,7 +51,7 @@ class CollectionSchema:
             raise PrimaryKeyException(0, "Primary key type must be DataType.INT64.")
 
         self._auto_id = kwargs.get("auto_id", None)
-        if self._auto_id is not None:
+        if "auto_id" in kwargs:
             if not isinstance(self._auto_id, bool):
                 raise ParamError("Param auto_id must be bool type.")
             if self._primary_field.auto_id is not None and self._primary_field.auto_id != self._auto_id:
@@ -178,8 +178,8 @@ class FieldSchema:
             raise ParamError("Param is_primary must be bool type.")
         self.is_primary = kwargs.get("is_primary", False)
         self.auto_id = kwargs.get("auto_id", None)
-        if self.auto_id is not None:
-            if not isinstance(kwargs.get("auto_id"), bool):
+        if "auto_id" in kwargs:
+            if not isinstance(self.auto_id, bool):
                 raise ParamError("Param auto_id must be bool type.")
             if not self.is_primary and self.auto_id:
                 raise PrimaryKeyException(0, "auto_id can only be specified on the primary key field")
