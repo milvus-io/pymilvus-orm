@@ -4,7 +4,6 @@ pull_request_rules:
       - base=main
       - "status-success=Code lint check (3.6)"
       - "status-success=Run Python Tests (3.6)"
-      - "status-success=docs/readthedocs.org:pymilvus-orm"
     actions:
       label:
         add:
