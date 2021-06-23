@@ -20,10 +20,12 @@ venv/
 
 # Env
 .env
+gtags.conf
 
 # Local Temp
 temp/
 *.swp
+*.swo
 assets/
 TODO
 
