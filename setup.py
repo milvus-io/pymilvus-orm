@@ -9,23 +9,22 @@ README = (HERE / 'README.md').read_text()
 requirements = [
         "pymilvus==2.0a1.dev47",
         "pandas==1.1.5; python_version<'3.7'",
-        "pandas; python_version>'3.6'",
-        "numpy==1.19.5; python_version<'3.7'",
-        "numpy; python_version>'3.6'",
+        "pandas==1.2.4; python_version>'3.6'",
     ]
 
 extras_require={
         'test': [
+            'sklearn==0.0',
             'pytest==5.3.4',
             'pytest-cov==2.8.1',
             'pytest-timeout==1.3.4',
         ],
         'dev': [
-            'requests-toolbelt==0.9.1',
-            'm2r==0.2.1',
             'sklearn==0.0',
+            'pylint==2.4.4',
         ],
         'doc': [
+            'm2r==0.2.1',
             'Sphinx==2.3.1',
             'sphinx-copybutton==0.3.1',
             'sphinx-rtd-theme==0.4.3',
