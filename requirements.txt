@@ -1,11 +1,9 @@
 --extra-index-url https://test.pypi.org/simple/
-requests==2.22.0
-requests-toolbelt==0.9.1
 pymilvus==2.0a1.dev47
-m2r==0.2.1
 pandas
 numpy
 sklearn==0.0
+m2r==0.2.1
 Sphinx==2.3.1
 sphinx-copybutton==0.3.1
 sphinx-rtd-theme==0.4.3
@@ -20,5 +18,3 @@ pytest==5.3.4
 pytest-cov==2.8.1
 pytest-timeout==1.3.4
 pylint==2.4.4
-
-
