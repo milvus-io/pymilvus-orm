@@ -99,7 +99,7 @@ class Connections(metaclass=SingleInstanceMetaClass):
         :type alias: str
         """
         if not isinstance(alias, str):
-            raise ParamError(f"alias should be string, but [{type(alias)}] is given")
+            raise ConnectionConfigException(0, ExceptionsMessage.AliasType % type(alias))
 
         if alias in self._conns:
             self._conns.pop(alias).close()
@@ -112,7 +112,7 @@ class Connections(metaclass=SingleInstanceMetaClass):
         :type alias: str
         """
         if not isinstance(alias, str):
-            raise ParamError(f"alias should be string, but [{type(alias)}] is given")
+            raise ConnectionConfigException(0, ExceptionsMessage.AliasType % type(alias))
 
         self.disconnect(alias)
         self._kwargs.pop(alias, None)
@@ -231,7 +231,7 @@ class Connections(metaclass=SingleInstanceMetaClass):
         {'host': 'localhost', 'port': '19530'}
         """
         if not isinstance(alias, str):
-            raise ParamError(f"alias should be string, but [{type(alias)}] is given")
+            raise ConnectionConfigException(0, ExceptionsMessage.AliasType % type(alias))
 
         return self._kwargs.get(alias, {})
 
