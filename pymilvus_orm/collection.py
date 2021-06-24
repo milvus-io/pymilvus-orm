@@ -33,6 +33,7 @@ from .exceptions import (
     PartitionAlreadyExistException,
     PartitionNotExistException,
     IndexNotExistException,
+    AutoIDException,
     ExceptionsMessage,
 )
 from .future import SearchResultFuture, InsertFuture
@@ -195,6 +196,9 @@ class Collection:
                 pk_index = i
         if pk_index == -1:
             raise SchemaNotReadyException(0, ExceptionsMessage.PrimaryKeyNotExist)
+        if "auto_id" in kwargs:
+            if not isinstance(kwargs.get("auto_id", None), bool):
+                raise AutoIDException(0, ExceptionsMessage.AutoIDType)
         auto_id = kwargs.pop("auto_id", False)
         if auto_id:
             if dataframe[primary_field].isnull().all():
