@@ -21,35 +21,26 @@ Constructor
 Attributes
 ----------
 
-+----------------------------------------------------------------------+------------------------------------------------------------------------+
-| API                                                                  | Description                                                            |
-+======================================================================+========================================================================+
-| `schema <#pymilvus_orm.Collection.schema>`_                          | Return the schema of collection.                                       |
-+----------------------------------------------------------------------+------------------------------------------------------------------------+
-| `description <#pymilvus_orm.Collection.description>`_                | Return the description text about the collection.                      |
-+----------------------------------------------------------------------+------------------------------------------------------------------------+
-| `name <#pymilvus_orm.Collection.name>`_                              | Return the collection name.                                            |
-+----------------------------------------------------------------------+------------------------------------------------------------------------+
-| `is_empty <#pymilvus_orm.Collection.is_empty>`_                      | Return whether the collection is empty.                                |
-+----------------------------------------------------------------------+------------------------------------------------------------------------+
-| `num_entities <#pymilvus_orm.Collection.num_entities>`_              | Return the number of entities.                                         |
-+----------------------------------------------------------------------+------------------------------------------------------------------------+
-| `primary_field <#pymilvus_orm.Collection.primary_field>`_            | Return the primary field of collection.                                |
-+----------------------------------------------------------------------+------------------------------------------------------------------------+
-| `partitions <#pymilvus_orm.Collection.partitions>`_                  | Return all partitions of the collection.                               |
-+----------------------------------------------------------------------+------------------------------------------------------------------------+
-| `indexes <#pymilvus_orm.Collection.indexes>`_                        | Return all indexes of the collection.                                  |
-+----------------------------------------------------------------------+------------------------------------------------------------------------+
++-----------------------------------------------------------+---------------------------------------------------+
+| Attributes                                                | Description                                       |
++===========================================================+===================================================+
+| `schema <#pymilvus_orm.Collection.schema>`_               | Return the schema of collection.                  |
++-----------------------------------------------------------+---------------------------------------------------+
+| `description <#pymilvus_orm.Collection.description>`_     | Return the description text about the collection. |
++-----------------------------------------------------------+---------------------------------------------------+
+| `name <#pymilvus_orm.Collection.name>`_                   | Return the collection name.                       |
++-----------------------------------------------------------+---------------------------------------------------+
+| `is_empty <#pymilvus_orm.Collection.is_empty>`_           | Return whether the collection is empty.           |
++-----------------------------------------------------------+---------------------------------------------------+
+| `num_entities <#pymilvus_orm.Collection.num_entities>`_   | Return the number of entities.                    |
++-----------------------------------------------------------+---------------------------------------------------+
+| `primary_field <#pymilvus_orm.Collection.primary_field>`_ | Return the primary field of collection.           |
++-----------------------------------------------------------+---------------------------------------------------+
+| `partitions <#pymilvus_orm.Collection.partitions>`_       | Return all partitions of the collection.          |
++-----------------------------------------------------------+---------------------------------------------------+
+| `indexes <#pymilvus_orm.Collection.indexes>`_             | Return all indexes of the collection.             |
++-----------------------------------------------------------+---------------------------------------------------+
 
-
-APIs References
----------------
-
-
-.. autoclass:: pymilvus_orm.Collection
-   :member-order: bysource
-   :members: schema, description, name, is_empty, num_entities, primary_field, drop, load, release, insert, search,
-             partitions, partition, has_partition, drop_partition, indexes, index, create_index, has_index, drop_index
 
 
 Methods
@@ -86,6 +77,11 @@ Methods
 
 APIs References
 ---------------
+
+.. autoclass:: pymilvus_orm.Collection
+   :member-order: bysource
+   :members: schema, description, name, is_empty, num_entities, primary_field, drop, load, release, insert, search,
+             partitions, partition, has_partition, drop_partition, indexes, index, create_index, has_index, drop_index
 
 
 .. autoclass:: pymilvus_orm.Collection
