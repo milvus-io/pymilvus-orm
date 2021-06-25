@@ -391,24 +391,22 @@ class Collection:
         :raises CollectionNotExistException: If the collection does not exist.
 
         :example:
-        >>> from pymilvus_orm.collection import Collection
-        >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> from pymilvus_orm.types import DataType
-        >>> from pymilvus_orm import connections
-        >>> connections.connect(alias="default")
-        <milvus.client.stub.Milvus object at 0x7f9a190ca898>
-        >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
-        >>> schema = CollectionSchema(fields=[field], description="Drop the collection.")
-        >>> collection = Collection(name="test_collection", schema=schema)
-        >>> import pandas as pd
-        >>> int64_series = pd.Series(data=list(range(10, 20)), index=list(range(10)))
-        >>> data = pd.DataFrame(data={"int64" : int64_series})
-        >>> collection.insert(data=data)
-        >>> collection.num_entities
-        >>> collection.drop()
-        >>> from pymilvus_orm import utility
-        >>> utility.has_collection("test_collection")
-        False
+            >>> from pymilvus_orm.collection import Collection
+            >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
+            >>> from pymilvus_orm.types import DataType
+            >>> from pymilvus_orm import connections, utility
+            >>> connections.connect()
+            <milvus.client.stub.Milvus object at 0x7f9a190ca898>
+            >>> schema = CollectionSchema([
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=2)
+            ... ])
+            >>> collection = Collection("test_collection_drop", schema)
+            >>> utility.has_collection("test_collection_drop")
+            True
+            >>> collection.drop()
+            >>> utility.has_collection("test_collection_drop")
+            False
         """
         conn = self._get_connection()
         indexes = self.indexes
