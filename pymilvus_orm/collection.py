@@ -298,22 +298,23 @@ class Collection:
             * False: The collection is  gfghnot empty.
 
         :example:
-        >>> from pymilvus_orm.collection import Collection
-        >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> from pymilvus_orm.types import DataType
-        >>> from pymilvus_orm import connections
-        >>> connections.connect(alias="default")
-        <milvus.client.stub.Milvus object at 0x7f9a190ca898>
-        >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
-        >>> schema = CollectionSchema(fields=[field], description="Tests if a collection is empty")
-        >>> collection = Collection(name="test_collection", schema=schema)
-        >>> collection.is_empty
-        True
-        >>> data = [[1,2,3,4]]
-        >>> collection.insert(data)
-        [424769928069057860, 424769928069057861, 424769928069057862, 424769928069057863]
-        >>> collection.is_empty
-        False
+            >>> from pymilvus_orm.collection import Collection
+            >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
+            >>> from pymilvus_orm.types import DataType
+            >>> from pymilvus_orm import connections
+            >>> connections.connect()
+            <milvus.client.stub.Milvus object at 0x7f9a190ca898>
+            >>> schema = CollectionSchema([
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=2)
+            ... ])
+            >>> collection = Collection("test_collection_is_empty", schema)
+            >>> collection.is_empty
+            True
+            >>> collection.insert([[1], [[1.0, 2.0]]])
+            <pymilvus_orm.search.MutationResult object at 0x7fabaf3e5d50>
+            >>> collection.is_empty
+            False
         """
         return self.num_entities == 0
 
