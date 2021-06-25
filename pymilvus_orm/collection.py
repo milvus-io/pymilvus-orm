@@ -70,38 +70,41 @@ def _check_data_schema(fields, data):
 class Collection:
     """
     This is a class corresponding to collection in milvus.
-    """
+
+    Constructs a collection by name, schema and other parameters.
+    Connection information is contained in kwargs.
+
+    :param name: the name of collection
+    :type name: str
+
+    :param schema: the schema of collection
+    :type schema: class `schema.CollectionSchema`
+
+    :example:
+        >>> from pymilvus_orm.collection import Collection
+        >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
+        >>> from pymilvus_orm.types import DataType
+        >>> from pymilvus_orm import connections
+        >>> connections.connect()
+        <milvus.client.stub.Milvus object at 0x7f9a190ca898>
+        >>> fields = [
+        ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+        ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=128)
+        ... ]
+        >>> description="This is a new collection description."
+        >>> schema = CollectionSchema(fields=fields, description=description)
+        >>> collection = Collection(name="test_collection_init", schema=schema)
+        >>> collection.name
+        'test_collection_init'
+        >>> collection.description
+        'This is a new collection description.'
+        >>> collection.is_empty
+        True
+        >>> collection.num_entities
+        0
+        """
 
     def __init__(self, name, schema=None, **kwargs):
-        """
-        Constructs a collection by name, schema and other parameters.
-        Connection information is contained in kwargs.
-
-        :param name: the name of collection
-        :type name: str
-
-        :param schema: the schema of collection
-        :type schema: class `schema.CollectionSchema`
-
-        :example:
-            >>> from pymilvus_orm.collection import Collection
-            >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-            >>> from pymilvus_orm.types import DataType
-            >>> from pymilvus_orm import connections
-            >>> connections.connect(alias="default")
-            <milvus.client.stub.Milvus object at 0x7f9a190ca898>
-            >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=True)
-            >>> schema = CollectionSchema(fields=[field], description="collection description")
-            >>> collection = Collection(name="test_collection", schema=schema, _using="default")
-            >>> collection.name
-            'test_collection'
-            >>> collection.description
-            'collection description'
-            >>> collection.is_empty
-            True
-            >>> collection.num_entities
-            0
-        """
         self._name = name
         self._kwargs = kwargs
         conn = self._get_connection()
@@ -245,15 +248,14 @@ class Collection:
             >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
             >>> from pymilvus_orm.types import DataType
             >>> from pymilvus_orm import connections
-            >>> connections.connect(alias="default")
-            <pymilvus.client.stub.Milvus object at 0x7f9a190ca898>
+            >>> connections.connect()
             >>> fields = [
-            ...     FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=True),
-            ...     FieldSchema("embedding", dtype=DataType.FLOAT_VECTOR, dim=128)
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=128)
             ... ]
             >>> description="This is an example text description."
             >>> schema = CollectionSchema(fields=fields, description=description)
-            >>> collection = Collection(name="test_collection", schema=schema, _using="default")
+            >>> collection = Collection(name="test_collection_description", schema=schema)
             >>> collection.description
             'This is an example text description.'
         """
@@ -273,18 +275,18 @@ class Collection:
             >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
             >>> from pymilvus_orm.types import DataType
             >>> from pymilvus_orm import connections
-            >>> connections.connect(alias="default")
-            <milvus.client.stub.Milvus object at 0x7f9a190ca898>
-            >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
-            >>> description="This is an example collection name."
-            >>> schema = CollectionSchema(fields=[field], description=description)
-            >>> collection = Collection(name="test_collection", schema=schema, _using="default")
+            >>> connections.connect()
+            >>> fields = [
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=128)
+            ... ]
+            >>> schema = CollectionSchema(fields)
+            >>> collection = Collection("test_collection_name", schema)
             >>> collection.name
-            'test_collection'
+            'test_collection_name'
         """
         return self._name
 
-    # read-only
     @property
     def is_empty(self) -> bool:
         """
