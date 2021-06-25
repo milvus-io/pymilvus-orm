@@ -330,24 +330,23 @@ class Collection:
         :raises CollectionNotExistException: If the collection does not exist.
 
         :example:
-        >>> from pymilvus_orm.collection import Collection
-        >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> from pymilvus_orm.types import DataType
-        >>> from pymilvus_orm import connections
-        >>> connections.connect(alias="default")
-        <milvus.client.stub.Milvus object at 0x7f9a190ca898>
-        >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
-        >>> description="Retrieves the number of entities in a collection."
-        >>> schema = CollectionSchema(fields=[field], description=description)
-        >>> collection = Collection(name="test_collection", schema=schema)
-        >>> collection.num_entities
-        0
-        >>> data = [[1,2,3,4]]
-        >>> collection.insert(data)
-        [424769928069057860, 424769928069057861, 424769928069057862, 424769928069057863]
-        >>> collection.num_entities
-        4
-        """
+            >>> from pymilvus_orm.collection import Collection
+            >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
+            >>> from pymilvus_orm.types import DataType
+            >>> from pymilvus_orm import connections
+            >>> connections.connect()
+            <milvus.client.stub.Milvus object at 0x7f9a190ca898>
+            >>> schema = CollectionSchema([
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=2)
+            ... ])
+            >>> collection = Collection("test_collection_num_entities", schema)
+            >>> collection.num_entities
+            0
+            >>> collection.insert([[1, 2], [[1.0, 2.0], [3.0, 4.0]]])
+            >>> collection.num_entities
+            2
+            """
         conn = self._get_connection()
         conn.flush([self._name])
         status = conn.get_collection_stats(db_name="", collection_name=self._name)
