@@ -462,23 +462,22 @@ class Collection:
         :raises BaseException: If collection has not been loaded to memory.
 
         :example:
-        >>> from pymilvus_orm.collection import Collection
-        >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> from pymilvus_orm import connections
-        >>> from pymilvus_orm.types import DataType
-        >>> field = FieldSchema("int64", DataType.INT64, is_primary=False, description="int64")
-        >>> schema = CollectionSchema([field], description="collection schema has a int64 field")
-        >>> connections.connect()
-        <milvus.client.stub.Milvus object at 0x7f8579002dc0>
-        >>> collection = Collection(name="test_collection", schema=schema)
-        >>> import pandas as pd
-        >>> int64_series = pd.Series(data=list(range(10, 20)), index=list(range(10)))
-        >>> data = pd.DataFrame(data={"int64" : int64_series})
-        >>> collection.insert(data)
-        >>> collection.load()   # load collection to memory
-        >>> assert not collection.is_empty
-        >>> assert collection.num_entities == 10
-        >>> collection.release()    # release the collection from memory
+            >>> from pymilvus_orm.collection import Collection
+            >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
+            >>> from pymilvus_orm.types import DataType
+            >>> from pymilvus_orm import connections
+            >>> connections.connect()
+            >>> schema = CollectionSchema([
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=2)
+            ... ])
+            >>> collection = Collection("test_collection_release", schema)
+            >>> collection.insert([[1, 2], [[1.0, 2.0], [3.0, 4.0]]])
+            <pymilvus_orm.search.MutationResult object at 0x7fabaf3e5d50>
+            >>> collection.load()
+            >>> collection.num_entities
+            2
+            >>> collection.release()    # release the collection from memory
         """
         conn = self._get_connection()
         conn.release_collection(self._name, timeout=kwargs.get("timeout", None))
