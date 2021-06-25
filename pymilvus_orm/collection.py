@@ -361,19 +361,20 @@ class Collection:
             The primary field of the collection.
 
         :example:
-        >>> from pymilvus_orm.collection import Collection
-        >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> from pymilvus_orm.types import DataType
-        >>> from pymilvus_orm import connections
-        >>> connections.connect(alias="default")
-        <milvus.client.stub.Milvus object at 0x7f9a190ca898>
-        >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=True)
-        >>> schema = CollectionSchema(fields=[field], description="get collection entities num")
-        >>> collection = Collection(name="test_collection", schema=schema)
-        >>> collection.primary_field
-        <pymilvus_orm.schema.FieldSchema object at 0x7f64f6a3cc40>
-        >>> collection.primary_field.name
-        'int64'
+            >>> from pymilvus_orm.collection import Collection
+            >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
+            >>> from pymilvus_orm.types import DataType
+            >>> from pymilvus_orm import connections
+            >>> connections.connect()
+            <milvus.client.stub.Milvus object at 0x7f9a190ca898>
+            >>> schema = CollectionSchema([
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("film_length", DataType.INT64, description="length in miniute"),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=2)
+            ... ])
+            >>> collection = Collection("test_collection_primary_field", schema)
+            >>> collection.primary_field.name
+            'film_id'
         """
         return self._schema.primary_field
 
