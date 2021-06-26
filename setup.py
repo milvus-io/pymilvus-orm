@@ -7,7 +7,7 @@ HERE = pathlib.Path(__file__).parent
 README = (HERE / 'README.md').read_text()
 
 requirements = [
-        "pymilvus==2.0a1.dev47",
+        "pymilvus==2.0a1.dev53",
         "pandas==1.1.5; python_version<'3.7'",
         "pandas==1.2.4; python_version>'3.6'",
     ]
@@ -24,6 +24,7 @@ extras_require={
             'pylint==2.4.4',
         ],
         'doc': [
+            'mistune==0.8.4',
             'm2r==0.2.1',
             'Sphinx==2.3.1',
             'sphinx-copybutton==0.3.1',
