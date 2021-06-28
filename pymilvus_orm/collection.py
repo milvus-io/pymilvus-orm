@@ -382,9 +382,9 @@ class Collection:
 
         :param kwargs:
             * *timeout* (``float``) --
-            An optional duration of time in seconds to allow for the RPC.
-            If timeout is set to None,
-            the client keeps waiting until the server responds or an error occurs.
+                An optional duration of time in seconds to allow for the RPC.
+                If timeout is set to None,
+                the client keeps waiting until the server responds or an error occurs.
 
         :raises CollectionNotExistException: If the collection does not exist.
 
@@ -743,19 +743,21 @@ class Collection:
         :raises BaseException: If partition doesn't exist.
 
         :example:
-        >>> from pymilvus_orm.collection import Collection
-        >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> from pymilvus_orm.types import DataType
-        >>> from pymilvus_orm import connections
-        >>> connections.connect(alias="default")
-        <milvus.client.stub.Milvus object at 0x7f9a190ca898>
-        >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
-        >>> schema = CollectionSchema(fields=[field], description="collection description")
-        >>> collection = Collection(name="test_collection", schema=schema, alias="default")
-        >>> collection.create_partition(partition_name="partition", description="test partition")
-        {"name": "partition", "description": "", "num_entities": 0}
-        >>> collection.partition("partition")
-        {"name": "partition", "description": "", "num_entities": 0}
+            >>> from pymilvus_orm.collection import Collection
+            >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
+            >>> from pymilvus_orm.types import DataType
+            >>> from pymilvus_orm import connections
+            >>> connections.connect()
+            <pymilvus.client.stub.Milvus object at 0x7f8579002dc0>
+            >>> schema = CollectionSchema([
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=2)
+            ... ])
+            >>> collection = Collection("test_collection_create_partition", schema)
+            >>> collection.create_partition("comedy", description="comedy films")
+            {"name": "comedy", "description": "comedy films", "num_entities": 0}
+            >>> collection.partition("comedy")
+            {"name": "partition", "description": "comedy films", "num_entities": 0}
         """
         if self.has_partition(partition_name) is True:
             raise PartitionAlreadyExistException(0, ExceptionsMessage.PartitionAlreayExist)
