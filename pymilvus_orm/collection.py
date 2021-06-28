@@ -776,23 +776,23 @@ class Collection:
         :raises CollectionNotExistException: If collection doesn't exist.
 
         :example:
-        >>> from pymilvus_orm.collection import Collection
-        >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> from pymilvus_orm.types import DataType
-        >>> from pymilvus_orm import connections
-        >>> connections.connect(alias="default")
-        <milvus.client.stub.Milvus object at 0x7f9a190ca898>
-        >>> field = FieldSchema("int64", DataType.INT64, descrition="int64", is_primary=False)
-        >>> schema = CollectionSchema(fields=[field], description="collection description")
-        >>> collection = Collection(name="test_collection", schema=schema, alias="default")
-        >>> collection.create_partition(partition_name="partition", description="test partition")
-        {"name": "partition", "description": "", "num_entities": 0}
-        >>> collection.partition("partition")
-        {"name": "partition", "description": "", "num_entities": 0}
-        >>> collection.has_partition("partition")
-        True
-        >>> collection.has_partition("partition2")
-        False
+            >>> from pymilvus_orm.collection import Collection
+            >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
+            >>> from pymilvus_orm.types import DataType
+            >>> from pymilvus_orm import connections
+            >>> connections.connect()
+            <pymilvus.client.stub.Milvus object at 0x7f8579002dc0>
+            >>> schema = CollectionSchema([
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=2)
+            ... ])
+            >>> collection = Collection("test_collection_has_partition", schema)
+            >>> collection.create_partition("comedy", description="comedy films")
+            {"name": "comedy", "description": "comedy films", "num_entities": 0}
+            >>> collection.has_partition("comedy")
+            True
+            >>> collection.has_partition("science_fiction")
+            False
         """
         conn = self._get_connection()
         return conn.has_partition(self._name, partition_name)
