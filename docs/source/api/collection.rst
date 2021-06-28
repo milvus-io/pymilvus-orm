@@ -82,11 +82,7 @@ APIs References
 
 .. autoclass:: pymilvus_orm.Collection
    :member-order: bysource
-   :members: schema, description, name, is_empty, num_entities, primary_field, drop, load, release, insert, search,
-             partitions, partition, has_partition, drop_partition, indexes, index, create_index, has_index, drop_index
-
-
-.. autoclass:: pymilvus_orm.Collection
-   :member-order: bysource
-   :members: drop, load, release, insert, search, partition, create_partition, has_partition, drop_partition,
+   :special-members: __init__
+   :members: schema, description, name, is_empty, num_entities, primary_field, partitions, indexes,
+             drop, load, release, insert, search, partition, create_partition, has_partition, drop_partition,
              index, create_index, has_index, drop_index
