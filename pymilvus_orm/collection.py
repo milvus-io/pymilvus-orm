@@ -504,21 +504,25 @@ class Collection:
         :raises BaseException: If the specified partition does not exist.
 
         :example:
-        >>> from pymilvus_orm.collection import Collection
-        >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> from pymilvus_orm import connections
-        >>> from pymilvus_orm.types import DataType
-        >>> connections.connect()
-        <milvus.client.stub.Milvus object at 0x7f8579002dc0>
-        >>> field = FieldSchema("int64", DataType.INT64, is_primary=False, description="int64")
-        >>> schema = CollectionSchema([field], description="collection schema has an int64 field")
-        >>> collection = Collection(name="test_collection", schema=schema)
-        >>> import random
-        >>> data = [[random.randint(1, 100) for _ in range(10)]]
-        >>> collection.insert(data)
-        >>> collection.load()
-        >>> assert not collection.is_empty
-        >>> assert collection.num_entities == 10
+            >>> from pymilvus_orm.collection import Collection
+            >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
+            >>> from pymilvus_orm.types import DataType
+            >>> from pymilvus_orm import connections
+            >>> import random
+            >>> connections.connect()
+            <pymilvus.client.stub.Milvus object at 0x7f8579002dc0>
+            >>> schema = CollectionSchema([
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=2)
+            ... ])
+            >>> collection = Collection("test_collection_insert", schema)
+            >>> data = [
+            ...     [random.randint(1, 100) for _ in range(10)],
+            ...     [[random.random() for _ in range(2)] for _ in range(10)],
+            ... ]
+            >>> collection.insert(data)
+            >>> collection.num_entities
+            10
         """
         if data is None:
             return MutationResult(data)
