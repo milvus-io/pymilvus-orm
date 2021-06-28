@@ -992,24 +992,24 @@ class Collection:
         :raises BaseException: If the index does not exist or has been dropped.
 
         :example:
-        >>> from pymilvus_orm.collection import Collection
-        >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> from pymilvus_orm.types import DataType
-        >>> from pymilvus_orm import connections
-        >>> connections.connect(alias="default")
-        <milvus.client.stub.Milvus object at 0x7feaddc9cb80>
-        >>> year_field = FieldSchema("year", DataType.INT64, is_primary=False, description="year")
-        >>> embedding_field = FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, dim=128)
-        >>> schema = CollectionSchema(fields=[year_field, embedding_field])
-        >>> collection = Collection(name="test_collection", schema=schema)
-        >>> index = {"index_type": "IVF_FLAT", "params": {"nlist": 128}, "metric_type": "L2"}
-        >>> collection.create_index("embedding", index)
-        Status(code=0, message='')
-        >>> collection.has_index()
-        True
-        >>> collection.drop_index()
-        >>> collection.has_index()
-        False
+            >>> from pymilvus_orm.collection import Collection
+            >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
+            >>> from pymilvus_orm.types import DataType
+            >>> from pymilvus_orm import connections
+            >>> connections.connect()
+            <pymilvus.client.stub.Milvus object at 0x7f8579002dc0>
+            >>> schema = CollectionSchema([
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=2)
+            ... ])
+            >>> collection = Collection("test_collection_has_index", schema)
+            >>> index = {"index_type": "IVF_FLAT", "params": {"nlist": 128}, "metric_type": "L2"}
+            >>> collection.create_index("films", index)
+            >>> collection.has_index()
+            True
+            >>> collection.drop_index()
+            >>> collection.has_index()
+            False
         """
         if self.has_index() is False:
             raise IndexNotExistException(0, ExceptionsMessage.IndexNotExist)
