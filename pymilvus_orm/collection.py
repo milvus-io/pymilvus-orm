@@ -893,7 +893,7 @@ class Collection:
             ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
             ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=2)
             ... ])
-            >>> collection = Collection("test_collection_indexes", schema)
+            >>> collection = Collection("test_collection_index", schema)
             >>> index = {"index_type": "IVF_FLAT", "params": {"nlist": 128}, "metric_type": "L2"}
             >>> collection.create_index("films", index)
             Status(code=0, message='')
@@ -925,23 +925,22 @@ class Collection:
         :raises BaseException: If the index has been created.
 
         :example:
-        >>> from pymilvus_orm.collection import Collection
-        >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> from pymilvus_orm.types import DataType
-        >>> from pymilvus_orm import connections
-        >>> connections.connect(alias="default")
-        <milvus.client.stub.Milvus object at 0x7f9a190ca898>
-        >>> year_field = FieldSchema("year", DataType.INT64, is_primary=False, description="year")
-        >>> embedding_field = FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, dim=128)
-        >>> schema = CollectionSchema(fields=[year_field, embedding_field])
-        >>> collection = Collection(name="test_collection", schema=schema)
-        >>> index = {"index_type": "IVF_FLAT", "params": {"nlist": 128}, "metric_type": "L2"}
-        >>> collection.create_index("embedding", index)
-        Status(code=0, message='')
-        >>> collection.indexes
-        [<pymilvus_orm.index.Index object at 0x7f4435587e20>]
-        >>> collection.index()
-        <pymilvus_orm.index.Index object at 0x7f44355a1460>
+            >>> from pymilvus_orm.collection import Collection
+            >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
+            >>> from pymilvus_orm.types import DataType
+            >>> from pymilvus_orm import connections
+            >>> connections.connect()
+            <pymilvus.client.stub.Milvus object at 0x7f8579002dc0>
+            >>> schema = CollectionSchema([
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=2)
+            ... ])
+            >>> collection = Collection("test_collection_indexes", schema)
+            >>> index = {"index_type": "IVF_FLAT", "params": {"nlist": 128}, "metric_type": "L2"}
+            >>> collection.create_index("films", index)
+            Status(code=0, message='')
+            >>> collection.index()
+            <pymilvus_orm.index.Index object at 0x7f44355a1460>
         """
         conn = self._get_connection()
         return conn.create_index(self._name, field_name, index_params,
