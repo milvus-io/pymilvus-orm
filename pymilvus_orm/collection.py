@@ -580,36 +580,42 @@ class Collection:
         :raises BaseException: If the return result from server is not ok.
 
         :example:
-        >>> from pymilvus_orm.collection import Collection
-        >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> from pymilvus_orm import connections
-        >>> from pymilvus_orm.types import DataType
-        >>> connections.connect()
-        <milvus.client.stub.Milvus object at 0x7f8579002dc0>
-        >>> dim = 128
-        >>> year_field = FieldSchema("year", DataType.INT64, is_primary=False, description="year")
-        >>> embedding_field = FieldSchema(name="embedding", dtype=DataType.FLOAT_VECTOR, dim=dim)
-        >>> schema = CollectionSchema(fields=[year_field, embedding_field])
-        >>> collection = Collection(name="test_collection", schema=schema)
-        >>> import random
-        >>> nb = 3000
-        >>> nq = 10
-        >>> limit = 10
-        >>> years = [i for i in range(nb)]
-        >>> embeddings = [[random.random() for _ in range(dim)] for _ in range(nb)]
-        >>> collection.([years, embeddings])
-        >>> collection.load()
-        >>> search_params = {"metric_type": "L2", "params": {"nprobe": 10}}
-        >>> res = collection.search(embeddings[:10], "embedding", search_params, limit, "year > 20")
-        >>> assert len(res) == nq
-        >>> for hits in res:
-        >>>     assert len(hits) == limit
-        >>> hits = res[0]
-        >>> assert len(hits.ids) == limit
-        >>> top1 = hits[0]
-        >>> print(top1.id)
-        >>> print(top1.distance)
-        >>> print(top1.score)
+            >>> from pymilvus_orm.collection import Collection
+            >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
+            >>> from pymilvus_orm.types import DataType
+            >>> from pymilvus_orm import connections
+            >>> import random
+            >>> connections.connect()
+            <pymilvus.client.stub.Milvus object at 0x7f8579002dc0>
+            >>> schema = CollectionSchema([
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=2)
+            ... ])
+            >>> collection = Collection("test_collection_search", schema)
+            >>> # insert
+            >>> data = [
+            ...     [i for i in range(10)],
+            ...     [[random.random() for _ in range(2)] for _ in range(10)],
+            ... ]
+            >>> collection.insert(data)
+            >>> collection.num_entities
+            >>> collection.load()
+            >>> # search
+            >>> search_param = {
+            ...     "data": [[1.0, 1.0]],
+            ...     "anns_field": "films",
+            ...     "param": {"metric_type": "L2"},
+            ...     "limit": 2,
+            ...     "expr": "film_id > 0",
+            ... }
+            >>> res = collection.search(**search_param)
+            >>> assert len(res) == 1
+            >>> hits = res[0]
+            >>> assert len(hits) == 2
+            >>> print(f"- Total hits: {len(hits)}, hits ids: {hits.ids} ")
+            - Total hits: 2, hits ids: [8, 5]
+            >>> print(f"- Top1 hit id: {hits[0].id}, distance: {hits[0].distance}, score: {hits[0].score} ")
+            - Top1 hit id: 8, distance: 0.10143111646175385, score: 0.10143111646175385
         """
         if expr is not None and not isinstance(expr, str):
             raise DataTypeNotMatchException(0, ExceptionsMessage.ExprType % type(expr))
