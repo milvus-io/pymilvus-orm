@@ -1,5 +1,5 @@
 --extra-index-url https://test.pypi.org/simple/
-pymilvus==2.0a1.dev53
+pymilvus==2.0a1.dev55
 pandas
 numpy
 sklearn==0.0
