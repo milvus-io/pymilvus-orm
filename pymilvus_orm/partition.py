@@ -143,6 +143,16 @@ class Partition:
 
         :raises PartitionNotExistException:
             When partitoin does not exist
+        :example:
+            >>> from pymilvus_orm import connections, Collection, Partition, FieldSchema, CollectionSchema, DataType
+            >>> connections.connect()
+            >>> schema = CollectionSchema([
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=2)
+            ... ])
+            >>> collection = Collection("test_partition_drop", schema)
+            >>> partition = Partition(collection, "comedy", "comedy films")
+            >>> partition.drop()
         """
         conn = self._get_connection()
         if conn.has_partition(self._collection.name, self._name) is False:
