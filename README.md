@@ -16,28 +16,29 @@ Another Python SDK for [Milvus](https://github.com/milvus-io/milvus). To contrib
 
 
 ## Compatibility
-The following collection shows Milvus versions and recommended PyMilvus ORM versions:
+The following collection shows Milvus versions and recommended PyMilvus-ORM versions:
 
-|Milvus version| Recommended PyMilvus ORM version |
+|Milvus version| Recommended PyMilvus-ORM version |
 |:-----:|:-----:|
-| 2.x.x | 0.0.1 |
+| 2.0.0-RC1 | 2.0.0rc1 |
 
 
 ## Installation
 
-You can install PyMilvus ORM via `pip3` for Python 3.6+:
+You can install PyMilvus-ORM via `pip3` for Python 3.6+:
 
 ```shell
+# Note this will only install the latest stable version
 $ pip3 install pymilvus-orm
 ```
 
-You can install a specific version of PyMilvus ORM by:
+You can install a specific version of PyMilvus-ORM by:
 
 ```shell
-$ pip3 install pymilvus-orm==0.0.1
+$ pip3 install pymilvus-orm==2.0.0rc1
 ```
 
-You can upgrade PyMilvus ORM to the latest version by:
+You can upgrade PyMilvus-ORM to the latest stable version by:
 
 ```shell
 $ pip3 install --upgrade pymilvus-orm
