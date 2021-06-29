@@ -53,19 +53,16 @@ class Partition:
         :return str: Partition description text, return when operation is successful
 
         :example:
-        >>> from pymilvus_orm.collection import Collection
-        >>> from pymilvus_orm.partition import Partition
-        >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> from pymilvus_orm.types import DataType
-        >>> from pymilvus_orm import connections
-        >>> connections.create_connection(alias="default")
-        <milvus.client.stub.Milvus object at 0x7f9a190ca898>
-        >>> field = FieldSchema("int64", DataType.INT64, "int64", is_parimary=False)
-        >>> schema = CollectionSchema(fields=[field], description="collection description")
-        >>> collection = Collection(name="test_collection", schema=schema, alias="default")
-        >>> partition = Partition(collection, "test_partition", "test partition desc")
-        >>> partition.description
-        'test partition desc'
+            >>> from pymilvus_orm import connections, Collection, Partition, FieldSchema, CollectionSchema, DataType
+            >>> connections.connect()
+            >>> schema = CollectionSchema([
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=2)
+            ... ])
+            >>> collection = Collection("test_partition_description", schema)
+            >>> partition = Partition(collection, "comedy", "comedy films")
+            >>> partition.description
+            'comedy films'
         """
         return self._description
 
