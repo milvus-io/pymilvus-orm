@@ -108,7 +108,6 @@ class Partition:
         """
         return self.num_entities == 0
 
-    # read-only
     @property
     def num_entities(self) -> int:
         """
@@ -116,22 +115,21 @@ class Partition:
 
         :return int: Number of entities in this partition.
         :example:
-        >>> from pymilvus_orm.collection import Collection
-        >>> from pymilvus_orm.schema import FieldSchema, CollectionSchema
-        >>> from pymilvus_orm import connections
-        >>> from pymilvus_orm.types import DataType
-        >>> connections.create_connection()
-        <milvus.client.stub.Milvus object at 0x7f4d59da0be0>
-        >>> field = FieldSchema("int64", DataType.INT64, is_primary=False, description="int64")
-        >>> schema = CollectionSchema([field], description="collection schema has a int64 field")
-        >>> collection = Collection(name="test_collection", schema=schema)
-        >>> from pymilvus_orm.partition import Partition
-        >>> partition = Partition(collection, "test_partition")
-        >>> import random
-        >>> data = [[random.randint(1,100) for _ in range(10)]]
-        >>> partition.insert(data)
-        >>> partition.num_entities
-        10
+            >>> from pymilvus_orm import connections, Collection, Partition, FieldSchema, CollectionSchema, DataType
+            >>> connections.connect()
+            >>> schema = CollectionSchema([
+            ...     FieldSchema("film_id", DataType.INT64, is_primary=True),
+            ...     FieldSchema("films", dtype=DataType.FLOAT_VECTOR, dim=2)
+            ... ])
+            >>> collection = Collection("test_partition_num_entities", schema)
+            >>> partition = Partition(collection, "comedy", "comedy films")
+            >>> data = [
+            ...     [i for i in range(10)],
+            ...     [[float(i) for i in range(2)] for _ in range(10)],
+            ... ]
+            >>> partition.insert(data)
+            >>> partition.num_entities
+            10
         """
         conn = self._get_connection()
         conn.flush([self._collection.name])
