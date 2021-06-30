@@ -25,7 +25,8 @@ def hello_milvus():
     dim = 128
     default_fields = [
         schema.FieldSchema(name="count", dtype=DataType.INT64, is_primary=True),
-        schema.FieldSchema(name="score", dtype=DataType.DOUBLE),
+        # Change field schema name to distinguish search result score
+        schema.FieldSchema(name="random_value", dtype=DataType.DOUBLE),
         schema.FieldSchema(name="float_vector", dtype=DataType.FLOAT_VECTOR, dim=dim)
     ]
     default_schema = schema.CollectionSchema(fields=default_fields, description="test collection")
@@ -40,7 +41,13 @@ def hello_milvus():
     import random
     nb = 3000
     vectors = [[random.random() for _ in range(dim)] for _ in range(nb)]
-    collection.insert([[i for i in range(nb)], [float(i) for i in range(nb)], vectors])
+    collection.insert(
+        [
+            [i for i in range(nb)],
+            [float(random.randrange(-20,-10)) for _ in range(nb)],
+            vectors
+        ]
+    )
 
     print(f"\nGet collection entities...")
     print(collection.num_entities)
@@ -58,13 +65,18 @@ def hello_milvus():
     import time
     start_time = time.time()
     print(f"\nSearch...")
-    res = collection.search(vectors[-2:], "float_vector", search_params, topK, "count > 100")
+    # define output_fields of search result
+    res = collection.search(
+        vectors[-2:], "float_vector", search_params, topK,
+        "count > 100", output_fields=["count", "random_value"]
+    )
     end_time = time.time()
 
     # show result
     for hits in res:
         for hit in hits:
-            print(hit)
+            # Get value of the random value field for search result
+            print(hit, hit.entity.get("random_value"))
     print("search latency = %.4fs" % (end_time - start_time))
     
     # drop collection
