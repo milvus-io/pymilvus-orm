@@ -10,8 +10,12 @@
 # or implied. See the License for the specific language governing permissions and limitations under the License.
 
 
-# import package
-from pymilvus_orm import *
+import random
+
+from pymilvus_orm import (
+    connections, FieldSchema, CollectionSchema, DataType,
+    Collection, list_collections,
+)
 
 
 def hello_milvus():
@@ -24,12 +28,11 @@ def hello_milvus():
     # create collection
     dim = 128
     default_fields = [
-        schema.FieldSchema(name="count", dtype=DataType.INT64, is_primary=True),
-        # Change field schema name to distinguish search result score
-        schema.FieldSchema(name="random_value", dtype=DataType.DOUBLE),
-        schema.FieldSchema(name="float_vector", dtype=DataType.FLOAT_VECTOR, dim=dim)
+        FieldSchema(name="count", dtype=DataType.INT64, is_primary=True),
+        FieldSchema(name="random_value", dtype=DataType.DOUBLE),
+        FieldSchema(name="float_vector", dtype=DataType.FLOAT_VECTOR, dim=dim)
     ]
-    default_schema = schema.CollectionSchema(fields=default_fields, description="test collection")
+    default_schema = CollectionSchema(fields=default_fields, description="test collection")
 
     print(f"\nCreate collection...")
     collection = Collection(name="hello_milvus", schema=default_schema)
@@ -38,13 +41,12 @@ def hello_milvus():
     print(list_collections())
 
     #  insert data
-    import random
     nb = 3000
     vectors = [[random.random() for _ in range(dim)] for _ in range(nb)]
     collection.insert(
         [
             [i for i in range(nb)],
-            [float(random.randrange(-20,-10)) for _ in range(nb)],
+            [float(random.randrange(-20, -10)) for _ in range(nb)],
             vectors
         ]
     )
@@ -78,7 +80,7 @@ def hello_milvus():
             # Get value of the random value field for search result
             print(hit, hit.entity.get("random_value"))
     print("search latency = %.4fs" % (end_time - start_time))
-    
+
     # drop collection
     collection.drop()
 
