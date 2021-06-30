@@ -6,7 +6,7 @@ This is a basic introduction to Milvus by PyMilvus-ORM.
 
 For a runnable python script,
 checkout `example.py <https://github.com/milvus-io/pymilvus-orm/blob/main/examples/example.py>`_ on PyMilvus-ORM Github,
-or `hello milvus <https://milvus.io/docs/v2.0.0/hellomilvus.md>`_ on Milvus official website. It's a good recommended
+or `hello milvus <https://milvus.io/docs/v2.0.0rc1/hellomilvus.md>`_ on Milvus official website. It's a good recommended
 start to get started with Milvus and PyMilvus-ORM as well.
 
 
@@ -40,7 +40,7 @@ By default Milvus runs on localhost in port 19530, so you can use default value 
 >>> connections.connect("default", host=host, port=port)
 
 After connecting, we can communicate with Milvus in the following ways. If you are confused about the
-terminology, see `Milvus Terminology <https://milvus.io/docs/v2.0.0/glossary.md>`_ for explanations.
+terminology, see `Milvus Terminology <https://milvus.io/docs/v2.0.0rc1/glossary.md>`_ for explanations.
 
 
 Collection
@@ -88,7 +88,7 @@ If you want to go further into Milvus with indexes, it's recommended to check ou
 `index examples <https://github.com/milvus-io/pymilvus-orm/blob/main/examples/example_index.py>`_.
 
 If you're already known about indexes from ``index examples``, and you want a full lists of params supported
-by PyMilvus-ORM, you check out `Index <https://milvus.io/api-reference/pymilvus-orm/v2.0.0/param.html>`_
+by PyMilvus-ORM, you check out `Index <https://milvus.io/api-reference/pymilvus-orm/v2.0.0rc1/param.html>`_
 chapter of the PyMilvus-ORM documentation.
 
 Further more, if you want to get a thorough view of indexes, check our official website for
@@ -151,14 +151,14 @@ In below example, we search the collection on ``embedding`` field.
 
 .. note::
     If the collection is index-built, user need to specify search param, and pass parameter `search_params` like: `collection.search(..., search_params={...})`.
-    You can refer to `Index params <https://milvus.io/cn/api-reference/pymilvus-orm/v2.0.0/param.html>`_ for more details.
+    You can refer to `Index params <https://milvus.io/cn/api-reference/pymilvus-orm/v2.0.0rc1/param.html>`_ for more details.
 
 .. note::
     If parameter `partition_names` is specified, milvus executes search request on these partition instead of whole collection.
 
 The returned ``results`` is a 2-D like structure, 1 for 1 entity querying, 2 for top 2. For more clarity, we obtain
 the film as below. If you want to know how to deal with search result in a better way, you can refer to
-`search result <https://milvus.io/cn/api-reference/pymilvus-orm/v2.0.0/results.html>`_ in PyMilvus-ORM doc.
+`search result <https://milvus.io/cn/api-reference/pymilvus-orm/v2.0.0rc1/results.html>`_ in PyMilvus-ORM doc.
 
 >>> result = results[0]
 >>> embedding_1 = result[0]
