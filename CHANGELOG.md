@@ -1,6 +1,7 @@
 # pymilvus 0.0.1(TBD)
 
 ## Task
+- Get value of metadata fields from search result output (#90)
 - Improve interface documentation (#89)
 - Add examples in partition.py (#88)
 - add example for index.py (#87)
