@@ -135,7 +135,7 @@ class Collection:
         return json.dumps({
             'name': self.name,
             'schema': self._schema.to_dict(),
-            'partitions': [eval(partition.__repr__()) for partition in self.partitions],
+            'partitions': [json.loads(p.__repr__()) for p in self.partitions],
             'description': self.description,
         })
 
