@@ -7,7 +7,7 @@ HERE = pathlib.Path(__file__).parent
 README = (HERE / 'README.md').read_text()
 
 requirements = [
-        "pymilvus==2.0.0rc1",
+        "pymilvus==2.0.0rc2.dev6",
         "pandas==1.1.5; python_version<'3.7'",
         "pandas==1.2.4; python_version>'3.6'",
     ]
