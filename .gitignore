@@ -37,3 +37,7 @@ debug/
 
 # Code coverage
 coverage.xml
+
+# macOS
+.DS_Store
+
