@@ -12,7 +12,7 @@
 [mergify]: https://mergify.io
 [mergify-status]: https://img.shields.io/endpoint.svg?url=https://gh.mergify.io/badges/milvus-io/pymilvus-orm&style=plastic
 
-Another Python SDK for [Milvus](https://github.com/milvus-io/milvus). To contribute code to this project, please read our [contribution guidelines](https://github.com/milvus-io/milvus/blob/master/CONTRIBUTING.md) first.
+Another Python SDK for [Milvus](https://github.com/milvus-io/milvus). To contribute code to this project, please read our [contribution guidelines](https://github.com/milvus-io/milvus/blob/master/CONTRIBUTING.md) first. If you have some ideas or encounter a problem, you can find us in the Slack channel [#py-milvus](https://milvusio.slack.com/archives/C024XTWMT4L).
 
 
 ## Compatibility
