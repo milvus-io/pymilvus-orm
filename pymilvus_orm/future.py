@@ -12,7 +12,7 @@
 
 
 from .search import SearchResult
-from .insert import MutationResult
+from .mutation import MutationResult
 
 
 # TODO(dragondriver): how could we inherit the docstring elegantly?

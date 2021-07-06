@@ -25,7 +25,7 @@ from .prepare import Prepare
 from .partition import Partition
 from .index import Index
 from .search import SearchResult
-from .insert import MutationResult
+from .mutation import MutationResult
 from .types import DataType
 from .exceptions import (
     SchemaNotReadyException,
