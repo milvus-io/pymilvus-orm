@@ -5,14 +5,14 @@ Tutorial
 This is a basic introduction to Milvus by PyMilvus-ORM.
 
 For a runnable python script,
-checkout `example.py <https://github.com/milvus-io/pymilvus-orm/blob/main/examples/example.py>`_ on PyMilvus-ORM Github,
+checkout `example.py <https://github.com/milvus-io/pymilvus-orm/blob/2.0.0rc1/examples/example.py>`_ on PyMilvus-ORM Github,
 or `hello milvus <https://milvus.io/docs/v2.0.0/hellomilvus.md>`_ on Milvus official website. It's a good recommended
 start to get started with Milvus and PyMilvus-ORM as well.
 
 
 .. note::
    Here we use float vectors as example vector field data, if you want to learn example about binary vectors, see
-   `binary vector example <https://github.com/milvus-io/pymilvus-orm/blob/main/examples/collection.py>`_.
+   `binary vector example <https://github.com/milvus-io/pymilvus-orm/blob/2.0.0rc1/examples/collection.py>`_.
 
 
 Prerequisites
@@ -85,7 +85,7 @@ You can also get info of the collection.
 
 This tutorial is a basic intro tutorial, building index won't be covered by this tutorial.
 If you want to go further into Milvus with indexes, it's recommended to check our
-`index examples <https://github.com/milvus-io/pymilvus-orm/blob/main/examples/example_index.py>`_.
+`index examples <https://github.com/milvus-io/pymilvus-orm/blob/2.0.0rc1/examples/example_index.py>`_.
 
 If you're already known about indexes from ``index examples``, and you want a full lists of params supported
 by PyMilvus-ORM, you check out `Index <https://milvus.io/api-reference/pymilvus-orm/v2.0.0rc1/param.html>`_
