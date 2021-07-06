@@ -11,7 +11,8 @@
 # the License.
 
 
-from .search import SearchResult, MutationResult
+from .search import SearchResult
+from .insert import MutationResult
 
 
 # TODO(dragondriver): how could we inherit the docstring elegantly?
