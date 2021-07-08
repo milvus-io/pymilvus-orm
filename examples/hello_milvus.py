@@ -79,6 +79,13 @@ def hello_milvus():
         for hit in hits:
             # Get value of the random value field for search result
             print(hit, hit.entity.get("random_value"))
+            print(hit, hit.entity.get("count"))
+            # or
+            print(hit, hit.get("random_value"))
+            print(hit, hit.get("count"))
+            # or
+            print(hit, hit.random_value)
+            print(hit, hit.count)
     print("search latency = %.4fs" % (end_time - start_time))
 
     # drop collection

@@ -11,7 +11,6 @@
 # the License.
 
 import abc
-from pymilvus.client.abstract import Entity
 
 
 class _IterableWrapper:
@@ -83,6 +82,69 @@ class DocstringMeta(type):
 #         return Hit(res)
 
 
+class Entity:
+    def __init__(self, entity):
+        """
+        Construct a Entity object. An entity records all target entries of hit result.
+        """
+        self._entity = entity
+
+    def __str__(self):
+        """
+        Return the human-readable content of Entity.
+
+        :return str:
+            The human-readable content of Entity
+        """
+        return self._entity.__str__()
+
+    __repr__ = __str__
+
+    # or primary_key?
+    @property
+    def id(self):
+        """
+        Return the primary key of Entity.
+
+        :return int:
+            The primary key of Entity.
+        """
+        return self._entity.id
+
+    @property
+    def fields(self):
+        """
+        Return all fields value of Entity.
+
+        :return list:
+            All fields value of Entity.
+        """
+        return self._entity.fields
+
+    def __getattr__(self, item):
+        """
+        Return the value of specific field.
+
+        :return str:
+            The value of specific field.
+        """
+        if item not in self.__dict__:
+            return self._value_of_field(item)
+        return self.__dict__[item]
+
+    def get(self, field):
+        """
+        Return the value of specific field.
+
+        :return str:
+            The value of specific field.
+        """
+        return self._value_of_field(field)
+
+    def _value_of_field(self, field):
+        return self._entity.value_of_field(field)
+
+
 class Hit:
     def __init__(self, hit):
         """
@@ -105,10 +167,10 @@ class Hit:
         """
         Return the Entity of the hit record.
 
-        :return pymilvus Entity object:
+        :return Entity object:
             The entity content of the hit record.
         """
-        return self._hit.entity
+        return Entity(self._hit.entity)
 
     @property
     def distance(self) -> float:
@@ -140,6 +202,29 @@ class Hit:
         return "(distance: {}, id: {})".format(self._hit.distance, self._hit.id)
 
     __repr__ = __str__
+
+    def __getattr__(self, item):
+        """
+        Return the value of specific field.
+
+        :return str:
+            The value of specific field.
+        """
+        if item not in self.__dict__:
+            return self._value_of_field(item)
+        return self.__dict__[item]
+
+    def get(self, field):
+        """
+        Return the value of specific field.
+
+        :return str:
+            The value of specific field.
+        """
+        return self._value_of_field(field)
+
+    def _value_of_field(self, field):
+        return self._hit.entity.value_of_field(field)
 
 
 class Hits:
