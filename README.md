@@ -21,6 +21,7 @@ The following collection shows Milvus versions and recommended PyMilvus-ORM vers
 |Milvus version| Recommended PyMilvus-ORM version |
 |:-----:|:-----:|
 | 2.0.0-RC1 | 2.0.0rc1 |
+| 2.0.0-RC2 | 2.0.0rc2 |
 
 
 ## Installation
@@ -35,7 +36,7 @@ $ pip3 install pymilvus-orm
 You can install a specific version of PyMilvus-ORM by:
 
 ```shell
-$ pip3 install pymilvus-orm==2.0.0rc1
+$ pip3 install pymilvus-orm==2.0.0rc2
 ```
 
 You can upgrade PyMilvus-ORM to the latest stable version by:
