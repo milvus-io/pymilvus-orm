@@ -53,6 +53,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     dependency_links=[
         'https://test.pypi.org/simple/pymilvus',
+        'https://pypi.org/simple/pymilvus',
     ],
     include_package_data=True,
     install_requires=requirements,
