@@ -110,7 +110,7 @@ class Collection:
             0
         """
         self._name = name
-        self.using = using
+        self._using = using
         self._kwargs = kwargs
         conn = self._get_connection()
         has = conn.has_collection(self._name)
@@ -145,7 +145,7 @@ class Collection:
         })
 
     def _get_connection(self):
-        conn = get_connection(self.using)
+        conn = get_connection(self._using)
         if conn is None:
             raise ConnectionNotExistException(0, ExceptionsMessage.ConnectFirst)
         return conn
