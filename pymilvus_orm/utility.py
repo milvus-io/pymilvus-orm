@@ -191,8 +191,7 @@ def wait_for_index_building_complete(collection_name, index_name="", timeout=Non
         >>> utility.loading_progress("test_collection")
 
     """
-    success, fail_reason = _get_connection(using).wait_for_creating_index(collection_name, index_name, timeout)
-    return success
+    return _get_connection(using).wait_for_creating_index(collection_name, index_name, timeout)[0]
 
 
 def has_collection(collection_name, using="default"):
