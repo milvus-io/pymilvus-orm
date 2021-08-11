@@ -580,7 +580,7 @@ class Collection:
             >>> collection.num_entities
             10
             >>> collection.load()
-            >>> # query
+            >>> # search
             >>> search_param = {
             ...     "data": [[1.0, 1.0]],
             ...     "anns_field": "films",
@@ -654,7 +654,7 @@ class Collection:
             >>> collection.num_entities
             10
             >>> collection.load()
-            >>> # search
+            >>> # query
             >>> expr = "film_id in [ 0, 1 ]"
             >>> res = collection.query(expr, output_fields=["film_date"])
             >>> assert len(res) == 2
