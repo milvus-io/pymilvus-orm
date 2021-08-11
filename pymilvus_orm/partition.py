@@ -399,7 +399,7 @@ class Partition:
             >>> partition.num_entities
             10
             >>> partition.load()
-            >>> # search
+            >>> # query
             >>> expr = "film_id in [ 0, 1 ]"
             >>> res = partition.query(expr, output_fields=["film_date"])
             >>> assert len(res) == 2

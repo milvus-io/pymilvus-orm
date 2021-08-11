@@ -580,7 +580,7 @@ class Collection:
             >>> collection.num_entities
             10
             >>> collection.load()
-            >>> # search
+            >>> # query
             >>> search_param = {
             ...     "data": [[1.0, 1.0]],
             ...     "anns_field": "films",
