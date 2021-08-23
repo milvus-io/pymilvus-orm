@@ -300,7 +300,7 @@ class Collection:
 
         :return bool:
             * True: The collection is empty.
-            * False: The collection is  gfghnot empty.
+            * False: The collection is  not empty.
 
         :example:
             >>> from pymilvus_orm import connections, Collection, FieldSchema, CollectionSchema, DataType
