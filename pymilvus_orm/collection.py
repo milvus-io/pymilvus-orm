@@ -527,7 +527,7 @@ class Collection:
 
         :param data: The vectors of search data, the length of data is number of query (nq), the
                      dim of every vector in data must be equal to vector field's of collection.
-        :type  data: list[list[float]]
+        :type  data: list[list[float]]; pandas.Series with contents of list[float]; numpy.array[numpy.array[float]]
         :param anns_field: The vector field used to search of collection.
         :type  anns_field: str
         :param param: The parameters of search, such as ``nprobe``.

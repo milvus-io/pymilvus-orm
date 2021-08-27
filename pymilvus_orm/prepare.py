@@ -81,8 +81,7 @@ class Prepare:
         if isinstance(data, pandas.DataFrame):
             if len(data.columns) != 1:
                 raise DataNotMatchException(0, ExceptionsMessage.FieldsNumInconsistent)
-            else:
-                entities = Prepare.prepare_search_data(data.iloc[:,0])
+            entities = Prepare.prepare_search_data(data.iloc[:, 0])
         elif isinstance(data, pandas.Series):
             entities = Prepare.prepare_search_data(data.values)
         elif isinstance(data, numpy.ndarray):
