@@ -71,3 +71,22 @@ class Prepare:
             raise DataNotMatchException(0, ExceptionsMessage.DataLengthsInconsistent)
 
         return entities
+
+    @classmethod
+    def prepare_search_data(cls, data):
+        if not isinstance(data, (list, tuple, pandas.DataFrame, pandas.Series, numpy.ndarray)):
+            raise DataTypeNotSupportException(0, ExceptionsMessage.DataTypeNotSupport)
+
+        entities = []
+        if isinstance(data, pandas.DataFrame):
+            if len(data.columns) != 1:
+                raise DataNotMatchException(0, ExceptionsMessage.FieldsNumInconsistent)
+            else:
+                entities = Prepare.prepare_search_data(data.iloc[:,0])
+        elif isinstance(data, pandas.Series):
+            entities = Prepare.prepare_search_data(data.values)
+        elif isinstance(data, numpy.ndarray):
+            entities = data.tolist()
+        else:
+            entities = data
+        return entities
