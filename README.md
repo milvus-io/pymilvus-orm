@@ -1,3 +1,6 @@
+### The content of this repository had been merged into [pymilvus](https://github.com/milvus-io/pymilvus) repository. This repository was archived on August 31th, and no changes to it were allowed ever since. Please find newest codes or assistance at pymilvus repository.
+
+---
 
 # Milvus Python SDK
 
